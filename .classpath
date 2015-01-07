@@ -2,6 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/OpenCV MASLAB"/>
+=======
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/OpenCV-2.4.9"/>
+>>>>>>> ebcac2da9629edf39e358c3e6bb9ac1310508a92
 	<classpathentry kind="output" path="bin"/>
 </classpath>
