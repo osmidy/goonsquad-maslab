@@ -6,7 +6,6 @@ import computervision.Sensor;
  * An interface providing methods to dictate mechanical operations of for
  * physical parts of a robot. A physical robot exists on a specified playing
  * field containing walls and blocks of varying colors.
- * 
  * @author osmidy
  *
  */
@@ -41,9 +40,18 @@ public interface Robot {
     
     /**
      * Searches for a Cube on the playing field
+     * 
      * @param sensors
-     * @return
+     * @return Cube
      */
     //public Cube findCube(List<Sensor> sensors);
 
+    /**
+     * Moves towards a Cube on the playing field in order to collect it
+     * 
+     * @param Cube
+     */
+    //public void getCube(Cube cube);
 }
+
+

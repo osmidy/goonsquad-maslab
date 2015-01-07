@@ -6,6 +6,14 @@ package imageprocessing;
  *
  */
 public interface ImageUtil {
-    
-    
+
+    /**
+     * Determines the color of the pixel
+     * 
+     * @param pixel
+     *          Pixel in image matrix captured by CameraSensor
+     * @return the color of the specified pixel (Red, Green, or Blue)
+     */
+    public int getPixelColor();
+        
 }
