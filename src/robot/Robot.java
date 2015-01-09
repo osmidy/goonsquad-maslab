@@ -5,22 +5,24 @@ import java.util.List;
 import computervision.Sensor;
 
 /**
- * An interface providing methods to dictate mechanical operations of for
- * physical parts of a robot. A physical robot exists on a specified playing
- * field containing walls and blocks of varying colors. With regards to
- * direction, all angles for the robot are measured counterclockwise relative to
- * the axis passing through the center of the Robot's face.
+ * An interface providing methods to dictate mechanical operations of a physical
+ * robot. A physical robot exists on a specified playing field containing walls
+ * and blocks of varying colors. With regards to direction, all angles for the
+ * robot are measured clockwise relative to the axis passing through the center
+ * of the Robot's face.
  * 
  * @author osmidy
  *
  */
 public interface Robot {
     // Datatype Definition: Robot ::= sensors:List<Sensor> +
-
+    
     /**
      * Determine the direction this Robot is facing
      * 
      * @param centerSensor
+     *            Sensor positioned at the front of the Robot, along the axis
+     *            passing through its face
      * @return the heading, in radians, of the Robot
      */
     public double getHeading(Sensor centerSensor);
@@ -78,10 +80,10 @@ public interface Robot {
      * Searches for a Cube on the playing field
      * 
      * @param sensor
-     *            Sensor used to do locate Cube on the field
-     * @return a Cube discovered on the playing field.
+     *            CameraSensor used to locate Cube on the field
+     * @return the Cube of closest distance discovered on the playing field.
      */
-//    public Cube findCube(Sensor sensors);
+    // public Cube findCube(CameraSensor sensor);
 
     /**
      * Moves towards a Cube on the playing field in order to collect it
@@ -89,5 +91,27 @@ public interface Robot {
      * @param cube
      *            the Cube on the field targeted by the robot
      */
-//    public void getCube(Cube cube);
+    // public void getCube(Cube cube);
+
+    /**
+     * Searches for walls on the playing field.
+     * 
+     * @param sensors
+     *            List of Sensors used to detect the walls
+     * @return a List of Walls detected by the Sensors
+     */
+    // public List<Walls> findWall(List<Sensor> sensors);
+
+    /**
+     * Causes the Robot to follow and move along the closest Wall
+     * 
+     * @param walls
+     *            a List of Walls on the playing field
+     */
+    // public void followWall(List<Wall> walls);
+    
+    /**
+     * @return the radius, in meters, of this Robot
+     */
+    public double getRadius();
 }
