@@ -26,6 +26,21 @@ public interface Robot {
      * @return the heading, in radians, of the Robot
      */
     public double getHeading(Sensor centerSensor);
+    
+    /**
+     * Assigns directional heading to Sensors mounted on the Robot
+     * @param sensor Sensor mounted on the robot
+     * @param heading Heading, in radians, to be assigned to the Sensor
+     */
+    public void setSensorHeading(Sensor sensor, double heading);
+    
+    /**
+     * Determine the direction a given Sensor is facing
+     * 
+     * @param sensor  Sensor mounted on the robot
+     * @return the heading, in radians, of the Sensor
+     */
+    public double getSensorHeading(Sensor sensor);
 
     /**
      * @return the current velocity of the robot, in m/s
