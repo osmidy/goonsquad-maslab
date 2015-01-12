@@ -28,13 +28,13 @@ public class Pwm {
     }
 
     /**
-     * Creates an instance of a Pwm object. Default enable status and speed of
-     * Pwm are respectively set to true and 0.0.
+     * Creates an instance of a Pwm object. Default speed and enable status of
+     * Pwm are respectively set to 0.0 and true.
      * 
      * @param pin
      *            an integer representing the physical pin number of the sensor
      */
-    public native void init(int pin);
+    private native void init(int pin);
 
     /**
      * Writes a value for the speed over the Pwm interface
@@ -49,5 +49,13 @@ public class Pwm {
      * @return the current speed on the Pwm sensor
      */
     public native double getSpeed();
+
+    /**
+     * Assigns the enable status of this Pwm object.
+     * 
+     * @param enable
+     *            boolean indicating enable status
+     */
+    public native void setEnableStatus(boolean enable);
 
 }

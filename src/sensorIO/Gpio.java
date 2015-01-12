@@ -10,6 +10,7 @@ package sensorIO;
  */
 public class Gpio {
     private final int pin;
+    private final String dir; // "in" or "out"
 
     // Library for input methods
     static {
@@ -24,18 +25,19 @@ public class Gpio {
      */
     public Gpio(int pin) {
         this.pin = pin;
+        this.dir = "out";
         this.init(pin);
     }
 
     /**
      * Creates an instance of the Gpio input pin. Default Gpio direction is set
-     * to DIR_OUT
+     * to DIR_OUT for output.
      * 
      * @param pin
      *            an integer representing the physical pin number of the sensor
      */
     // First create fields for pinInterface and pin, then run this method
-    public native void init(int pin);
+    private native void init(int pin);
 
     /**
      * Reads input value from the Gpio pin
@@ -47,8 +49,11 @@ public class Gpio {
     /**
      * Writes output value to the Gpio pin
      * 
+     * @param value
+     *            int value to be written to the Gpio. Must be either 0 (low) or
+     *            1 (high)
      */
-    public native void write();
+    public native void write(int value);
 
     /**
      * Changes direction on the pin
@@ -58,5 +63,10 @@ public class Gpio {
      *            "out"
      */
     public native void setDirection(String dir);
+    
+    /**
+     * @return direction for this Gpio pin
+     */
+    public native String getDirection();
 
 }
