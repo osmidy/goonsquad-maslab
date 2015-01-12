@@ -23,7 +23,6 @@ public class ImageProcessor {
         buffers = new ArrayList<Mat>();
         for (int i = 0; i < numBuffers; i++) {
             buffers.add(new Mat(new Size(), CvType.CV_8UC3));
-            
             buffers.add(new Mat(new Size(), CvType.CV_8UC1));
             buffers.add(new Mat(new Size(), CvType.CV_8UC1));
             buffers.add(new Mat(new Size(), CvType.CV_8UC1));

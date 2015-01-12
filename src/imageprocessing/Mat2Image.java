@@ -25,7 +25,7 @@ public class Mat2Image {
     public BufferedImage getImage(Mat mat) {
         allocateTempSpace(mat);
         if (mat.type() == CvType.CV_8UC3) {
-            Imgproc.cvtColor(mat, mat, Imgproc.COLOR_BGR2RGB);
+           Imgproc.cvtColor(mat, mat, Imgproc.COLOR_BGR2RGB);
         }
         mat.get(0, 0, dat);
         img.getRaster().setDataElements(0, 0, img.getWidth(), img.getHeight(), dat);
