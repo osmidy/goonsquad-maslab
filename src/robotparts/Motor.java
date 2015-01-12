@@ -15,11 +15,12 @@ public class Motor {
     private final Gpio dir;
     private final int pwmPin;
     private final int dirPin;
+    private final long pwmPointer;
+    private final long dirPointer;
 
     // Rep Invariant: Pwm and Gpio are on different pins; Gpio set for output
     private void checkRep() {
         assert pwmPin != dirPin;
-        assert dir.getDirection().equals("out");
     }
 
     /**
@@ -37,8 +38,10 @@ public class Motor {
     public Motor(Pwm pwm, int pwmPin, Gpio dir, int dirPin) {
         this.pwm = pwm;
         this.pwmPin = pwmPin;
+        this.pwmPointer = pwm.getPointer();
         this.dir = dir;
         this.dirPin = dirPin;
+        this.dirPointer = dir.getPointer();
         checkRep();
     }
 
@@ -55,7 +58,7 @@ public class Motor {
         } else {
             this.setReverse();
         }
-        pwm.setSpeed(speed);
+        pwm.setSpeed(pwmPointer, speed);
         checkRep();
     }
 
@@ -63,7 +66,7 @@ public class Motor {
      * Sets the Motor to run in the forward direction.
      */
     public void setForward() {
-        dir.write(0);
+        dir.write(dirPointer, 0);
         checkRep();
     }
 
@@ -71,7 +74,7 @@ public class Motor {
      * Sets the Motor to run in the reverse direction.
      */
     public void setReverse() {
-        dir.write(1);
+        dir.write(dirPointer, 1);
         checkRep();
     }
 

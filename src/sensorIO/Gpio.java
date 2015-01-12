@@ -10,7 +10,7 @@ package sensorIO;
  */
 public class Gpio {
     private final int pin;
-    private final String dir; // "in" or "out"
+    private final long pointer;
 
     // Library for input methods
     static {
@@ -22,51 +22,54 @@ public class Gpio {
      * 
      * @param pin
      *            an integer representing the physical pin number of the sensor
+     * @param direction
+     *            a String, either "in" or "out", designating the Gpio for
+     *            either input or output
      */
-    public Gpio(int pin) {
+    public Gpio(int pin, String dir) {
         this.pin = pin;
-        this.dir = "out";
-        this.init(pin);
+        pointer = this.init(pin, dir);
     }
 
     /**
      * Creates an instance of the Gpio input pin. Default Gpio direction is set
-     * to DIR_OUT for output.
+     * to DIR_OUT for output.  Default Gpio vlue is 1.
      * 
      * @param pin
      *            an integer representing the physical pin number of the sensor
+     * @param direction
+     *            a String, either "in" or "out", designating the Gpio for
+     *            either input or output
+     * @return a long value for the stored pointer to this object in C++
      */
     // First create fields for pinInterface and pin, then run this method
-    private native void init(int pin);
+    private native long init(int pin, String direction);
 
     /**
      * Reads input value from the Gpio pin
      * 
+     * @param pointer
+     *            long representing pointer to Gpio object in C++
      * @return the current value on the Gpio
      */
-    public native int read();
+    public native int read(long pointer);
 
     /**
      * Writes output value to the Gpio pin
      * 
+     * @param pointer
+     *            long representing pointer to Gpio object in C++
      * @param value
      *            int value to be written to the Gpio. Must be either 0 (low) or
      *            1 (high)
      */
-    public native void write(int value);
+    public native void write(long pointer, int value);
 
     /**
-     * Changes direction on the pin
-     * 
-     * @param dir
-     *            String indicating the direction to be set, either "in" or
-     *            "out"
+     * @return the stored pointer for this object in C++
      */
-    public native void setDirection(String dir);
-    
-    /**
-     * @return direction for this Gpio pin
-     */
-    public native String getDirection();
+    public long getPointer() {
+        return this.pointer;
+    }
 
 }
