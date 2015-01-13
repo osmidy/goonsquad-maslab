@@ -12,12 +12,13 @@ import sensorIO.Spi;
  */
 public class Gyroscope {
     private final Gpio chipSelect;
+    private final String gpioDir = "out";
     private final int chipPin;
     private final Spi spi;
 
     // Rep Invariant: Gpio direction is "out"
     private void checkRep() {
-        assert chipSelect.getDirection().equals("out");
+        assert gpioDir.equals("out");
     }
 
     /**
@@ -28,7 +29,7 @@ public class Gyroscope {
      */
     public Gyroscope(int chipPin) {
         this.chipPin = chipPin;
-        chipSelect = new Gpio(chipPin);
+        chipSelect = new Gpio(chipPin, gpioDir);
         spi = new Spi();
         checkRep();
     }

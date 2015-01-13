@@ -14,7 +14,7 @@ public class Gpio {
 
     // Library for input methods
     static {
-        System.loadLibrary("gpio");
+        System.loadLibrary("interface");
     }
 
     /**

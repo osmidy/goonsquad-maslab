@@ -14,11 +14,12 @@ public class Servo {
     private final Gpio dir;
     private final int pwmPin;
     private final int dirPin;
+    private final long pwmPointer;
+    private final long dirPointer;
 
-    // Rep Invariant: Pwm and Gpio are on different pins; Gpio set for output
+    // Rep Invariant: Pwm and Gpio are on different pins
     private void checkRep() {
         assert pwmPin != dirPin;
-        assert dir.getDirection().equals("out");
     }
 
     /**
@@ -36,8 +37,10 @@ public class Servo {
     public Servo(Pwm pwm, int pwmPin, Gpio dir, int dirPin) {
         this.pwm = pwm;
         this.pwmPin = pwmPin;
+        this.pwmPointer = pwm.getPointer();
         this.dir = dir;
         this.dirPin = dirPin;
+        this.dirPointer = dir.getPointer();
         checkRep();
     }
 
@@ -49,7 +52,7 @@ public class Servo {
      *            power to be applied by the servo
      */
     public void setSpeed(double speed) {
-        pwm.setSpeed(speed);
+        pwm.setSpeed(pwmPointer, speed);
         checkRep();
     }
 
@@ -61,7 +64,7 @@ public class Servo {
      *            or 1
      */
     public void setDirection(int value) {
-        dir.write(value);
+        dir.write(dirPointer, value);
         checkRep();
     }
 
@@ -69,11 +72,11 @@ public class Servo {
      * Reverses the direction of motion for this Servo
      */
     public void reverseDirection() {
-        int value = dir.read();
+        int value = dir.read(dirPointer);
         if (value == 0) {
-            dir.write(1);
+            dir.write(dirPointer, 1);
         } else {
-            dir.write(0);
+            dir.write(dirPointer, 0);
         }
         checkRep();
     }

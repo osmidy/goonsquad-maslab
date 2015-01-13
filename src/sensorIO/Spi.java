@@ -12,7 +12,7 @@ public class Spi {
     private final long pointer;
     
     static {
-        System.loadLibrary("spi");
+        System.loadLibrary("interface");
     }
 
     /**
