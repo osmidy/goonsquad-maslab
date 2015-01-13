@@ -14,7 +14,7 @@ public class Pwm {
 
     // Library for input methods
     static {
-        System.loadLibrary("pwm");
+        System.loadLibrary("interface");
     }
 
     /**
