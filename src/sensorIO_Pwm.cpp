@@ -1,5 +1,6 @@
 #include <jni.h>
 #include <stdio.h>
+#include <math.h>
 #include "mraa.hpp"
 #include "sensorIO_Pwm.h"
 
@@ -20,7 +21,7 @@ JNIEXPORT void JNICALL Java_sensorIO_Pwm_setSpeed
 }
 
 JNIEXPORT jdouble JNICALL Java_sensorIO_Pwm_getSpeed
-  (JNIEnv *env, jobject pointer, jlong pointer) {
+  (JNIEnv *env, jobject thisObj, jlong pointer) {
 	mraa::Pwm* pwm = (mraa::Pwm*)pointer;
 	jdouble speed = (jdouble)pwm->read();
 	return speed;
