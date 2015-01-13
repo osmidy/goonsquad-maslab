@@ -8,7 +8,7 @@ JNIEXPORT jlong JNICALL Java_sensorIO_Gpio_init
   (JNIEnv *env, jobject thisObj, jint pin, jstring direction) {
 	mraa::Gpio* gpio = new mraa::Gpio((int)pin);
 	jlong pointer = (jlong)gpio;
-	const char *dir = env->GetStringUTFChars(env, direction, NULL);
+	const char *dir = env->GetStringUTFChars(direction, NULL);
 	if (strcmp (dir, "out") == 0) {
 		gpio->dir(mraa::DIR_OUT);
 	}
