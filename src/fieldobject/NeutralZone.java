@@ -15,11 +15,17 @@ public class NeutralZone implements FieldObject {
     // These not final; will change based camera readings.
     private int width;
     private final int depth;
+    // Location on field
+    private final int x;
+    private final int y;
 
-    public NeutralZone() {
+    public NeutralZone(int x, int y) {
         height = 0;
         width = 0;
         depth = 0;
+        
+        this.x = x;
+        this.y = y;
     }
 
     @Override
@@ -64,6 +70,18 @@ public class NeutralZone implements FieldObject {
 
     @Override
     public int getColor() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getX() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getY() {
         // TODO Auto-generated method stub
         return 0;
     }

@@ -44,6 +44,16 @@ public interface FieldObject {
      *         <height, width, depth>.
      */
     public List<Integer> getDimensions();
+    
+    /**
+     * @return the x-coordinate for this field object
+     */
+    public int getX();
+    
+    /**
+     * @return the y-coordinate for this field object
+     */
+    public int getY();
 
     /**
      * Assigns a lighting profile identifying the Material making up this

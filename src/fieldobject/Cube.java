@@ -15,11 +15,17 @@ public class Cube implements FieldObject {
     private final int height;
     private final int width;
     private final int depth;
+    // Location on field
+    private final int x;
+    private final int y;
     
-    public Cube() {
+    public Cube(int x, int y) {
         height = 2;
         width = 2;
         depth = 2;
+        
+        this.x = x;
+        this.y = y;
     }
 
     @Override
@@ -59,6 +65,18 @@ public class Cube implements FieldObject {
 
     @Override
     public int getColor() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getX() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getY() {
         // TODO Auto-generated method stub
         return 0;
     }
