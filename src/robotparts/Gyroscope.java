@@ -12,9 +12,16 @@ import sensorIO.Spi;
  */
 public class Gyroscope {
     private final Gpio chipSelect;
+    private final long chipPointer;
     private final String gpioDir = "out";
     private final int chipPin;
     private final Spi spi;
+    private final long spiPointer;
+    
+    // For native methods
+    static {
+        System.loadLibrary("interface");
+    }
 
     // Rep Invariant: Gpio direction is "out"
     private void checkRep() {
@@ -29,18 +36,23 @@ public class Gyroscope {
      */
     public Gyroscope(int chipPin) {
         this.chipPin = chipPin;
-        chipSelect = new Gpio(chipPin, gpioDir);
-        spi = new Spi();
+        this.chipSelect = new Gpio(chipPin, gpioDir);
+        this.spi = new Spi();
+        this.chipPointer = chipSelect.getPointer();
+        this.spiPointer = spi.getPointer();
         checkRep();
     }
-    
+
     /**
      * Determines the current heading of this Gyroscope.
      * 
+     * @param chipPointer
+     *            a long; points to memory location of Gpio object for this
+     *            Gyroscope
+     * @param spiPointer
+     *            a long; points to memory location of Spi object for this
+     *            Gyroscope
      * @return the heading, in degrees, of the Gyroscope
      */
-    public double getHeading() {
-        // TODO: adjust for drifting
-        return 0;
-    }
+    public native double getHeading(long chipPointer, long spiPointer);
 }

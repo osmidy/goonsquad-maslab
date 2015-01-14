@@ -43,7 +43,7 @@ public interface FieldObject {
      * @return a List of the dimensions of this FieldObject, in the order
      *         <height, width, depth>.
      */
-    public List<Double> getDimensions();
+    public List<Integer> getDimensions();
 
     /**
      * Assigns a lighting profile identifying the Material making up this
