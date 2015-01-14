@@ -29,13 +29,14 @@ public class ImageUtil {
         int height = (int) (camera.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT));
         JLabel cameraPane = createWindow("Camera output", width, height);
         JLabel opencvPane = createWindow("OpenCV output", width, height);
+       
 
         // Set up structures for processing images
         ImageProcessor processor = new ImageProcessor();
         Mat rawImage = new Mat();
         Mat processedImage = new Mat();
         Mat2Image rawImageConverter = new Mat2Image(BufferedImage.TYPE_3BYTE_BGR);
-        Mat2Image processedImageConverter = new Mat2Image(BufferedImage.TYPE_BYTE_GRAY);
+        Mat2Image processedImageConverter = new Mat2Image(BufferedImage.TYPE_3BYTE_BGR);
         
         while (true) {
             // Wait until the camera has a new frame
@@ -48,7 +49,7 @@ public class ImageUtil {
             }
             
             // Process the image however you like
-            processor.process(rawImage, processedImage);
+            processor.process(rawImage); //, processedImage.data);
             
             // Update the GUI windows
             updateWindow(cameraPane, rawImage, rawImageConverter);

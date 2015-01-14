@@ -1,0 +1,32 @@
+#include<opencv>
+
+int[] process(Mat img) {
+	Mat redFiltered = img
+	Mat blueFiltered = img
+	Mat greenFiltered = img 
+	Array arrayB = img.data
+	Array arrayG = img.data
+	Array arrayR = img.data
+	for (int elt=0; elt < arrayB.length; elt++) { 
+		int RBRatio = 2.2;
+		int RGRatio = 2.2;
+		int GRRatio = 2.2;
+		int GBRatio = 2.2;
+		int BRRatio = 2.2;
+		int BGRatio = 2.2;
+		if (array[elt][2] > RGRatio * array[elt][1]) && (array[elt][2] > RBRatio * array[elt][0]) {
+			arrayR[elt] = [150,150,250];
+		{
+		elif (array[elt][1] > GRRatio * array[elt][2]) && (array[elt][1] > GBRatio * array[elt][0]) {
+			arrayG[elt] = [150,250,150];
+		{
+		elif (elt[0] > BRRatio * elt[2]) && (elt[0] > BGRatio * elt[1]) {
+			arrayB[elt] = [250,150,150];
+		{
+		else {
+			array[elt] = [0, 0, 0]
+		{
+	{
+	blueFiltered.data = arrayB
+	greenFiltered.data = arrayG
+	redFiltered.data = arrayR
