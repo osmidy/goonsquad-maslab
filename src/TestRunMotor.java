@@ -7,10 +7,15 @@ public class TestRunMotor {
         // Run the motor
         int pwmPin = 9;
         int dirPin = 8;
+        int pwmPinRight = 3;
+        int dirPinRight = 4;
         Pwm pwm = new Pwm(pwmPin);
+        Pwm pwmRight = new Pwm(pwmPinRight);
         Gpio dir = new Gpio(8, "out");
+        Gpio dirRight = new Gpio(dirPinRight,"out");
         long pwmPointer = pwm.getPointer();
         long dirPointer = dir.getPointer();
+        long pwmPointerRight = pwmRight.getPointer();
         print("Starting...2");
         try {
             Thread.sleep(1000);
@@ -27,7 +32,7 @@ public class TestRunMotor {
         }
         print("Speed!");
         pwm.setSpeed(pwmPointer, 0.5);
-        
+        pwmRight.setSpeed(pwmPointerRight, 0.5);
         // Stop after 5 seconds
         try {
             Thread.sleep(5000);
@@ -36,6 +41,7 @@ public class TestRunMotor {
             e.printStackTrace();
         }
         pwm.setSpeed(pwmPointer, 0.0);
+        pwmRight.setSpeed(pwmPointerRight, 0.0);
     }
     
     private static void print(String str) {
