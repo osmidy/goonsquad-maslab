@@ -32,23 +32,6 @@ public class Spi {
     private native long init(int bus);
 
     /**
-     * Writes single byte to Spi
-     * 
-     * @param pointer
-     *            long representing pointer to Spi object in C++
-     * @param data
-     *            char representing the byte to be written
-     * @return data recevied via MISO
-     */
-    public native char write(long pointer, char data);
-
-    /**
-     * Writes buffer of bytes to Spi, as specified in mraa docs. length must be
-     * nonnegative.
-     */
-    public native char write(long pointer, char data, int length);
-
-    /**
      * Sets the bit per word for this Spi, as specified in mraa docs. bits must
      * be nonnegative.
      */

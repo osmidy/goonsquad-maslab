@@ -17,22 +17,6 @@ JNIEXPORT jlong JNICALL Java_sensorIO_Spi_init
 
 /*
  * Class:     sensorIO_Spi
- * Method:    write
- * Signature: (JC)C
- */
-JNIEXPORT jchar JNICALL Java_sensorIO_Spi_write__JC
-  (JNIEnv *, jobject, jlong, jchar);
-
-/*
- * Class:     sensorIO_Spi
- * Method:    write
- * Signature: (JCI)C
- */
-JNIEXPORT jchar JNICALL Java_sensorIO_Spi_write__JCI
-  (JNIEnv *, jobject, jlong, jchar, jint);
-
-/*
- * Class:     sensorIO_Spi
  * Method:    bitPerWord
  * Signature: (JI)V
  */
