@@ -9,10 +9,10 @@ extern "C" {
 #endif
 /*
  * Class:     robotparts_Gyroscope
- * Method:    getHeading
+ * Method:    getAngularVelocity
  * Signature: (JJ)D
  */
-JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getHeading
+JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getAngularVelocity
   (JNIEnv *, jobject, jlong, jlong);
 
 #ifdef __cplusplus

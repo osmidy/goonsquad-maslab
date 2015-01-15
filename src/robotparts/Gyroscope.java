@@ -46,7 +46,7 @@ public class Gyroscope {
     }
 
     /**
-     * Determines the current heading of this Gyroscope.
+     * Determines the current angular velocity of this Gyroscope.
      * 
      * @param chipPointer
      *            a long; points to memory location of Gpio object for this
@@ -54,9 +54,9 @@ public class Gyroscope {
      * @param spiPointer
      *            a long; points to memory location of Spi object for this
      *            Gyroscope
-     * @return the heading, in degrees, of the Gyroscope
+     * @return the heading, in degrees/s, of the Gyroscope
      */
-    public native double getHeading(long chipPointer, long spiPointer);
+    public native double getAngularVelocity(long chipPointer, long spiPointer);
     
     public int getChipPin() {
         return chipPin;

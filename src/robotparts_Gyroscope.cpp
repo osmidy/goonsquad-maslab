@@ -16,7 +16,6 @@
  */
 
 float readSensor(char* recv) {
-	printf("%x, %x, %x, %x\r\n", recv[0], recv[1], recv[2], recv[3]);
 	int init = 0;
 	struct timeval tv;
 	float rf;
@@ -54,14 +53,10 @@ jdouble fixDrift(float drift) {
 
 }
 
-JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getHeading(JNIEnv *env,
+JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getAngularVelocity(JNIEnv *env,
 		jobject thisObj, jlong chipPointer, jlong spiPointer) {
-	printf("getting Gpio\r\n");
 	mraa::Gpio* chipSelect = (mraa::Gpio*) chipPointer;
-	printf("done\r\n");
-	printf("getting Spi\r\n");
 	mraa::Spi* spi = (mraa::Spi*) spiPointer;
-	printf("done again\r\n");
 	chipSelect->write(1);
 	spi->bitPerWord(32);
 	char rxBuf[2];
@@ -77,15 +72,11 @@ JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getHeading(JNIEnv *env,
 	char* recv = spi->write(writeBuf, 4);
 	chipSelect->write(1);
 	if (recv != NULL) {
-		printf("reading sensor\r\n");
 		float driftedAngle = readSensor(recv);
-		printf("sensor read\r\n");
 		jdouble correctedAngle = fixDrift(driftedAngle);
-		printf("corrected angle\r\n");
 		return correctedAngle;
 
 	} else {
-		printf("recv was NULL!");
 		return 0.03421;  // Indicating recv was null
 	}
 }
