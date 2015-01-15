@@ -16,6 +16,7 @@ public class TestRunMotor {
         long pwmPointer = pwm.getPointer();
         long dirPointer = dir.getPointer();
         long pwmPointerRight = pwmRight.getPointer();
+        long dirPointerRight = dirRight.getPointer();
         print("Starting...2");
         try {
             Thread.sleep(1000);
@@ -31,8 +32,9 @@ public class TestRunMotor {
             e.printStackTrace();
         }
         print("Speed!");
-        pwm.setSpeed(pwmPointer, 0.5);
-        pwmRight.setSpeed(pwmPointerRight, 0.5);
+        pwm.setSpeed(pwmPointer, 0.2);
+        pwmRight.setSpeed(pwmPointerRight, 0.2);
+        dirRight.write(dirPointerRight, 0);
         // Stop after 5 seconds
         try {
             Thread.sleep(5000);
