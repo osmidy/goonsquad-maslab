@@ -53,26 +53,26 @@ jdouble fixDrift(float drift) {
 
 JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getHeading(JNIEnv *env,
 		jobject thisObj, jlong chipPointer, jlong spiPointer) {
-	printf("getting Gpio");
+	printf("getting Gpio\r\n");
 	mraa::Gpio* chipSelect = (mraa::Gpio*) chipPointer;
-	printf("done");
-	printf("getting Spi");
+	printf("done\r\n");
+	printf("getting Spi\r\n");
 	mraa::Spi* spi = (mraa::Spi*) spiPointer;
-	printf("done again");
+	printf("done again\r\n");
 	chipSelect->write(1);
 	spi->bitPerWord(32);
-//	char rxBuf[2];
-//	char writeBuf[4];
-//	unsigned int sensorRead = 0x20000000;
-//	writeBuf[0] = sensorRead & 0xff;
-//	writeBuf[1] = (sensorRead >> 8) & 0xff;
-//	writeBuf[2] = (sensorRead >> 16) & 0xff;
-//	writeBuf[3] = (sensorRead >> 24) & 0xff;
-//	float total = 0;
-//	struct timeval tv;
-//	chipSelect->write(0);
-//	char* recv = spi->write(writeBuf, 4);
-//	chipSelect->write(1);
+	char rxBuf[2];
+	char writeBuf[4];
+	unsigned int sensorRead = 0x20000000;
+	writeBuf[0] = sensorRead & 0xff;
+	writeBuf[1] = (sensorRead >> 8) & 0xff;
+	writeBuf[2] = (sensorRead >> 16) & 0xff;
+	writeBuf[3] = (sensorRead >> 24) & 0xff;
+	float total = 0;
+	struct timeval tv;
+	chipSelect->write(0);
+	char* recv = spi->write(writeBuf, 4);
+	chipSelect->write(1);
 //	if (recv != NULL) {
 //		float driftedAngle = readSensor(recv);
 //		jdouble correctedAngle = fixDrift(driftedAngle);
