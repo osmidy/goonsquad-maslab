@@ -60,7 +60,7 @@ JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getHeading(JNIEnv *env,
 	mraa::Spi* spi = (mraa::Spi*) spiPointer;
 	printf("done again");
 	chipSelect->write(1);
-//	spi->bitPerWord(32);
+	spi->bitPerWord(32);
 //	char rxBuf[2];
 //	char writeBuf[4];
 //	unsigned int sensorRead = 0x20000000;
