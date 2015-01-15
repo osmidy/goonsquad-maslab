@@ -16,9 +16,9 @@ struct info {
 };
 
 void echo_handler(void* args) {
-	info data = (info)args;
+	info* data = (info*)args;
 	static struct timeval start;
-	bool rising = data.echo->read() == 1;
+	bool rising = data->echo->read() == 1;
 	if (rising) {
 		gettimeofday(&start, NULL);
 	}
@@ -30,8 +30,8 @@ void echo_handler(void* args) {
 		int diffUSec = end.tv_usec - start.tv_usec;
 		double diffTime = (double) diffSec + 0.000001 * diffUSec;
 		// Speed of sound conversion: 340m/s * 0.5 (round trip)
-		data.distance = diffTime * 170.0;
-		data.checking = false;
+		data->distance = diffTime * 170.0;
+		data->checking = false;
 
 	}
 }
@@ -42,13 +42,13 @@ JNIEXPORT jdouble JNICALL Java_sensors_UltraSonicSensor_echoHandle(JNIEnv *env,
 	data.echo = (mraa::Gpio*)echoPointer;
 	data.checking = true;
 	mraa::Gpio* trig = (mraa::Gpio*)trigPointer;
-	data.echo->isr(mraa::EDGE_BOTH, echo_handler, data);
-
+	data.echo->isr(mraa::EDGE_BOTH, echo_handler, &data);
+	// minimum 10us trigger pulse
+	trig->write(1);
+	usleep(20);
+	trig->write(0);
 	while(data.checking) {
-		// minimum 10us trigger pulse
-		trig->write(1);
-		usleep(20);
-		trig->write(0);
+		usleep(1000);
 	}
 	data.echo->isrExit();
 	jdouble distance = (jdouble)data.distance;

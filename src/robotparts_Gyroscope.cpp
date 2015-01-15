@@ -69,7 +69,7 @@ JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getHeading(JNIEnv *env,
 	char* recv = spi->write(writeBuf, 4);
 	chipSelect->write(1);
 	if (recv != NULL) {
-		float drfitedAngle = readSensor(recv);
+		float driftedAngle = readSensor(recv);
 		jdouble correctedAngle = fixDrift(driftedAngle);
 		return correctedAngle;
 
