@@ -60,26 +60,27 @@ JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getHeading(JNIEnv *env,
 	mraa::Spi* spi = (mraa::Spi*) spiPointer;
 	printf("done again");
 	chipSelect->write(1);
-	spi->bitPerWord(32);
-	char rxBuf[2];
-	char writeBuf[4];
-	unsigned int sensorRead = 0x20000000;
-	writeBuf[0] = sensorRead & 0xff;
-	writeBuf[1] = (sensorRead >> 8) & 0xff;
-	writeBuf[2] = (sensorRead >> 16) & 0xff;
-	writeBuf[3] = (sensorRead >> 24) & 0xff;
-	float total = 0;
-	struct timeval tv;
-	chipSelect->write(0);
-	char* recv = spi->write(writeBuf, 4);
-	chipSelect->write(1);
-	if (recv != NULL) {
-		float driftedAngle = readSensor(recv);
-		jdouble correctedAngle = fixDrift(driftedAngle);
-		return correctedAngle;
-
-	} else {
-		printf("recv was NULL!");
-		return 0.03421;  // Indicating recv was null
-	}
+//	spi->bitPerWord(32);
+//	char rxBuf[2];
+//	char writeBuf[4];
+//	unsigned int sensorRead = 0x20000000;
+//	writeBuf[0] = sensorRead & 0xff;
+//	writeBuf[1] = (sensorRead >> 8) & 0xff;
+//	writeBuf[2] = (sensorRead >> 16) & 0xff;
+//	writeBuf[3] = (sensorRead >> 24) & 0xff;
+//	float total = 0;
+//	struct timeval tv;
+//	chipSelect->write(0);
+//	char* recv = spi->write(writeBuf, 4);
+//	chipSelect->write(1);
+//	if (recv != NULL) {
+//		float driftedAngle = readSensor(recv);
+//		jdouble correctedAngle = fixDrift(driftedAngle);
+//		return correctedAngle;
+//
+//	} else {
+//		printf("recv was NULL!");
+//		return 0.03421;  // Indicating recv was null
+//	}
+	return 0;
 }
