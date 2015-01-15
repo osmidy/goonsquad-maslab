@@ -16,7 +16,7 @@
  */
 
 float readSensor(char* recv) {
-	printf("%d\r\n", recv[0]);
+	printf("%x, %x, %x, %x\r\n", recv[0], recv[1], recv[2], recv[3]);
 	int init = 0;
 	struct timeval tv;
 	float rf;
@@ -43,6 +43,7 @@ float readSensor(char* recv) {
 //		total = readSensor(recv);
 //	}
 	total = (float)reading;
+	total /= 80.0;
 	return total;
 }
 
