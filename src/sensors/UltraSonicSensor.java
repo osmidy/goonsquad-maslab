@@ -20,6 +20,10 @@ public class UltraSonicSensor implements Sensor {
 
     private final String DIR_IN = "in";
     private final String DIR_OUT = "out";
+    
+    static {
+        System.loadLibrary("interface");
+    }
 
     /**
      * Constructor method.
