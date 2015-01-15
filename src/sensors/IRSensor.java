@@ -40,8 +40,9 @@ public class IRSensor implements Sensor {
      * @return the distance, in meters, to the nearest object
      */
     private double computeDistance(double voltage) {
-        // TODO: apply formula here
-        double distance = voltage * 1;
+        double exp = 1.257;
+        double cmToM = .01;
+        double distance = 8592.3*Math.pow(voltage, exp) * cmToM;
         return distance;
     }
 
