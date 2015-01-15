@@ -57,4 +57,16 @@ public class Gyroscope {
      * @return the heading, in degrees, of the Gyroscope
      */
     public native double getHeading(long chipPointer, long spiPointer);
+    
+    public int getChipPin() {
+        return chipPin;
+    }
+    
+    public long getChipPointer() {
+        return chipPointer;
+    }
+    
+    public long getSpiPointer() {
+        return spiPointer;
+    }
 }
