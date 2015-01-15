@@ -35,7 +35,7 @@ public class Spi {
      * Writes single byte to Spi
      * 
      * @param pointer
-     *            long representing pointer to Gpio object in C++
+     *            long representing pointer to Spi object in C++
      * @param data
      *            char representing the byte to be written
      * @return data recevied via MISO

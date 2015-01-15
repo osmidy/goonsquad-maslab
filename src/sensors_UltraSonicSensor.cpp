@@ -16,7 +16,7 @@ struct info {
 };
 
 void echo_handler(void* args) {
-	struct data = (struct)args;
+	info data = (info)args;
 	static struct timeval start;
 	bool rising = data.echo->read() == 1;
 	if (rising) {
