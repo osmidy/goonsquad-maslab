@@ -8,7 +8,7 @@ public class TestGyro {
     
     public static void main(String[] f) throws InterruptedException {
         while (true) {
-            System.out.println(x);gyro.getHeading(chip, spi));
+            System.out.println(gyro.getHeading(chip, spi));
             Thread.sleep(2000);
         }
     }
