@@ -33,7 +33,7 @@ public class TestRunMotor {
         }
         print("Speed!");
         pwm.setSpeed(pwmPointer, 0.2);
-        pwmRight.setSpeed(pwmPointerRight, 0.2);
+        pwmRight.setSpeed(pwmPointerRight, 0.1);
         dirRight.write(dirPointerRight, 0);
         // Stop after 5 seconds
         try {
