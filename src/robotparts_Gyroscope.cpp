@@ -51,9 +51,12 @@ jdouble fixDrift(float drift) {
 
 JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getHeading(JNIEnv *env,
 		jobject thisObj, jlong chipPointer, jlong spiPointer) {
-
+	printf("getting Gpio");
 	mraa::Gpio* chipSelect = (mraa::Gpio*) chipPointer;
+	printf("done");
+	printf("getting Spi");
 	mraa::Spi* spi = (mraa::Spi*) spiPointer;
+	printf("done again");
 	chipSelect->write(1);
 	spi->bitPerWord(32);
 	char rxBuf[2];
