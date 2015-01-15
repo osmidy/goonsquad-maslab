@@ -1,6 +1,7 @@
 #include <jni.h>
 #include <stdio.h>
 #include <cstring>
+
 #include "mraa.hpp"
 #include "sensorIO_Gpio.h"
 

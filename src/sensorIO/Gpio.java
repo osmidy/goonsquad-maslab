@@ -21,19 +21,20 @@ public class Gpio {
      * Constructor method
      * 
      * @param pin
-     *            an integer representing the physical pin number of the sensor
+     *            an integer representing the physical pin number of this Gpio
+     *            object
      * @param direction
      *            a String, either "in" or "out", designating the Gpio for
      *            either input or output
      */
     public Gpio(int pin, String dir) {
         this.pin = pin;
-        pointer = this.init(pin, dir);
+        this.pointer = this.init(pin, dir);
     }
 
     /**
-     * Creates an instance of the Gpio input pin. Default Gpio direction is set
-     * to DIR_OUT for output.  Default Gpio vlue is 1.
+     * Creates an instance of the Gpio object. Default Gpio direction is set
+     * to DIR_OUT for output. Default Gpio value is 1.
      * 
      * @param pin
      *            an integer representing the physical pin number of the sensor

@@ -2,7 +2,7 @@ package robot;
 
 import java.util.List;
 
-import computervision.Sensor;
+import sensors.Sensor;
 
 /**
  * An interface providing methods to dictate mechanical operations of a physical

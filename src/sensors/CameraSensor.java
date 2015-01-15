@@ -1,4 +1,4 @@
-package computervision;
+package sensors;
 
 import fieldobject.FieldObject;
 
@@ -29,28 +29,6 @@ public class CameraSensor implements Sensor {
         
     }
 
-    @Override
-    public int getInputPin() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int getOutputPin() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public String getInputInterface() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String getOutputInterface() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    
 
 }
