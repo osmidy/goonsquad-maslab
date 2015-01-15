@@ -32,8 +32,8 @@ public class TestRunMotor {
             e.printStackTrace();
         }
         print("Speed!");
-        pwm.setSpeed(pwmPointer, 0.2);
-        pwmRight.setSpeed(pwmPointerRight, 0.1);
+        pwm.setSpeed(pwmPointer, 0.4);
+        pwmRight.setSpeed(pwmPointerRight, 0.2);
         dirRight.write(dirPointerRight, 0);
         // Stop after 5 seconds
         try {
