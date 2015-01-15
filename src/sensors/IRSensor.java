@@ -1,6 +1,6 @@
 package sensors;
 
-import sensorIO.Gpio;
+import sensorIO.Aio;
 
 /**
  * A class representing a physical IR sensor. Implements the Sensor interface.
@@ -9,9 +9,9 @@ import sensorIO.Gpio;
  *
  */
 public class IRSensor implements Sensor {
-    private final Gpio gpio;
-    private final int gpioPin;
-    private final long gpioPointer;
+    private final Aio aio;
+    private final int aioPin;
+    private final long aioPointer;
 
     /**
      * Constructor method.
@@ -20,14 +20,14 @@ public class IRSensor implements Sensor {
      *            physical pin for the Sensor. direction for this Gpio is "in"
      */
     public IRSensor(int gpioPin) {
-        this.gpioPin = gpioPin;
-        gpio = new Gpio(this.gpioPin, "in"); // TODO: in or out?
-        gpioPointer = gpio.getPointer();
+        this.aioPin = gpioPin;
+        aio = new Aio(this.aioPin); // TODO: in or out?
+        aioPointer = aio.getPointer();
     }
 
     @Override
     public double distanceToObject() {
-        double voltage = gpio.read(gpioPointer);
+        double voltage = aio.read(aioPointer);
         double distance = computeDistance(voltage);
         return distance;
     }

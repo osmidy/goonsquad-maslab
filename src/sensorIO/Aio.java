@@ -56,5 +56,12 @@ public class Aio {
      * Implements getBit, as specified in mraa docs.
      */
     public native int getBit(long pointer);
+    
+    /**
+     * @return the C++ pointer for this object
+     */
+    public long getPointer() {
+        return this.pointer;
+    }
 
 }
