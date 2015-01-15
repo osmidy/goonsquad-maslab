@@ -18,6 +18,8 @@ public class Gyroscope {
     private final Spi spi;
     private final long spiPointer;
     
+    private final String DIR_OUT = "out";
+    
     // For native methods
     static {
         System.loadLibrary("interface");
@@ -25,7 +27,7 @@ public class Gyroscope {
 
     // Rep Invariant: Gpio direction is "out"
     private void checkRep() {
-        assert gpioDir.equals("out");
+        assert gpioDir.equals(DIR_OUT);
     }
 
     /**

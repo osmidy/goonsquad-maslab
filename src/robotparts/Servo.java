@@ -16,6 +16,8 @@ public class Servo {
     private final int dirPin;
     private final long pwmPointer;
     private final long dirPointer;
+    
+    private final String DIR_OUT = "out";
 
     // Rep Invariant: Pwm and Gpio are on different pins
     private void checkRep() {
