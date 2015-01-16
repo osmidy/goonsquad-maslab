@@ -50,8 +50,8 @@ public class TestStayStraight {
                     total -= bias;
                     if (heading != 0.0) {
                         heading = total;
-                        System.out.println("Thread heading: " + heading);
                     }
+                    System.out.println("Thread heading: " + heading);
                 }
             }
 
