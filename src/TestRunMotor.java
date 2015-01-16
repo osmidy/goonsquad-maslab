@@ -1,6 +1,6 @@
 import sensorIO.Gpio;
 import sensorIO.Pwm;
-
+import robotparts.Gyroscope;
 
 public class TestRunMotor {
     public static void main (String[] args) {
@@ -32,16 +32,31 @@ public class TestRunMotor {
             e.printStackTrace();
         }
         print("Speed!");
-        pwm.setSpeed(pwmPointer, 0.225);
-        pwmRight.setSpeed(pwmPointerRight, 0.2);
+        pwm.setSpeed(pwmPointer, 0);
+        pwmRight.setSpeed(pwmPointerRight, 0);
         dirRight.write(dirPointerRight, 0);
+        
+        //make gyro
+        final Gyroscope gyro = new Gyroscope(10);
+        long chip = gyro.getChipPointer();
+        long spi = gyro.getSpiPointer();
+        
+        // PID(just P for now) loop for 5 seconds
+        long startTime = System.currentTimeMillis(); //fetch starting time
+        while(false||(System.currentTimeMillis()-startTime)<5000){
+        	double bias = 0.1*System.currentTimeMillis()-0.33;
+        	double power = gyro.getAngularVelocity(chip, spi) - bias;
+        	pwm.setSpeed(pwmPointer, 0-0.3*power);
+        	pwmRight.setSpeed(pwmPointerRight, 0+0.3*power);
+        }
         // Stop after 5 seconds
-        try {
+        /**try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        */
         pwm.setSpeed(pwmPointer, 0.0);
         pwmRight.setSpeed(pwmPointerRight, 0.0);
     }
