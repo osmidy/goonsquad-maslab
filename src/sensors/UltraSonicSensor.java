@@ -30,7 +30,7 @@ public class UltraSonicSensor implements Sensor {
      * 
      * @param trigPin
      *            pin for output from this Sensor
-     * @param echoPiin
+     * @param echoPin
      *            pin for input from this Sensor
      */
     public UltraSonicSensor(int trigPin, int echoPin) {
