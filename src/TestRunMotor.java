@@ -42,12 +42,12 @@ public class TestRunMotor {
         long spi = gyro.getSpiPointer();
         
         // PID(just P for now) loop for 5 seconds
-        //long startTime = System.currentTimeMillis(); //fetch starting time
-        //while(false||(System.currentTimeMillis()-startTime)<5000){
-        while (true){
+        long startTime = System.currentTimeMillis(); //fetch starting time
+        while(false||(System.currentTimeMillis()-startTime)<5000){
         	double bias = 0.1*System.currentTimeMillis()-0.33;
         	double power = gyro.getAngularVelocity(chip, spi) - bias;
         	pwm.setSpeed(pwmPointer, 0-0.3*power);
+        	pwmRight.setSpeed(pwmPointerRight, 0+0.3*power);
         }
         // Stop after 5 seconds
         /**try {
@@ -57,8 +57,8 @@ public class TestRunMotor {
             e.printStackTrace();
         }
         */
-        //pwm.setSpeed(pwmPointer, 0.0);
-        //pwmRight.setSpeed(pwmPointerRight, 0.0);
+        pwm.setSpeed(pwmPointer, 0.0);
+        pwmRight.setSpeed(pwmPointerRight, 0.0);
     }
     
     private static void print(String str) {
