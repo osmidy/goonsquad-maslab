@@ -57,6 +57,7 @@ public class Gyroscope {
      * @return the heading, in degrees/s, of the Gyroscope
      */
     public native double getAngularVelocity(long chipPointer, long spiPointer);
+    // Bias:  y  = 0.1x - .3373
     
     public int getChipPin() {
         return chipPin;

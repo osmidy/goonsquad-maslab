@@ -16,12 +16,12 @@ public class IRSensor implements Sensor {
     /**
      * Constructor method.
      * 
-     * @param gpioPin
-     *            physical pin for the Sensor. direction for this Gpio is "in"
+     * @param aioPin
+     *            physical pin for the Sensor.
      */
-    public IRSensor(int gpioPin) {
-        this.aioPin = gpioPin;
-        aio = new Aio(this.aioPin); // TODO: in or out?
+    public IRSensor(int aioPin) {
+        this.aioPin = aioPin;
+        aio = new Aio(this.aioPin);
         aioPointer = aio.getPointer();
     }
 
