@@ -70,7 +70,7 @@ public class TestStayStraight {
                 rightSpeed += .01;
                 rightMotor.setSpeed(rightSpeed);
             }
-            System.out.printf("Left: %d, Right: %d, Heading: %d \n", leftMotor.getSpeed(), rightMotor.getSpeed(), heading);
+            System.out.println("Left: " +  leftMotor.getSpeed() + "Right: " + rightMotor.getSpeed() + "Heading: " + heading);
             long fin = System.currentTimeMillis();
             if ((fin - current) >= 7000) {
                 leftMotor.setSpeed(0);
