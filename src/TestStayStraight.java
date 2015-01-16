@@ -22,55 +22,63 @@ public class TestStayStraight {
         int pwmPinLeft = 9;
         int dirPinLeft = 8;
         int pwmPinRight = 3;
-        int dirPinRight = 4;        
+        int dirPinRight = 4;
 
         Pwm pwmLeft = new Pwm(pwmPinLeft);
         Gpio dirLeft = new Gpio(dirPinLeft, DIR_OUT);
         Pwm pwmRight = new Pwm(pwmPinRight);
         Gpio dirRight = new Gpio(dirPinRight, DIR_OUT);
-        Motor leftMotor = new Motor(pwmLeft, pwmPinLeft, dirLeft,
-                dirPinLeft, leftForward, leftReverse);
+        Motor leftMotor = new Motor(pwmLeft, pwmPinLeft, dirLeft, dirPinLeft,
+                leftForward, leftReverse);
         pwmPointerLeft = leftMotor.getPwmPin();
         dirPointerLeft = leftMotor.getGpioPin();
         Motor rightMotor = new Motor(pwmRight, pwmPinRight, dirRight,
                 dirPinRight, rightForward, rightReverse);
         pwmPointerRight = rightMotor.getPwmPin();
         dirPointerRight = rightMotor.getGpioPin();
-        
+
         Thread getHeading = new Thread(new Runnable() {
             public void run() {
                 long start = System.currentTimeMillis();
                 while (true) {
                     long end = System.currentTimeMillis();
                     double diff = .001 * (end - start); // from milli to sec
-                    double omega = gyro.getAngularVelocity(gyro.getChipPointer(), gyro.getSpiPointer());
+                    double omega = gyro.getAngularVelocity(
+                            gyro.getChipPointer(), gyro.getSpiPointer());
                     double total = omega * diff;
                     double bias = (.1 * diff) - .3373;
                     total -= bias;
-                    heading = total;
+                    if (heading != 0.0) {
+                        heading = total;
+                    }
                 }
             }
 
         });
 
-        
         getHeading.start();
         long current = System.currentTimeMillis();
         leftMotor.setSpeed(.2);
         rightMotor.setSpeed(.2);
-        outerloop:
-        while (true) {
+        outerloop: while (true) {
             if (heading >= 0.5) {
                 double leftSpeed = leftMotor.getSpeed();
                 leftSpeed += .01;
+                double rightSpeed = rightMotor.getSpeed();
+                rightSpeed -= .01;
                 leftMotor.setSpeed(leftSpeed);
+                rightMotor.setSpeed(rightSpeed);
             }
             if (heading <= -0.5) {
                 double rightSpeed = rightMotor.getSpeed();
                 rightSpeed += .01;
+                double leftSpeed = leftMotor.getSpeed();
+                leftSpeed -= .01;
                 rightMotor.setSpeed(rightSpeed);
+                leftMotor.setSpeed(leftSpeed);
             }
-            System.out.println("Left: " +  leftMotor.getSpeed() + "Right: " + rightMotor.getSpeed() + "Heading: " + heading);
+            System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
+                    + rightMotor.getSpeed() + " Heading: " + heading);
             long fin = System.currentTimeMillis();
             if ((fin - current) >= 7000) {
                 leftMotor.setSpeed(0);

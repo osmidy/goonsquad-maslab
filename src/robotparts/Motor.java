@@ -73,7 +73,7 @@ public class Motor {
      * @return current speed of this Motor
      */
     public double getSpeed() {
-        return speed;
+        return pwm.getSpeed(pwmPointer);
     }
 
     /**
