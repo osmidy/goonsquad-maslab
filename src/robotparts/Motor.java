@@ -17,6 +17,9 @@ public class Motor {
     private final int dirPin;
     private final long pwmPointer;
     private final long dirPointer;
+    private double speed;
+    private final int forwardValue;
+    private final int reverseValue;
 
     // Rep Invariant: Pwm and Gpio are on different pins; Gpio set for output
     private void checkRep() {
@@ -35,13 +38,16 @@ public class Motor {
      * @param dirPin
      *            Physical pin number of dir
      */
-    public Motor(Pwm pwm, int pwmPin, Gpio dir, int dirPin) {
+    public Motor(Pwm pwm, int pwmPin, Gpio dir, int dirPin, int fv, int rv) {
         this.pwm = pwm;
         this.pwmPin = pwmPin;
         this.pwmPointer = pwm.getPointer();
         this.dir = dir;
         this.dirPin = dirPin;
         this.dirPointer = dir.getPointer();
+        this.speed = 0;
+        this.forwardValue = fv;
+        this.reverseValue = rv;
         checkRep();
     }
 
@@ -52,29 +58,37 @@ public class Motor {
      *            a double in the range [0.0, 1.0], indicating the percentage of
      *            power to be applied by the motor
      */
-    public void setSpeed(double speed) {
+    public synchronized void setSpeed(double speed) {
         if (speed >= 0) {
             this.setForward();
         } else {
             this.setReverse();
         }
         pwm.setSpeed(pwmPointer, speed);
+        this.speed = speed;
         checkRep();
+    }
+    
+    /**
+     * @return current speed of this Motor
+     */
+    public double getSpeed() {
+        return speed;
     }
 
     /**
      * Sets the Motor to run in the forward direction.
      */
-    public void setForward() {
-        dir.write(dirPointer, 0);
+    private void setForward() {
+        dir.write(dirPointer, forwardValue);
         checkRep();
     }
 
     /**
      * Sets the Motor to run in the reverse direction.
      */
-    public void setReverse() {
-        dir.write(dirPointer, 1);
+    private void setReverse() {
+        dir.write(dirPointer, reverseValue);
         checkRep();
     }
 
