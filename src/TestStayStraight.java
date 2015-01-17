@@ -40,10 +40,8 @@ public class TestStayStraight {
         Thread getHeading = new Thread(new Runnable() {
             public void run() {
                 long start = System.currentTimeMillis();
-                System.out.println(start);
                 while (true) {
                     long end = System.currentTimeMillis();
-                    System.out.println(end);
                     double diff = .001 * (end - start); // from milli to sec
                     double omega = gyro.getAngularVelocity(
                             gyro.getChipPointer(), gyro.getSpiPointer());
@@ -51,7 +49,6 @@ public class TestStayStraight {
                     double bias = (.1 * diff) - .3373;
                     total -= bias;
                     heading = total;
-                    System.out.println("Thread heading: " + heading);
                 }
             }
 
