@@ -97,6 +97,7 @@ public class TestStayStraight {
             rightMotor.setSpeed(motorBias - power);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed() + " Heading: " + heading);
+            System.out.println("Integral: " + integral + "Derivative: " + derivative);
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
