@@ -87,6 +87,7 @@ public class TestStayStraight {
                 break outerloop;
             }
         }
+        getHeading.interrupt();
         System.out.println("Fin.");
     }
 }
