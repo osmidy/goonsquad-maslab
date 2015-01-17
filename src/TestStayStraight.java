@@ -57,14 +57,24 @@ public class TestStayStraight {
         long current = System.currentTimeMillis();
         double motorBias = .2;
         double p = .001;
+        double i = .001;
+        double d = -.001;
+        long begin = System.currentTimeMillis();
         leftMotor.setSpeed(motorBias);
         rightMotor.setSpeed(motorBias);
             
-        // Main loop with P control implemented
+        // Main loop with PID control implemented
         outerloop: while (true) {
             double omega = gyro.getAngularVelocity(gyro.getChipPointer(),
                     gyro.getSpiPointer());
             double diff = desired - heading;
+            double integral = 0;
+            while (true) {
+                long finish = System.currentTimeMillis();
+                double deltaT = .001 * (finish - begin); // from milli to sec
+                integral += diff * deltaT;
+                begin = finish;
+            double derivative = omega - ((.11 * finish) - .3373);
             // // if (heading <= -0.5) {
             // // double leftSpeed = leftMotor.getSpeed();
             // // leftSpeed += p;
@@ -81,7 +91,7 @@ public class TestStayStraight {
             // // rightMotor.setSpeed(rightSpeed);
             // // leftMotor.setSpeed(leftSpeed);
             // // }
-            double power = p * diff;
+            double power = p * diff + i * integral + d * derivative;
             leftMotor.setSpeed(motorBias + power);
             rightMotor.setSpeed(motorBias - power);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
