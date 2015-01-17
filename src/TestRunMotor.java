@@ -50,13 +50,13 @@ public class TestRunMotor {
         	pwmRight.setSpeed(pwmPointerRight, 0.15+0.03*power);
         }
         // Stop after 5 seconds
-        /**try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        */
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        
         pwm.setSpeed(pwmPointer, 0.0);
         pwmRight.setSpeed(pwmPointerRight, 0.0);
     }
