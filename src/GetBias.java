@@ -42,8 +42,8 @@ public class GetBias {
         leftMotor.setSpeed(leftSpeed);
         rightMotor.setSpeed(rightSpeed);
         
+        long start = System.currentTimeMillis();
         while (true) {
-            long start = System.currentTimeMillis();
             if (heading >= 1.0) {
                 long end = System.currentTimeMillis();
                 leftMotor.setSpeed(-leftSpeed);
