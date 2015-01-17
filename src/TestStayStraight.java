@@ -36,14 +36,14 @@ public class TestStayStraight {
         Thread getHeading = new Thread(new Runnable() {
             public void run() {
                 long start = System.currentTimeMillis();
-                double prevBias = 0;
                 while (true) {
                     long end = System.currentTimeMillis();
                     double deltaT = .001 * (end - start); // from milli to sec
                     double omega = gyro.getAngularVelocity(
                             gyro.getChipPointer(), gyro.getSpiPointer());
-                    double bias = ((.1 * end) - .3373) - prevBias;
-                    double total = (omega-bias) * deltaT;
+                    double bias = ((.1 * end) - .3373);
+                    double prevBias = ((.1 * start) - .3373);
+                    double total = (omega - (bias - prevBias)) * deltaT;
                     heading += total;
                     start = end;
                     // System.out.println(heading);
