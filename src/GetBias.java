@@ -37,29 +37,27 @@ public class GetBias {
         });
         
         getHeading.start();
+        long start = System.currentTimeMillis();
         double leftSpeed = .2;
         double rightSpeed = .2;
-        leftMotor.setSpeed(leftSpeed);
-        rightMotor.setSpeed(rightSpeed);
         
-        long start = System.currentTimeMillis();
         outerloop: while (true) {
+            leftMotor.setSpeed(leftSpeed);
+            rightMotor.setSpeed(rightSpeed);
             if (heading >= 1.0) {
                 long end = System.currentTimeMillis();
-                leftMotor.setSpeed(-leftSpeed);
-                rightMotor.setSpeed(-rightSpeed);
+                leftMotor.setSpeed(-1 * leftSpeed);
+                rightMotor.setSpeed(-1 * rightSpeed);
                 Thread.sleep(end - start);
                 leftSpeed -= .001;
             }
-            if (heading <=-1.0) {
+            if (heading <= -1.0) {
                 long end = System.currentTimeMillis();
                 leftMotor.setSpeed(-leftSpeed);
                 rightMotor.setSpeed(-rightSpeed);
                 Thread.sleep(end - start);
                 rightSpeed -= .001;
             }
-            leftMotor.setSpeed(leftSpeed);
-            rightMotor.setSpeed(rightSpeed);
             System.out.println(leftMotor.getSpeed() + " " + rightMotor.getSpeed() + " " + heading);
             if (System.currentTimeMillis() - start >= 10000 && Math.abs(heading) < 1.0) {
                 leftMotor.setSpeed(0);

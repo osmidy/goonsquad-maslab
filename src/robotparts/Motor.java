@@ -82,6 +82,9 @@ public class Motor {
      */
     private void setForward() {
         dir.write(dirPointer, forwardValue);
+        if (speed < 0) {
+            speed *= -1;
+        }
         checkRep();
     }
 
@@ -90,6 +93,9 @@ public class Motor {
      */
     private void setReverse() {
         dir.write(dirPointer, reverseValue);
+        if (speed > 0) {
+            speed *= -1;
+        }
         checkRep();
     }
 
