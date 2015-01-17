@@ -87,7 +87,7 @@ public class TestStayStraight {
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed() + " Heading: " + heading);
             try {
-            Thread.sleep(250);
+            Thread.sleep(100);
             } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
