@@ -59,7 +59,7 @@ public class TestStayStraight {
         long current = System.currentTimeMillis();
         leftMotor.setSpeed(.2);
         rightMotor.setSpeed(.2);
-        double p = .00001;
+        double p = .001;
         outerloop: while (true) {
             double omega = gyro.getAngularVelocity(gyro.getChipPointer(), gyro.getSpiPointer());
 //            if (heading <= -0.5) {
