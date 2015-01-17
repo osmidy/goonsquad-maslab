@@ -34,6 +34,7 @@ public class TestStayStraight {
         pwmPointerRight = rightMotor.getPwmPin();
         dirPointerRight = rightMotor.getGpioPin();
 
+        // Calculating Current Heading with integration
         Thread getHeading = new Thread(new Runnable() {
             public void run() {
                 long start = System.currentTimeMillis();
@@ -51,14 +52,16 @@ public class TestStayStraight {
             }
 
         });
-
+        
+        // Initial Settings
         getHeading.start();
         long current = System.currentTimeMillis();
         double bias = .2;
         double p = .001;
         leftMotor.setSpeed(bias);
         rightMotor.setSpeed(bias);
-
+            
+        // Main loop with P control implemented
         outerloop: while (true) {
             double omega = gyro.getAngularVelocity(gyro.getChipPointer(),
                     gyro.getSpiPointer());
