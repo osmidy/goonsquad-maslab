@@ -93,7 +93,7 @@ public class TestStayStraight {
             e.printStackTrace();
             }
             long fin = System.currentTimeMillis();
-            if ((fin - current) >= 5000) {
+            if ((fin - current) >= 10000) {
                 leftMotor.setSpeed(0);
                 rightMotor.setSpeed(0);
                 break outerloop;
