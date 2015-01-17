@@ -62,7 +62,7 @@ public class TestStayStraight {
         leftMotor.setSpeed(.2);
         rightMotor.setSpeed(.2);
         outerloop: while (true) {
-            if (heading >= 0.5) {
+            if (heading <= -0.5) {
                 double leftSpeed = leftMotor.getSpeed();
                 leftSpeed += .01;
                 double rightSpeed = rightMotor.getSpeed();
@@ -70,7 +70,7 @@ public class TestStayStraight {
                 leftMotor.setSpeed(leftSpeed);
                 rightMotor.setSpeed(rightSpeed);
             }
-            if (heading <= -0.5) {
+            if (heading >= 0.5) {
                 double rightSpeed = rightMotor.getSpeed();
                 rightSpeed += .01;
                 double leftSpeed = leftMotor.getSpeed();
