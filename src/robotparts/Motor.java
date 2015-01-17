@@ -34,8 +34,10 @@ public class Motor {
      *            Physical pin number of pwm
      * @param dirPin
      *            Physical pin number of dir
-     *            @param forwardValue Pin value that rotates the motor in the forward direction
-     *            @param reverseValue Pin value that rotates the motor in the reverse direction
+     * @param forwardValue
+     *            Pin value that rotates the motor in the forward direction
+     * @param reverseValue
+     *            Pin value that rotates the motor in the reverse direction
      */
     public Motor(int pwmPin, int dirPin, int forwardValue, int reverseValue) {
         this.pwm = new Pwm(pwmPin);
@@ -67,7 +69,7 @@ public class Motor {
         this.speed = speed;
         checkRep();
     }
-    
+
     /**
      * @return current speed of this Motor
      */
