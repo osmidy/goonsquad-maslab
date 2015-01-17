@@ -23,7 +23,7 @@ public class TestStayStraight {
         int dirPinLeft = 8;
         int pwmPinRight = 3;
         int dirPinRight = 4;
-        double desired = 0.0;
+        double desired = 45.0;
 
         Pwm pwmLeft = new Pwm(pwmPinLeft);
         Gpio dirLeft = new Gpio(dirPinLeft, DIR_OUT);
@@ -63,25 +63,25 @@ public class TestStayStraight {
         outerloop: while (true) {
             double omega = gyro.getAngularVelocity(gyro.getChipPointer(), gyro.getSpiPointer());
             double diff = desired - heading;
-            if (heading <= -0.5) {
+//            if (heading <= -0.5) {
 //                double leftSpeed = leftMotor.getSpeed();
 //                leftSpeed += p;
 //                double rightSpeed = rightMotor.getSpeed();
 //                rightSpeed -= p;
-                leftMotor.setSpeed(.2 + p*diff);
-                rightMotor.setSpeed(.2 - p*diff);
-            }
-            if (heading >= 0.5) {
+//                leftMotor.setSpeed(leftSpeed);
+//                rightMotor.setSpeed(rightSpeed);
+//            }
+//            if (heading >= 0.5) {
 //                double rightSpeed = rightMotor.getSpeed();
 //                rightSpeed += p;
 //                double leftSpeed = leftMotor.getSpeed();
 //                leftSpeed -= p;
-                rightMotor.setSpeed(.2 + p*diff);
-                leftMotor.setSpeed(.2 - p*diff);
-            }
-//            
-//            leftMotor.setSpeed(.2 + p*diff);
-//            rightMotor.setSpeed(.2 - p*diff);
+//                rightMotor.setSpeed(rightSpeed);
+//                leftMotor.setSpeed(leftSpeed);
+//            }
+            
+            leftMotor.setSpeed(.2 + p*diff);
+            rightMotor.setSpeed(.2 - p*diff);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed() + " Heading: " + heading);
 //            try {
