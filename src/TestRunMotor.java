@@ -32,8 +32,8 @@ public class TestRunMotor {
             e.printStackTrace();
         }
         print("Speed!");
-        pwm.setSpeed(pwmPointer, 0.3);
-        pwmRight.setSpeed(pwmPointerRight, 0.3);
+        pwm.setSpeed(pwmPointer, 0.15);
+        pwmRight.setSpeed(pwmPointerRight, 0.15);
         dirRight.write(dirPointerRight, 0);
         
         //make gyro
@@ -46,8 +46,8 @@ public class TestRunMotor {
         while(false||(System.currentTimeMillis()-startTime)<5000){
         	double bias = 0.1*System.currentTimeMillis()-0.33;
         	double power = gyro.getAngularVelocity(chip, spi) - bias;
-        	pwm.setSpeed(pwmPointer, 0.3-0.03*power);
-        	pwmRight.setSpeed(pwmPointerRight, 0.3+0.03*power);
+        	pwm.setSpeed(pwmPointer, 0.15-0.03*power);
+        	pwmRight.setSpeed(pwmPointerRight, 0.15+0.03*power);
         }
         // Stop after 5 seconds
         /**try {
