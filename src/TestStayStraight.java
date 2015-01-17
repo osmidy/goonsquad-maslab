@@ -23,7 +23,7 @@ public class TestStayStraight {
         int dirPinLeft = 8;
         int pwmPinRight = 3;
         int dirPinRight = 4;
-        double desired = 45.0;
+        double desired = 0.0;
 
         Pwm pwmLeft = new Pwm(pwmPinLeft);
         Gpio dirLeft = new Gpio(dirPinLeft, DIR_OUT);
