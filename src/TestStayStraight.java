@@ -50,9 +50,7 @@ public class TestStayStraight {
                     double total = omega * diff;
                     double bias = (.1 * diff) - .3373;
                     total -= bias;
-                    if (heading != 0.0) {
-                        heading = total;
-                    }
+                    heading = total;
                     System.out.println("Thread heading: " + heading);
                 }
             }
