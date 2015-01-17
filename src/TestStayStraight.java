@@ -1,7 +1,5 @@
 import robotparts.Gyroscope;
 import robotparts.Motor;
-import sensorIO.Gpio;
-import sensorIO.Pwm;
 
 public class TestStayStraight {
     static double heading = 0.0;
@@ -38,9 +36,11 @@ public class TestStayStraight {
         Thread getHeading = new Thread(new Runnable() {
             public void run() {
                 long start = System.currentTimeMillis();
+                double integral = 0;
                 while (true) {
                     long end = System.currentTimeMillis();
-                    double diff = .001 * (end - start); // from milli to sec
+                    double deltaT = .001 * (end - start); // from milli to sec
+                    double diff = desired - heading;
                     double omega = gyro.getAngularVelocity(
                             gyro.getChipPointer(), gyro.getSpiPointer());
                     double total = omega * diff;
