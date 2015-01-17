@@ -43,7 +43,7 @@ public class GetBias {
         rightMotor.setSpeed(rightSpeed);
         
         long start = System.currentTimeMillis();
-        while (true) {
+        outerloop: while (true) {
             if (heading >= 1.0) {
                 long end = System.currentTimeMillis();
                 leftMotor.setSpeed(-leftSpeed);
@@ -64,6 +64,7 @@ public class GetBias {
             if (System.currentTimeMillis() - start >= 3000) {
                 leftMotor.setSpeed(0);
                 rightMotor.setSpeed(0);
+                break outerloop;
             }
         }
     }
