@@ -23,7 +23,7 @@ public class TestStayStraight {
         int dirPinLeft = 8;
         int pwmPinRight = 3;
         int dirPinRight = 4;
-        double desired = 90.0;
+        double desired = 0.0;
 
         Motor leftMotor = new Motor(pwmPinLeft, dirPinLeft, leftForward,
                 leftReverse);
@@ -58,7 +58,7 @@ public class TestStayStraight {
         double p = .01;
         leftMotor.setSpeed(bias);
         rightMotor.setSpeed(bias);
-        
+
         outerloop: while (true) {
             double omega = gyro.getAngularVelocity(gyro.getChipPointer(),
                     gyro.getSpiPointer());
@@ -82,20 +82,20 @@ public class TestStayStraight {
             double power = p * diff;
             leftMotor.setSpeed(bias + power);
             rightMotor.setSpeed(bias - power);
-            // System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
-            // + rightMotor.getSpeed() + " Heading: " + heading);
+            System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
+                    + rightMotor.getSpeed() + " Heading: " + heading);
             // // try {
             // // Thread.sleep(250);
             // // } catch (InterruptedException e) {
             // // // TODO Auto-generated catch block
             // // e.printStackTrace();
             // // }
-            // long fin = System.currentTimeMillis();
-            // if ((fin - current) >= 5000) {
-            // leftMotor.setSpeed(0);
-            // rightMotor.setSpeed(0);
-            // break outerloop;
-            // }
+            long fin = System.currentTimeMillis();
+            if ((fin - current) >= 5000) {
+                leftMotor.setSpeed(0);
+                rightMotor.setSpeed(0);
+                break outerloop;
+            }
             // }
             getHeading.interrupt();
             System.out.println("Fin.");
