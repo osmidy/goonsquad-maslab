@@ -23,7 +23,7 @@ public class TestStayStraight {
         int dirPinLeft = 8;
         int pwmPinRight = 3;
         int dirPinRight = 4;
-        double desired = 0.0;
+        double desired = 90.0;
 
         Pwm pwmLeft = new Pwm(pwmPinLeft);
         Gpio dirLeft = new Gpio(dirPinLeft, DIR_OUT);
@@ -58,7 +58,7 @@ public class TestStayStraight {
         getHeading.start();
         long current = System.currentTimeMillis();
         leftMotor.setSpeed(.2);
-        rightMotor.setSpeed(.2);
+        rightMotor.setSpeed(-.2);
         double p = .01;
         outerloop: while (true) {
             double omega = gyro.getAngularVelocity(gyro.getChipPointer(), gyro.getSpiPointer());
