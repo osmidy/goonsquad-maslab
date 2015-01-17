@@ -55,13 +55,13 @@ public class GetBias {
                 long end = System.currentTimeMillis();
                 leftMotor.setSpeed(-leftSpeed);
                 rightMotor.setSpeed(-rightSpeed);
+                Thread.sleep(end - start);
                 rightSpeed -= .001;
             }
             leftMotor.setSpeed(leftSpeed);
             rightMotor.setSpeed(rightSpeed);
-            System.out.println(leftMotor.getSpeed() + " " + rightMotor.getSpeed());
-            long current = System.currentTimeMillis();
-            if (current - start >= 10000) {
+            System.out.println(leftMotor.getSpeed() + " " + rightMotor.getSpeed() + " " + Integer.toString((int)(System.currentTimeMillis()-start)));
+            if (System.currentTimeMillis() - start >= 3000) {
                 leftMotor.setSpeed(0);
                 rightMotor.setSpeed(0);
             }
