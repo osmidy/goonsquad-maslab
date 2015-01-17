@@ -47,7 +47,7 @@ public class TestRunMotor {
         	double bias = 0.1*System.currentTimeMillis()-0.33;
         	double power = gyro.getAngularVelocity(chip, spi) - bias;
         	pwm.setSpeed(pwmPointer, 0-0.3*power);
-        	pwmRight.setSpeed(pwmPointerRight, 0+0.3*power);
+        	pwmRight.setSpeed(pwmPointerRight, 0+0.03*power);
         }
         // Stop after 5 seconds
         /**try {
