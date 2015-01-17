@@ -45,6 +45,7 @@ public class GetBias {
         outerloop: while (true) {
             if (end != 0) {
                 Thread.sleep(end - start);
+                end = 0;
             }
             leftMotor.setSpeed(leftSpeed);
             rightMotor.setSpeed(rightSpeed);
