@@ -43,7 +43,7 @@ public class TestStayStraight {
                     double omega = gyro.getAngularVelocity(
                             gyro.getChipPointer(), gyro.getSpiPointer());
                     double total = omega * deltaT;
-                    double bias = (.1 * diff) - .3373;
+                    double bias = (.1 * deltaT) - .3373;
                     total -= bias;
                     heading += total;
                     start = end;
