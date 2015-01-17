@@ -60,6 +60,8 @@ public class TestStayStraight {
         double i = .001;
         double d = -.001;
         long begin = System.currentTimeMillis();
+        double integral = 0;
+        double derivative = 0;
         leftMotor.setSpeed(motorBias);
         rightMotor.setSpeed(motorBias);
 
@@ -67,9 +69,7 @@ public class TestStayStraight {
         outerloop: while (true) {
             double omega = gyro.getAngularVelocity(gyro.getChipPointer(),
                     gyro.getSpiPointer());
-            double diff = desired - heading;
-            double integral = 0;
-            double derivative = 0;
+            double diff = desired - heading;          
             long finish = System.currentTimeMillis();
             double deltaT = .001 * (finish - begin); // from milli to sec
             integral += diff * deltaT;
@@ -97,7 +97,7 @@ public class TestStayStraight {
             rightMotor.setSpeed(motorBias - power);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed() + " Heading: " + heading);
-            System.out.println("Integral: " + integral + "Derivative: " + derivative);
+            System.out.println("Integral: " + integral + "Derivative: " + derivative + "Power: " + power);
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
