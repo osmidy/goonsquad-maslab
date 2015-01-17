@@ -80,8 +80,14 @@ public class TestStayStraight {
             }
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed() + " Heading: " + heading);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             long fin = System.currentTimeMillis();
-            if ((fin - current) >= 7000) {
+            if ((fin - current) >= 15000) {
                 leftMotor.setSpeed(0);
                 rightMotor.setSpeed(0);
                 break outerloop;
