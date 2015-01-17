@@ -55,7 +55,7 @@ public class TestStayStraight {
         getHeading.start();
         long current = System.currentTimeMillis();
         double bias = .2;
-        double p = .01;
+        double p = .001;
         leftMotor.setSpeed(bias);
         rightMotor.setSpeed(bias);
 
