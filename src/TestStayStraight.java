@@ -96,9 +96,9 @@ public class TestStayStraight {
                 rightMotor.setSpeed(0);
                 break outerloop;
             }
-            // }
-            getHeading.interrupt();
-            System.out.println("Fin.");
+            // }    
         }
+        getHeading.interrupt();
+        System.out.println("Fin.");
     }
 }
