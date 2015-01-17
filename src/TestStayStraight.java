@@ -54,9 +54,11 @@ public class TestStayStraight {
 
         getHeading.start();
         long current = System.currentTimeMillis();
-        leftMotor.setSpeed(.2);
-        rightMotor.setSpeed(-.2);
+        double bias = .2;
         double p = .01;
+        leftMotor.setSpeed(bias);
+        rightMotor.setSpeed(bias);
+        
         outerloop: while (true) {
             double omega = gyro.getAngularVelocity(gyro.getChipPointer(),
                     gyro.getSpiPointer());
@@ -78,8 +80,8 @@ public class TestStayStraight {
             // // leftMotor.setSpeed(leftSpeed);
             // // }
             double power = p * diff;
-            leftMotor.setSpeed(.2 + power);
-            rightMotor.setSpeed(-.2 - power);
+            leftMotor.setSpeed(bias + power);
+            rightMotor.setSpeed(bias - power);
             // System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
             // + rightMotor.getSpeed() + " Heading: " + heading);
             // // try {
