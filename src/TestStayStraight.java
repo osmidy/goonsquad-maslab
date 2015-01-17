@@ -36,17 +36,17 @@ public class TestStayStraight {
         Thread getHeading = new Thread(new Runnable() {
             public void run() {
                 long start = System.currentTimeMillis();
-                double integral = 0;
                 while (true) {
                     long end = System.currentTimeMillis();
                     double deltaT = .001 * (end - start); // from milli to sec
                     double diff = desired - heading;
                     double omega = gyro.getAngularVelocity(
                             gyro.getChipPointer(), gyro.getSpiPointer());
-                    double total = omega * diff;
+                    double total = omega * deltaT;
                     double bias = (.1 * diff) - .3373;
                     total -= bias;
-                    heading = total;
+                    heading += total;
+                    start = end;
                     // System.out.println(heading);
                 }
             }
@@ -87,12 +87,12 @@ public class TestStayStraight {
             rightMotor.setSpeed(bias - power);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed() + " Heading: " + heading);
-            // // try {
-            // // Thread.sleep(250);
-            // // } catch (InterruptedException e) {
-            // // // TODO Auto-generated catch block
-            // // e.printStackTrace();
-            // // }
+            try {
+            Thread.sleep(250);
+            } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            }
             long fin = System.currentTimeMillis();
             if ((fin - current) >= 5000) {
                 leftMotor.setSpeed(0);
