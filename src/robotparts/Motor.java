@@ -15,6 +15,7 @@ public class Motor {
     private final Gpio dir;
     private final int pwmPin;
     private final int dirPin;
+    private String DIR_OUT = "out";
     private final long pwmPointer;
     private final long dirPointer;
     private double speed;
@@ -29,25 +30,23 @@ public class Motor {
     /**
      * Instantiates a Motor. By default, the Motor run in the forward direction.
      * 
-     * @param pwm
-     *            A Pwm object controlling power to, and speed of, the motor
      * @param pwmPin
      *            Physical pin number of pwm
-     * @param dir
-     *            A Gpio object controlling direction of the motor
      * @param dirPin
      *            Physical pin number of dir
+     *            @param forwardValue Pin value that rotates the motor in the forward direction
+     *            @param reverseValue Pin value that rotates the motor in the reverse direction
      */
-    public Motor(Pwm pwm, int pwmPin, Gpio dir, int dirPin, int fv, int rv) {
-        this.pwm = pwm;
+    public Motor(int pwmPin, int dirPin, int forwardValue, int reverseValue) {
+        this.pwm = new Pwm(pwmPin);
         this.pwmPin = pwmPin;
         this.pwmPointer = pwm.getPointer();
-        this.dir = dir;
+        this.dir = new Gpio(dirPin, DIR_OUT);
         this.dirPin = dirPin;
         this.dirPointer = dir.getPointer();
+        this.forwardValue = forwardValue;
+        this.reverseValue = reverseValue;
         this.speed = 0;
-        this.forwardValue = fv;
-        this.reverseValue = rv;
         checkRep();
     }
 
