@@ -51,7 +51,7 @@ public class TestStayStraight {
             }
 
         });
-        
+
         // Initial Settings
         getHeading.start();
         long current = System.currentTimeMillis();
@@ -62,19 +62,20 @@ public class TestStayStraight {
         long begin = System.currentTimeMillis();
         leftMotor.setSpeed(motorBias);
         rightMotor.setSpeed(motorBias);
-            
+
         // Main loop with PID control implemented
         outerloop: while (true) {
             double omega = gyro.getAngularVelocity(gyro.getChipPointer(),
                     gyro.getSpiPointer());
             double diff = desired - heading;
             double integral = 0;
-            while (true) {
-                long finish = System.currentTimeMillis();
-                double deltaT = .001 * (finish - begin); // from milli to sec
-                integral += diff * deltaT;
-                begin = finish;
-            double derivative = omega - ((.11 * finish) - .3373);
+            double derivative = 0;
+            long finish = System.currentTimeMillis();
+            double deltaT = .001 * (finish - begin); // from milli to sec
+            integral += diff * deltaT;
+            begin = finish;
+            derivative = omega - ((.11 * finish) - .3373);
+
             // // if (heading <= -0.5) {
             // // double leftSpeed = leftMotor.getSpeed();
             // // leftSpeed += p;
@@ -97,18 +98,18 @@ public class TestStayStraight {
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed() + " Heading: " + heading);
             try {
-            Thread.sleep(100);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
             long fin = System.currentTimeMillis();
-            if ((fin - current) >= 10000) {
+            if ((fin - current) >= 5000) {
                 leftMotor.setSpeed(0);
                 rightMotor.setSpeed(0);
                 break outerloop;
             }
-            // }    
+            // }
         }
         getHeading.interrupt();
         System.out.println("Fin.");
