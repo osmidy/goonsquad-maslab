@@ -50,53 +50,54 @@ public class TestStayStraight {
                     double bias = (.1 * diff) - .3373;
                     total -= bias;
                     heading = total;
+                    System.out.println(heading);
                 }
             }
 
         });
 
         getHeading.start();
-        long current = System.currentTimeMillis();
-        leftMotor.setSpeed(.2);
-        rightMotor.setSpeed(-.2);
-        double p = .01;
-        outerloop: while (true) {
-            double omega = gyro.getAngularVelocity(gyro.getChipPointer(), gyro.getSpiPointer());
-            double diff = desired - heading;
-//            if (heading <= -0.5) {
-//                double leftSpeed = leftMotor.getSpeed();
-//                leftSpeed += p;
-//                double rightSpeed = rightMotor.getSpeed();
-//                rightSpeed -= p;
-//                leftMotor.setSpeed(leftSpeed);
-//                rightMotor.setSpeed(rightSpeed);
+//        long current = System.currentTimeMillis();
+//        leftMotor.setSpeed(.2);
+//        rightMotor.setSpeed(-.2);
+//        double p = .01;
+//        outerloop: while (true) {
+//            double omega = gyro.getAngularVelocity(gyro.getChipPointer(), gyro.getSpiPointer());
+//            double diff = desired - heading;
+////            if (heading <= -0.5) {
+////                double leftSpeed = leftMotor.getSpeed();
+////                leftSpeed += p;
+////                double rightSpeed = rightMotor.getSpeed();
+////                rightSpeed -= p;
+////                leftMotor.setSpeed(leftSpeed);
+////                rightMotor.setSpeed(rightSpeed);
+////            }
+////            if (heading >= 0.5) {
+////                double rightSpeed = rightMotor.getSpeed();
+////                rightSpeed += p;
+////                double leftSpeed = leftMotor.getSpeed();
+////                leftSpeed -= p;
+////                rightMotor.setSpeed(rightSpeed);
+////                leftMotor.setSpeed(leftSpeed);
+////            }
+//            
+//            leftMotor.setSpeed(.2 + p*diff);
+//            rightMotor.setSpeed(.2 - p*diff);
+//            System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
+//                    + rightMotor.getSpeed() + " Heading: " + heading);
+////            try {
+////                Thread.sleep(250);
+////            } catch (InterruptedException e) {
+////                // TODO Auto-generated catch block
+////                e.printStackTrace();
+////            }
+//            long fin = System.currentTimeMillis();
+//            if ((fin - current) >= 5000) {
+//                leftMotor.setSpeed(0);
+//                rightMotor.setSpeed(0);
+//                break outerloop;
 //            }
-//            if (heading >= 0.5) {
-//                double rightSpeed = rightMotor.getSpeed();
-//                rightSpeed += p;
-//                double leftSpeed = leftMotor.getSpeed();
-//                leftSpeed -= p;
-//                rightMotor.setSpeed(rightSpeed);
-//                leftMotor.setSpeed(leftSpeed);
-//            }
-            
-            leftMotor.setSpeed(.2 + p*diff);
-            rightMotor.setSpeed(.2 - p*diff);
-            System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
-                    + rightMotor.getSpeed() + " Heading: " + heading);
-//            try {
-//                Thread.sleep(250);
-//            } catch (InterruptedException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-            long fin = System.currentTimeMillis();
-            if ((fin - current) >= 5000) {
-                leftMotor.setSpeed(0);
-                rightMotor.setSpeed(0);
-                break outerloop;
-            }
-        }
+//        }
         getHeading.interrupt();
         System.out.println("Fin.");
     }
