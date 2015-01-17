@@ -46,6 +46,7 @@ public class TestStayStraight {
                     double bias = (.1 * diff) - .3373;
                     total -= bias;
                     heading += total;
+                    start = end;
                     // System.out.println(heading);
                 }
             }
