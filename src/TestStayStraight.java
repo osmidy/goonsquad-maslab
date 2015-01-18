@@ -56,7 +56,7 @@ public class TestStayStraight {
         long current = System.currentTimeMillis();
         double motorBias = 0;
         double p = .01;
-        double i = .0001;
+        double i = .0005;
         double d = .03;
         long begin = System.currentTimeMillis();
         double integral = 0;
@@ -76,8 +76,8 @@ public class TestStayStraight {
             begin = finish;
             derivative = diff - prevDiff;
             prevDiff = diff;
-            if (integral > 50000) {
-                integral = 50000;
+            if (integral > 500) {
+                integral = 500;
             }
             double power = p * diff + i * integral + d * derivative;
             leftMotor.setSpeed(motorBias + power);
