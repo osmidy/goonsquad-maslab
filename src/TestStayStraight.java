@@ -54,7 +54,7 @@ public class TestStayStraight {
         // Initial Settings
         getHeading.start();
         long current = System.currentTimeMillis();
-        double motorBias = 0;
+        double motorBias = 0.2;
         double p = .015;
         double i = .0005;
         double d = .03;
