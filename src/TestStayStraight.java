@@ -74,7 +74,7 @@ public class TestStayStraight {
             double deltaT = .001 * (finish - begin); // from milli to sec
             integral += diff * deltaT;
             begin = finish;
-            derivative = omega - ((.11 * (.001 * finish) - .3373));
+            derivative = omega - ((.11 * (.001 * current) - .3373));
             System.out.println("Omega: " + omega + "Finish: " + finish);
             // // if (heading <= -0.5) {
             // // double leftSpeed = leftMotor.getSpeed();
