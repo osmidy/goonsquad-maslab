@@ -39,8 +39,7 @@ public class TestStayStraight {
                 while (true) {
                     long end = System.currentTimeMillis();
                     double deltaT = .001 * (end - start); // from milli to sec
-                    double omega = gyro.getAngularVelocity(
-                            gyro.getChipPointer(), gyro.getSpiPointer());
+                    double omega = gyro.getAngularVelocity();
                     double bias = ((.11 * end) - .3373);
                     double prevBias = ((.11 * start) - .3373);
                     double total = (omega - (bias - prevBias)) * deltaT;
@@ -67,8 +66,7 @@ public class TestStayStraight {
 
         // Main loop with PID control implemented
         outerloop: while (true) {
-            double omega = gyro.getAngularVelocity(gyro.getChipPointer(),
-                    gyro.getSpiPointer());
+            double omega = gyro.getAngularVelocity();
             double diff = desired - heading;          
             long finish = System.currentTimeMillis();
             double deltaT = .001 * (finish - begin); // from milli to sec

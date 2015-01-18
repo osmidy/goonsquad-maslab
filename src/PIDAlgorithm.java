@@ -42,7 +42,7 @@ public class PIDAlgorithm {
                 while (true) {
                     long end = System.currentTimeMillis();
                     double deltaT = .001 * (end - start); // milli to sec
-                    double angVel = gyro.getAngularVelocity(chip, spi);
+                    double angVel = gyro.getAngularVelocity();
                     setAngle(angVel * deltaT, deltaT);
                     double diff = desiredHeading - currentHeading;
                     integral += diff * deltaT;

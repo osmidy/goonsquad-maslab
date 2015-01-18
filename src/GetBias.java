@@ -20,8 +20,6 @@ public class GetBias {
         Motor rightMotor = new Motor(pwmPinRight, dirPinRight, rightForward,
                 rightReverse);
         Gyroscope gyro = new Gyroscope(gyroPin);
-        long chip = gyro.getChipPointer();
-        long spi = gyro.getSpiPointer();
         
         Thread getHeading = new Thread(new Runnable() {
             public void run() {
@@ -29,7 +27,7 @@ public class GetBias {
                 while (true) {
                     long end = System.currentTimeMillis();
                     double deltaT = .001 * (end - start); // milli to sec
-                    double angVel = gyro.getAngularVelocity(chip, spi);
+                    double angVel = gyro.getAngularVelocity();
                     heading = angVel * deltaT;
                     heading -= ((.1*deltaT) - .3373);
                 }
