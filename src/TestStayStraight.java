@@ -54,7 +54,7 @@ public class TestStayStraight {
         // Initial Settings
         getHeading.start();
         long current = System.currentTimeMillis();
-        double motorBias = .2;
+        double motorBias = 0;
         double p = 0; //.01;
         double i = 0; //.0005;
         double d = .1;
@@ -92,7 +92,7 @@ public class TestStayStraight {
             // // rightMotor.setSpeed(rightSpeed);
             // // leftMotor.setSpeed(leftSpeed);
             // // }
-            double power = p * diff + i * integral + d * derivative;
+            double power = derivative; // p * diff + i * integral + d * derivative;
             leftMotor.setSpeed(motorBias + power);
             rightMotor.setSpeed(motorBias - power);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
