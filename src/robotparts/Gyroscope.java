@@ -36,7 +36,7 @@ public class Gyroscope {
      * @param gpioPin
      *            Pin number for the Gpio interface of this Gyroscoe
      */
-    public Gyroscope(int chipPin) {
+    public Gyroscope (int chipPin) {
         this.chipPin = chipPin;
         this.chipSelect = new Gpio(chipPin, gpioDir);
         this.spi = new Spi();
