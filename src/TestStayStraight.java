@@ -46,7 +46,6 @@ public class TestStayStraight {
                     double total = (omega - (bias - prevBias)) * deltaT;
                     heading += total;
                     start = end;
-                    System.out.println("End: " + end);
                 }
             }
 
@@ -74,8 +73,7 @@ public class TestStayStraight {
             double deltaT = .001 * (finish - begin); // from milli to sec
             integral += diff * deltaT;
             begin = finish;
-            derivative = omega - ((.11 * (.001 * finish) - .3373));
-            System.out.println("Omega: " + omega + "Finish: " + finish);
+            derivative = omega; // - ((.11 * (.001 * finish) - .3373));
             // // if (heading <= -0.5) {
             // // double leftSpeed = leftMotor.getSpeed();
             // // leftSpeed += p;
