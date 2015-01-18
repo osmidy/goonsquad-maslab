@@ -57,10 +57,11 @@ public class TestStayStraight {
         double motorBias = .2;
         double p = .01;
         double i = .001;
-        double d = -.001;
+        double d = -.01;
         long begin = System.currentTimeMillis();
         double integral = 0;
         double derivative = 0;
+        double prevDiff = 0;
         leftMotor.setSpeed(motorBias);
         rightMotor.setSpeed(motorBias);
 
@@ -73,7 +74,8 @@ public class TestStayStraight {
             double deltaT = .001 * (finish - begin); // from milli to sec
             integral += diff * deltaT;
             begin = finish;
-            derivative = omega - ((.11 * (.001 * (finish - current)) - .3373));
+            derivative = diff - prevDiff;
+            prevDiff = diff;
             // // if (heading <= -0.5) {
             // // double leftSpeed = leftMotor.getSpeed();
             // // leftSpeed += p;
