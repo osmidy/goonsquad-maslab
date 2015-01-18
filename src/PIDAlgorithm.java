@@ -33,8 +33,6 @@ public class PIDAlgorithm {
         Motor rightMotor = new Motor(pwmPinRight, dirPinRight, rightForward,
                 rightReverse);
         Gyroscope gyro = new Gyroscope(gyroPin);
-        long chip = gyro.getChipPointer();
-        long spi = gyro.getSpiPointer();
         
         Thread getHeading = new Thread(new Runnable() {
             public void run() {

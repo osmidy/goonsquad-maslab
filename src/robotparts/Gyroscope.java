@@ -65,12 +65,4 @@ public class Gyroscope {
     public int getChipPin() {
         return chipPin;
     }
-
-    public long getChipPointer() {
-        return chipPointer;
-    }
-
-    public long getSpiPointer() {
-        return spiPointer;
-    }
 }
