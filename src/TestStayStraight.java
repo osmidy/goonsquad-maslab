@@ -92,7 +92,7 @@ public class TestStayStraight {
             // // rightMotor.setSpeed(rightSpeed);
             // // leftMotor.setSpeed(leftSpeed);
             // // }
-            double power = derivative; // p * diff + i * integral + d * derivative;
+            double power = d * derivative; // p * diff + i * integral + d * derivative;
             leftMotor.setSpeed(motorBias + power);
             rightMotor.setSpeed(motorBias - power);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
