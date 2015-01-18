@@ -56,7 +56,7 @@ public class TestStayStraight {
         long current = System.currentTimeMillis();
         double motorBias = 0;
         double p = .01;
-        double i = 0; //.0005;
+        double i = .0001;
         double d = .03;
         long begin = System.currentTimeMillis();
         double integral = 0;
@@ -76,22 +76,9 @@ public class TestStayStraight {
             begin = finish;
             derivative = diff - prevDiff;
             prevDiff = diff;
-            // // if (heading <= -0.5) {
-            // // double leftSpeed = leftMotor.getSpeed();
-            // // leftSpeed += p;
-            // // double rightSpeed = rightMotor.getSpeed();
-            // // rightSpeed -= p;
-            // // leftMotor.setSpeed(leftSpeed);
-            // // rightMotor.setSpeed(rightSpeed);
-            // // }
-            // // if (heading >= 0.5) {
-            // // double rightSpeed = rightMotor.getSpeed();
-            // // rightSpeed += p;
-            // // double leftSpeed = leftMotor.getSpeed();
-            // // leftSpeed -= p;
-            // // rightMotor.setSpeed(rightSpeed);
-            // // leftMotor.setSpeed(leftSpeed);
-            // // }
+            if (integral > 50000) {
+                integral = 50000;
+            }
             double power = p * diff + i * integral + d * derivative;
             leftMotor.setSpeed(motorBias + power);
             rightMotor.setSpeed(motorBias - power);
