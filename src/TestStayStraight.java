@@ -56,7 +56,7 @@ public class TestStayStraight {
         long current = System.currentTimeMillis();
         double motorBias = .2;
         double p = .001;
-        double i = .001;
+        double i = .0001;
         double d = -.001;
         long begin = System.currentTimeMillis();
         double integral = 0;
@@ -102,6 +102,7 @@ public class TestStayStraight {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+            
             long fin = System.currentTimeMillis();
             if ((fin - current) >= 5000) {
                 leftMotor.setSpeed(0);
@@ -110,6 +111,7 @@ public class TestStayStraight {
             }
             // }
         }
+        System.out.println("Current: " + current);
         getHeading.interrupt();
         System.out.println("Fin.");
     }
