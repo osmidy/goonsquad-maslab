@@ -55,9 +55,9 @@ public class TestStayStraight {
         getHeading.start();
         long current = System.currentTimeMillis();
         double motorBias = .2;
-        double p = 0; // .01;
+        double p = .01;
         double i = .0001;
-        double d = -.1;
+        double d = .1;
         long begin = System.currentTimeMillis();
         double integral = 0;
         double derivative = 0;
