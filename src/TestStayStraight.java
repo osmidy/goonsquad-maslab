@@ -57,7 +57,7 @@ public class TestStayStraight {
         double motorBias = 0;
         double p = .01;
         double i = 0; //.0005;
-        double d = .01;
+        double d = .03;
         long begin = System.currentTimeMillis();
         double integral = 0;
         double derivative = 0;
