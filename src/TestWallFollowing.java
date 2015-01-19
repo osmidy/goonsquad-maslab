@@ -51,8 +51,8 @@ public class TestWallFollowing {
         leftMotor.setSpeed(bias);
         rightMotor.setSpeed(bias);
 
-        // Main loop with P control
-        parallelLoop: while ((Math.abs(diff) > 0.01) && (Math.abs(frontSep - separation) > 0.01) 
+        // Main loop with PID control
+        mainLoop: while ((Math.abs(diff) > 0.01) && (Math.abs(frontSep - separation) > 0.01) 
                 && (Math.abs(rearSep - separation) > 0.01)) {
             long end = System.currentTimeMillis();
             frontSep = forwardSensor.distanceToObject();
@@ -70,10 +70,11 @@ public class TestWallFollowing {
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed());
             System.out.println("Integral: " + integral + "Derivative: " + derivative + "Power: " + power);
+            // Use slight turns in place to change distance from wall
             if (!(Math.abs(diff) > 0.01)) {
-                if (frontSep > rearSep) { 
-                    leftMotor.setSpeed(-0.01);
-                    rightMotor.setSpeed(0.01);
+                if (frontSep > separation) { 
+                    leftMotor.setSpeed(-0.02);
+                    rightMotor.setSpeed(0.02);
                 }
                 else {
                     leftMotor.setSpeed(0.01);
@@ -91,7 +92,7 @@ public class TestWallFollowing {
             if ((fin - current) >= 10000) {
                 leftMotor.setSpeed(0);
                 rightMotor.setSpeed(0);
-                break parallelLoop;
+                break mainLoop;
             }
         
         }
