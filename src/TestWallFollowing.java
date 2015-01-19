@@ -67,7 +67,7 @@ public class TestWallFollowing {
             leftMotor.setSpeed(bias - power);
             rightMotor.setSpeed(bias + power);
             begin = end;
-            prevDiff = filteredDiff;
+            prevDiff = diff;
             System.out.println("Front: " + frontSep + "Rear: " + rearSep);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed());
