@@ -21,7 +21,9 @@ public class TestWallFollowing {
         int dirPinLeft = 8;
         int pwmPinRight = 3;
         int dirPinRight = 4;
-        double desired = 0.0;
+        
+        int forwardPin = 0;
+        int rearPin = 1;
 
         Motor leftMotor = new Motor(pwmPinLeft, dirPinLeft, leftForward,
                 leftReverse);
@@ -31,8 +33,8 @@ public class TestWallFollowing {
                 rightReverse);
         pwmPointerRight = rightMotor.getPwmPin();
         dirPointerRight = rightMotor.getGpioPin();
-        IRSensor forwardSensor = new IRSensor(0);
-        IRSensor rearSensor = new IRSensor(1);
+        IRSensor forwardSensor = new IRSensor(forwardPin);
+        IRSensor rearSensor = new IRSensor(rearPin);
         
         // Initial Settings 
         long current = System.currentTimeMillis();
