@@ -21,7 +21,9 @@ public class TestWallFollowing {
         int dirPinLeft = 8;
         int pwmPinRight = 3;
         int dirPinRight = 4;
-        double desired = 0.0;
+        
+        int forwardPin = 0;
+        int rearPin = 1;
 
         Motor leftMotor = new Motor(pwmPinLeft, dirPinLeft, leftForward,
                 leftReverse);
@@ -31,29 +33,29 @@ public class TestWallFollowing {
                 rightReverse);
         pwmPointerRight = rightMotor.getPwmPin();
         dirPointerRight = rightMotor.getGpioPin();
-        IRSensor forwardSensor = new IRSensor(0);
-        IRSensor rearSensor = new IRSensor(1);
+        IRSensor forwardSensor = new IRSensor(forwardPin);
+        IRSensor rearSensor = new IRSensor(rearPin);
         
         // Initial Settings 
         long current = System.currentTimeMillis();
         long begin = System.currentTimeMillis();
-        double bias = .2;
-        double p = .012;
-        double i = .0005;
-        double d = .03;
+        double bias = 0;
+        double p = 0; // .012;
+        double i = 0; // .0005;
+        double d = 50; // .03;
         double integral = 0;
         double derivative = 0;
         double separation = .1;
         double frontSep = forwardSensor.distanceToObject();
         double rearSep = rearSensor.distanceToObject();  
         double diff = frontSep -rearSep;
+        System.out.println("Front: " + frontSep + "Rear: " + rearSep);
         double prevDiff = 0;
         leftMotor.setSpeed(bias);
         rightMotor.setSpeed(bias);
 
         // Main loop with PID control
-        mainLoop: while ((Math.abs(diff) > 0.01) && (Math.abs(frontSep - separation) > 0.01) 
-                && (Math.abs(rearSep - separation) > 0.01)) {
+        mainLoop: while (true) {
             long end = System.currentTimeMillis();
             frontSep = forwardSensor.distanceToObject();
             rearSep = rearSensor.distanceToObject();  
@@ -71,16 +73,16 @@ public class TestWallFollowing {
                     + rightMotor.getSpeed());
             System.out.println("Integral: " + integral + "Derivative: " + derivative + "Power: " + power);
             // Use slight turns in place to change distance from wall
-            if (!(Math.abs(diff) > 0.01)) {
-                if (frontSep > separation) { 
-                    leftMotor.setSpeed(-0.02);
-                    rightMotor.setSpeed(0.02);
-                }
-                else {
-                    leftMotor.setSpeed(0.01);
-                    rightMotor.setSpeed(-0.01);
-                }
-            }
+//            if (!(Math.abs(diff) > 0.01)) {
+//                if (frontSep > separation) { 
+//                    leftMotor.setSpeed(-0.02);
+//                    rightMotor.setSpeed(0.02);
+//                }
+//                else {
+//                    leftMotor.setSpeed(0.02);
+//                    rightMotor.setSpeed(-0.02);
+//                }
+//            }
             try {
                 Thread.sleep(33);
             } catch (InterruptedException e) {
