@@ -33,8 +33,8 @@ public class TestWallFollowing {
         long current = System.currentTimeMillis();
         long begin = System.currentTimeMillis();
         double bias = 0;
-        double p = 2.5; // .012;
-        double i = 0.5; // .0005;
+        double p = 3; // .012;
+        double i = 0.8; // .0005;
         double d = 0.1; // .03;
         double integral = 0;
         double derivative = 0;
@@ -48,6 +48,10 @@ public class TestWallFollowing {
 
         // Main loop with PID control
         mainLoop: while (true) {
+            if ((frontSep > 0.5) || (rearSep > 0.5)) {
+                leftMotor.setSpeed(0);
+                rightMotor.setSpeed(0);
+            }
             long end = System.currentTimeMillis();
             frontSep = forwardSensor.distanceToObject();
             rearSep = rearSensor.distanceToObject();  
