@@ -73,16 +73,16 @@ public class TestWallFollowing {
                     + rightMotor.getSpeed());
             System.out.println("Integral: " + integral + "Derivative: " + derivative + "Power: " + power);
             // Use slight turns in place to change distance from wall
-            if (!(Math.abs(diff) > 0.01)) {
-                if (frontSep > separation) { 
-                    leftMotor.setSpeed(-0.02);
-                    rightMotor.setSpeed(0.02);
-                }
-                else {
-                    leftMotor.setSpeed(0.02);
-                    rightMotor.setSpeed(-0.02);
-                }
-            }
+//            if (!(Math.abs(diff) > 0.01)) {
+//                if (frontSep > separation) { 
+//                    leftMotor.setSpeed(-0.02);
+//                    rightMotor.setSpeed(0.02);
+//                }
+//                else {
+//                    leftMotor.setSpeed(0.02);
+//                    rightMotor.setSpeed(-0.02);
+//                }
+//            }
             try {
                 Thread.sleep(33);
             } catch (InterruptedException e) {
