@@ -13,104 +13,120 @@ import sensors.Sensor;
  * An class providing methods to dictate mechanical operations of a physical
  * robot. A physical robot exists on a specified playing field containing walls
  * and blocks of varying colors. With regards to direction, all angles for the
- * robot are measured clockwise, in degrees, relative to the axis passing through the center
- * of the Robot's face.
+ * robot are measured clockwise, in degrees, relative to the axis passing
+ * through the center of the Robot's face.
  * 
  * @author osmidy
  *
  */
 public class Robot {
+    // Datatype Definition: Robot ::= sensors:Set<Sensor> + gyro:Gyroscope +
+    // motors:List<Motor> + servos:List<Servo>
+
+    // Rep Invariant: robot has at least two motors
+    private void checkRep() {
+        assert motors.size() >= 2;
+    }
+
     private final Set<Sensor> sensors;
     private final Map<Sensor, Double> sensorHeadings;
     private final List<Motor> motors;
     private final List<Servo> servos;
     private final Gyroscope gyro;
-    private State state = FINDWALL;
-    // Datatype Definition: Robot ::= sensors:Set<Sensor> + gyro:Gyroscope + motors:List<Motor> + servos:List<Servo>
-    // Rep Invariant:  robot has at least two motors
-    private void checkRep() {
-        assert motors.size() >= 2;
-    }
-    
+
+    private double heading = 0.0;
+    private final double radius = 0.1524;
+    private State state = State.FINDWALL;
+
     enum State {
         WALLFOLLOW, FINDWALL, DROPSTACK, FINDDROPZONE, DRIVETOCUBE, COLLECTCUBE;
     }
-    
+
     /**
-     * Constructo method
+     * Constructor method
      * 
-     * @parm sensorMap a mapping of Sensors mounted on this Robot to the angle at which they are aligned
-     * @param motors a List of Motor mounted on this Robot
-     * @param servos a List of Servos mounted on this Robot
-     * @param gyro a Gyroscope mounted on this Robot
+     * @parm sensorMap a mapping of Sensors mounted on this Robot to the angle
+     *       at which they are aligned
+     * @param motors
+     *            a List of Motor mounted on this Robot
+     * @param servos
+     *            a List of Servos mounted on this Robot
+     * @param gyro
+     *            a Gyroscope mounted on this Robot
      */
-    public Robot(Map<Sensor, Double> sensorMap, List<Motor> motors, List<Servo> servos, Gyroscope gyro) {
+    public Robot(Map<Sensor, Double> sensorMap, List<Motor> motors,
+            List<Servo> servos, Gyroscope gyro) {
         this.sensorHeadings = sensorMap;
         this.sensors = sensorMap.keySet();
+        this.motors = motors;
+        this.servos = servos;
+        this.gyro = gyro;
+
     }
+
     /**
      * Determine the direction this Robot is facing
      * 
-     * @param centerSensor
-     *            Sensor positioned at the front of the Robot, along the axis
-     *            passing through its face
      * @return the heading, in radians, of the Robot
      */
-    public double getHeading(Sensor centerSensor);
-    
+    public double getHeading() {
+        return this.heading;
+    }
+
     /**
-     * Assigns directional heading to Sensors mounted on the Robot
-     * @param sensor Sensor mounted on the robot
-     * @param heading Heading, in radians, to be assigned to the Sensor
+     * Updates the current heading of this Robot
+     * 
+     * @param angle
+     *            the new value for the Robot heading
      */
-    public void setSensorHeading(Sensor sensor, double heading);
-    
+    public synchronized void setHeading(double angle) {
+        this.heading = angle;
+    }
+
     /**
      * Determine the direction a given Sensor is facing
      * 
-     * @param sensor  Sensor mounted on the robot
-     * @return the heading, in radians, of the Sensor
+     * @param sensor
+     *            Sensor mounted on the robot
+     * @return the heading, in degrees, of the Sensor
      */
-    public double getSensorHeading(Sensor sensor);
+    public double getSensorHeading(Sensor sensor) {
+        double angle = sensorHeadings.get(sensor);
+        return angle;
+    }
 
     /**
-     * @return the current velocity of the robot, in m/s
+     * @return the current speed of the robot
      */
-    public double getVelocity();
+    public double getSpeed() {
+        return 0.0;
+    }
 
     /**
      * Updates the robot's velocity
      * 
-     * @param speed double in range [0.0, 1.0]
+     * @param speed
+     *            double in range [0.0, 1.0]
      */
-    public void setVelocity(double speed);
+    public void setVelocity(double speed) {
+
+    }
 
     /**
-     * @return the current velocity of the robot, in rad/s
+     * @return the current angular velocity of the robot, in deg/s
      */
-    public double getAngularVelocity();
-
-    /**
-     * Updates the robot's angular velocity
-     * 
-     * @param TBD
-     */
-    public void setAngularVelocity();
-
-    /**
-     * Determines the direction of a Sensor on the Robot.
-     * 
-     * @param sensor
-     *            A Sensor mounted on the robot
-     * @return the heading, in radians, of the sensor.
-     */
-    public double getSensorDirection(Sensor sensor);
+    public double getAngularVelocity() {
+        double omega = gyro.getAngularVelocity();
+        return omega;
+    }
 
     /**
      * Calls the mechanical action to be taken by the robot part
      */
     // TODO: robot parts or whole robot?
-    public void action();
+    public void action() {
+
+    }
 
     /**
      * Determines the object closest to this Robot
@@ -120,7 +136,39 @@ public class Robot {
      *            field
      * @return the distance from this Robot to the closest object in meters
      */
-    public double distanceToClosestObject(List<Sensor> sensors);
+    public double distanceToClosestObject(Set<Sensor> sensors) {
+        double closest = Double.MAX_VALUE;
+        for (Sensor sensor : sensors) {
+            double dist = sensor.distanceToObject();
+            if (dist < closest) {
+                closest = dist;
+            }
+        }
+        return closest;
+    }
+
+    /**
+     * Determines the angle of the object closest to this Robot
+     * 
+     * @param sensorMap
+     *            Sensors used to determine distance to objects on the playing
+     *            field
+     * @return the angle, relative to the robot, at which the closest object is
+     * 
+     */
+    public double angleOfClosestObject(Map<Sensor, Double> sensorMap) {
+        double angle = Double.MAX_VALUE;
+        double closest = Double.MAX_VALUE;
+        for (Sensor sensor: sensorMap.keySet()) {
+            double dist = sensor.distanceToObject();
+            double dir = sensorMap.get(sensor);
+            if (dist < closest) {
+                closest = dist;
+                angle = dir;
+            }
+        }
+        return angle;
+    }
 
     /**
      * Searches for a Cube on the playing field
@@ -155,9 +203,11 @@ public class Robot {
      *            a List of Walls on the playing field
      */
     // public void followWall(List<Wall> walls);
-    
+
     /**
      * @return the radius, in meters, of this Robot
      */
-    public double getRadius();
+    public double getRadius() {
+        return this.radius;
+    }
 }
