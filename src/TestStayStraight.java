@@ -6,7 +6,6 @@ public class TestStayStraight {
     static Gyroscope gyro = new Gyroscope(10);
 
     public static void main(String[] args) {
-
         int leftForward = 1;
         int leftReverse = 0;
         int rightForward = 0;
@@ -43,7 +42,6 @@ public class TestStayStraight {
 
         // Initial Settings
         getHeading.start();
-        long current = System.currentTimeMillis();
         double motorBias = 0.2;
         double p = .012;
         double i = .0005;
