@@ -61,7 +61,7 @@ public class TestWallFollowing {
             double deltaT = .001 * (end - begin);
             integral += diff * deltaT;
             derivative = filteredDiff - prevDiff;
-            derivative = diff - prevDiff;
+            // derivative = diff - prevDiff;
             if (integral > 500) {
                 integral = 500;
             }
