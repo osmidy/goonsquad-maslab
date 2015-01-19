@@ -1,4 +1,4 @@
-import robotparts.Gyroscope;
+ import robotparts.Gyroscope;
 import robotparts.Motor;
 import sensors.IRSensor;
 import sensorIO.Gpio;
@@ -55,19 +55,24 @@ public class TestWallFollowing {
             }
             long end = System.currentTimeMillis();
             frontSep = forwardSensor.distanceToObject();
-            rearSep = rearSensor.distanceToObject();  
+            rearSep = rearSensor.distanceToObject(); 
             diff = frontSep - rearSep;
+            double filteredDiff = 0.8*diff+0.2*prevDiff;
             double deltaT = .001 * (end - begin);
             integral += diff * deltaT;
+<<<<<<< HEAD
+            derivative = filteredDiff - prevDiff;
+=======
             derivative = diff - prevDiff;
             if (integral > 500) {
                 integral = 500;
             }
+>>>>>>> f6f7ba73182d0c782603dadf36c284dfef489cc6
             double power = p * diff + i * integral + d * derivative;
             leftMotor.setSpeed(bias - power);
             rightMotor.setSpeed(bias + power);
             begin = end;
-            prevDiff = diff;
+            prevDiff = filteredDiff;
             System.out.println("Front: " + frontSep + "Rear: " + rearSep);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed());
