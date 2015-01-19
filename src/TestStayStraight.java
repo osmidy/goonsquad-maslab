@@ -6,12 +6,6 @@ public class TestStayStraight {
     static Gyroscope gyro = new Gyroscope(10);
 
     public static void main(String[] args) {
-        String DIR_OUT = "out";
-        long pwmPointerLeft;
-        long dirPointerLeft;
-        long pwmPointerRight;
-        long dirPointerRight;
-
         int leftForward = 1;
         int leftReverse = 0;
         int rightForward = 0;
@@ -25,12 +19,8 @@ public class TestStayStraight {
 
         Motor leftMotor = new Motor(pwmPinLeft, dirPinLeft, leftForward,
                 leftReverse);
-        pwmPointerLeft = leftMotor.getPwmPin();
-        dirPointerLeft = leftMotor.getGpioPin();
         Motor rightMotor = new Motor(pwmPinRight, dirPinRight, rightForward,
                 rightReverse);
-        pwmPointerRight = rightMotor.getPwmPin();
-        dirPointerRight = rightMotor.getGpioPin();
 
         // Calculating Current Heading with integration
         Thread getHeading = new Thread(new Runnable() {
@@ -52,7 +42,6 @@ public class TestStayStraight {
 
         // Initial Settings
         getHeading.start();
-        long current = System.currentTimeMillis();
         double motorBias = 0.2;
         double p = .012;
         double i = .0005;
