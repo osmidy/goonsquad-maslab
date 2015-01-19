@@ -58,16 +58,17 @@ public class TestWallFollowing {
         mainLoop: while (true) {
             long end = System.currentTimeMillis();
             frontSep = forwardSensor.distanceToObject();
-            rearSep = rearSensor.distanceToObject();  
+            rearSep = rearSensor.distanceToObject(); 
             diff = frontSep - rearSep;
+            double filteredDiff = 0.8*diff+0.2*prevDiff;
             double deltaT = .001 * (end - begin);
             integral += diff * deltaT;
-            derivative = diff - prevDiff;
+            derivative = filteredDiff - prevDiff;
             double power = p * diff + i * integral + d * derivative;
             leftMotor.setSpeed(bias - power);
             rightMotor.setSpeed(bias + power);
             begin = end;
-            prevDiff = diff;
+            prevDiff = filteredDiff;
             System.out.println("Front: " + frontSep + "Rear: " + rearSep);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed());
