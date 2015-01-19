@@ -60,14 +60,11 @@ public class TestWallFollowing {
             double filteredDiff = 0.8*diff+0.2*prevDiff;
             double deltaT = .001 * (end - begin);
             integral += diff * deltaT;
-<<<<<<< HEAD
             derivative = filteredDiff - prevDiff;
-=======
             derivative = diff - prevDiff;
             if (integral > 500) {
                 integral = 500;
             }
->>>>>>> f6f7ba73182d0c782603dadf36c284dfef489cc6
             double power = p * diff + i * integral + d * derivative;
             leftMotor.setSpeed(bias - power);
             rightMotor.setSpeed(bias + power);
