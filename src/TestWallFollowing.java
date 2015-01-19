@@ -37,7 +37,7 @@ public class TestWallFollowing {
         // Initial Settings 
         long current = System.currentTimeMillis();
         long begin = System.currentTimeMillis();
-        double bias = .2;
+        double bias = .1;
         double p = .012;
         double i = .0005;
         double d = .03;
@@ -47,6 +47,7 @@ public class TestWallFollowing {
         double frontSep = forwardSensor.distanceToObject();
         double rearSep = rearSensor.distanceToObject();  
         double diff = frontSep -rearSep;
+        System.out.println("Front: " + frontSep + "Rear: " + rearSep);
         double prevDiff = 0;
         leftMotor.setSpeed(bias);
         rightMotor.setSpeed(bias);
@@ -77,8 +78,8 @@ public class TestWallFollowing {
                     rightMotor.setSpeed(0.02);
                 }
                 else {
-                    leftMotor.setSpeed(0.01);
-                    rightMotor.setSpeed(-0.01);
+                    leftMotor.setSpeed(0.02);
+                    rightMotor.setSpeed(-0.02);
                 }
             }
             try {
