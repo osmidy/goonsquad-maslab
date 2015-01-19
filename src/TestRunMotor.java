@@ -38,14 +38,12 @@ public class TestRunMotor {
         /**
         //make gyro
         final Gyroscope gyro = new Gyroscope(10);
-        long chip = gyro.getChipPointer();
-        long spi = gyro.getSpiPointer();
         
         // PID(just P for now) loop for 5 seconds
         long startTime = System.currentTimeMillis(); //fetch starting time
         while(false||(System.currentTimeMillis()-startTime)<5000){
         	double bias = 0.1*System.currentTimeMillis()-0.33;
-        	double power = gyro.getAngularVelocity(chip, spi) - bias;
+        	double power = gyro.getAngularVelocity() - bias;
         	pwm.setSpeed(pwmPointer, 0.15-0.03*power);
         	pwmRight.setSpeed(pwmPointerRight, 0.15+0.03*power);
         }

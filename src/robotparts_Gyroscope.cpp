@@ -25,22 +25,6 @@ float readSensor(char* recv) {
 	recvVal = (recvVal << 8) | ((uint8_t) recv[1] & 0xFF);
 	recvVal = (recvVal << 8) | ((uint8_t) recv[0] & 0xFF);
 	short reading = (recvVal >> 10) & 0xffff;
-//	if (init) {
-//		unsigned long long ms = (unsigned long long) (tv.tv_sec) * 1000
-//				+ (unsigned long long) (tv.tv_usec) / 1000;
-//		gettimeofday(&tv, NULL);
-//		ms -= (unsigned long long) (tv.tv_sec) * 1000
-//				+ (unsigned long long) (tv.tv_usec) / 1000;
-//		int msi = (int) ms;
-//		float msf = (float) msi;
-//		rf = (float) reading;
-//        total += -0.001 * msf * (rf / 80.0);
-//	} else {
-//		init = 1;
-//		gettimeofday(&tv, NULL);
-//		usleep(10 * MS);
-//		total = readSensor(recv);
-//	}
 	total = (float)reading;
 	total /= 80.0;
 	return total;

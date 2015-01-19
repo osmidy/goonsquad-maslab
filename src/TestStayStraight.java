@@ -6,11 +6,6 @@ public class TestStayStraight {
     static Gyroscope gyro = new Gyroscope(10);
 
     public static void main(String[] args) {
-        String DIR_OUT = "out";
-        long pwmPointerLeft;
-        long dirPointerLeft;
-        long pwmPointerRight;
-        long dirPointerRight;
 
         int leftForward = 1;
         int leftReverse = 0;
@@ -25,12 +20,8 @@ public class TestStayStraight {
 
         Motor leftMotor = new Motor(pwmPinLeft, dirPinLeft, leftForward,
                 leftReverse);
-        pwmPointerLeft = leftMotor.getPwmPin();
-        dirPointerLeft = leftMotor.getGpioPin();
         Motor rightMotor = new Motor(pwmPinRight, dirPinRight, rightForward,
                 rightReverse);
-        pwmPointerRight = rightMotor.getPwmPin();
-        dirPointerRight = rightMotor.getGpioPin();
 
         // Calculating Current Heading with integration
         Thread getHeading = new Thread(new Runnable() {
@@ -39,8 +30,7 @@ public class TestStayStraight {
                 while (true) {
                     long end = System.currentTimeMillis();
                     double deltaT = .001 * (end - start); // from milli to sec
-                    double omega = gyro.getAngularVelocity(
-                            gyro.getChipPointer(), gyro.getSpiPointer());
+                    double omega = gyro.getAngularVelocity();
                     double bias = ((.11 * end) - .3373);
                     double prevBias = ((.11 * start) - .3373);
                     double total = (omega - (bias - prevBias)) * deltaT;
@@ -54,10 +44,10 @@ public class TestStayStraight {
         // Initial Settings
         getHeading.start();
         long current = System.currentTimeMillis();
-        double motorBias = 0;
-        double p = 0; //.01;
-        double i = 0; //.0005;
-        double d = .05;
+        double motorBias = 0.2;
+        double p = .012;
+        double i = .0005;
+        double d = .03;
         long begin = System.currentTimeMillis();
         double integral = 0;
         double derivative = 0;
@@ -67,8 +57,6 @@ public class TestStayStraight {
 
         // Main loop with PID control implemented
         outerloop: while (true) {
-            double omega = gyro.getAngularVelocity(gyro.getChipPointer(),
-                    gyro.getSpiPointer());
             double diff = desired - heading;          
             long finish = System.currentTimeMillis();
             double deltaT = .001 * (finish - begin); // from milli to sec
@@ -76,30 +64,17 @@ public class TestStayStraight {
             begin = finish;
             derivative = diff - prevDiff;
             prevDiff = diff;
-            // // if (heading <= -0.5) {
-            // // double leftSpeed = leftMotor.getSpeed();
-            // // leftSpeed += p;
-            // // double rightSpeed = rightMotor.getSpeed();
-            // // rightSpeed -= p;
-            // // leftMotor.setSpeed(leftSpeed);
-            // // rightMotor.setSpeed(rightSpeed);
-            // // }
-            // // if (heading >= 0.5) {
-            // // double rightSpeed = rightMotor.getSpeed();
-            // // rightSpeed += p;
-            // // double leftSpeed = leftMotor.getSpeed();
-            // // leftSpeed -= p;
-            // // rightMotor.setSpeed(rightSpeed);
-            // // leftMotor.setSpeed(leftSpeed);
-            // // }
-            double power = d * derivative; // p * diff + i * integral + d * derivative;
+            if (integral > 500) {
+                integral = 500;
+            }
+            double power = p * diff + i * integral + d * derivative;
             leftMotor.setSpeed(motorBias + power);
             rightMotor.setSpeed(motorBias - power);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed() + " Heading: " + heading);
             System.out.println("Integral: " + integral + "Derivative: " + derivative + "Power: " + power);
             try {
-                Thread.sleep(100);
+                Thread.sleep(33);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

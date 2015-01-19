@@ -17,9 +17,9 @@ public class Gyroscope {
     private final int chipPin;
     private final Spi spi;
     private final long spiPointer;
-    
+
     private final String DIR_OUT = "out";
-    
+
     // For native methods
     static {
         System.loadLibrary("interface");
@@ -56,18 +56,13 @@ public class Gyroscope {
      *            Gyroscope
      * @return the heading, in degrees/s, of the Gyroscope
      */
-    public native double getAngularVelocity(long chipPointer, long spiPointer);
-    // Bias:  y  = 0.1x - .3373
-    
+    public double getAngularVelocity() {
+        return getAngularVelocity(chipPointer, spiPointer);
+    }
+
+    private native double getAngularVelocity(long chipPointer, long spiPointer);
+
     public int getChipPin() {
         return chipPin;
-    }
-    
-    public long getChipPointer() {
-        return chipPointer;
-    }
-    
-    public long getSpiPointer() {
-        return spiPointer;
     }
 }

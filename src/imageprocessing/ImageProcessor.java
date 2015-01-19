@@ -7,7 +7,6 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
 
 public class ImageProcessor {
     private static final int numBuffers = 1;
@@ -15,6 +14,7 @@ public class ImageProcessor {
     
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        System.loadLibrary("interface");
     }
     
     public ImageProcessor() {
@@ -35,7 +35,12 @@ public class ImageProcessor {
     // (In practice it's a little different:
     //  the output image will be for your visual reference,
     //  but you will mainly want to output a list of the locations of detected objects.)
-    public native int[] process(Mat rawImage); //, Mat processedImage); { 
+    public void process(Mat rawImage) {
+        long pointer = rawImage.getNativeObjAddr();
+        process(pointer);
+    }
+    
+    private native void process(long rawImagePointer);
         
         // These two lines are a workaround for the fact that CvtColor throws weird errors
         // when you try to convert from a 3-channel (BGR) image to a 1-channel (grayscale) image.
