@@ -35,7 +35,7 @@ public class TestWallFollowing {
         double bias = 0;
         double p = 2.7; // .012;
         double i = 1.25; // .0005;
-        double d = 0.15; // .03;
+        double d = 0.25; // .03;
         double integral = 0;
         double derivative = 0;
         double separation = .1;
