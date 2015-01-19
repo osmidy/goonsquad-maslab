@@ -1,22 +1,53 @@
 package robot;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import robotparts.Gyroscope;
+import robotparts.Motor;
+import robotparts.Servo;
 import sensors.Sensor;
 
 /**
- * An interface providing methods to dictate mechanical operations of a physical
+ * An class providing methods to dictate mechanical operations of a physical
  * robot. A physical robot exists on a specified playing field containing walls
  * and blocks of varying colors. With regards to direction, all angles for the
- * robot are measured clockwise relative to the axis passing through the center
+ * robot are measured clockwise, in degrees, relative to the axis passing through the center
  * of the Robot's face.
  * 
  * @author osmidy
  *
  */
-public interface Robot {
-    // Datatype Definition: Robot ::= sensors:List<Sensor> +
+public class Robot {
+    private final Set<Sensor> sensors;
+    private final Map<Sensor, Double> sensorHeadings;
+    private final List<Motor> motors;
+    private final List<Servo> servos;
+    private final Gyroscope gyro;
+    private State state = FINDWALL;
+    // Datatype Definition: Robot ::= sensors:Set<Sensor> + gyro:Gyroscope + motors:List<Motor> + servos:List<Servo>
+    // Rep Invariant:  robot has at least two motors
+    private void checkRep() {
+        assert motors.size() >= 2;
+    }
     
+    enum State {
+        WALLFOLLOW, FINDWALL, DROPSTACK, FINDDROPZONE, DRIVETOCUBE, COLLECTCUBE;
+    }
+    
+    /**
+     * Constructo method
+     * 
+     * @parm sensorMap a mapping of Sensors mounted on this Robot to the angle at which they are aligned
+     * @param motors a List of Motor mounted on this Robot
+     * @param servos a List of Servos mounted on this Robot
+     * @param gyro a Gyroscope mounted on this Robot
+     */
+    public Robot(Map<Sensor, Double> sensorMap, List<Motor> motors, List<Servo> servos, Gyroscope gyro) {
+        this.sensorHeadings = sensorMap;
+        this.sensors = sensorMap.keySet();
+    }
     /**
      * Determine the direction this Robot is facing
      * 
@@ -50,9 +81,9 @@ public interface Robot {
     /**
      * Updates the robot's velocity
      * 
-     * @param TBD
+     * @param speed double in range [0.0, 1.0]
      */
-    public void setVelocity();
+    public void setVelocity(double speed);
 
     /**
      * @return the current velocity of the robot, in rad/s
