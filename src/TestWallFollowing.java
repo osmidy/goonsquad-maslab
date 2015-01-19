@@ -57,6 +57,9 @@ public class TestWallFollowing {
             frontSep = forwardSensor.distanceToObject();
             rearSep = rearSensor.distanceToObject(); 
             diff = frontSep - rearSep;
+            if (diff > 0.001) {
+                diff = 0;
+            }
             double deltaT = .001 * (end - begin);
             integral += diff * deltaT;
             derivative = diff - prevDiff;
