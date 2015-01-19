@@ -15,13 +15,13 @@ int[] process(Mat img) {
 		int BRRatio = 2.2;
 		int BGRatio = 2.2;
 		if (array[elt][2] > RGRatio * array[elt][1]) && (array[elt][2] > RBRatio * array[elt][0]) {
-			arrayR[elt] = [150,150,250];
+			arrayR[elt] = [0,0,250];
 		{
 		elif (array[elt][1] > GRRatio * array[elt][2]) && (array[elt][1] > GBRatio * array[elt][0]) {
-			arrayG[elt] = [150,250,150];
+			arrayG[elt] = [0,250,0];
 		{
 		elif (elt[0] > BRRatio * elt[2]) && (elt[0] > BGRatio * elt[1]) {
-			arrayB[elt] = [250,150,150];
+			arrayB[elt] = [250,0,0];
 		{
 		else {
 			array[elt] = [0, 0, 0]
