@@ -55,8 +55,7 @@ public class TestWallFollowing {
         rightMotor.setSpeed(bias);
 
         // Main loop with PID control
-        mainLoop: while ((Math.abs(diff) > 0.005) && (Math.abs(frontSep - separation) > 0.005) 
-                && (Math.abs(rearSep - separation) > 0.005)) {
+        mainLoop: while (true) {
             long end = System.currentTimeMillis();
             frontSep = forwardSensor.distanceToObject();
             rearSep = rearSensor.distanceToObject();  
