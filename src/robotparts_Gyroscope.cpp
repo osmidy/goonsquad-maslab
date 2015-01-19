@@ -35,7 +35,7 @@ float readSensor(char* recv) {
 //	float correct = drift;
 //	return (jdouble)correct;
 
-}
+//}
 
 JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getAngularVelocity(JNIEnv *env,
 		jobject thisObj, jlong chipPointer, jlong spiPointer) {
