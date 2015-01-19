@@ -33,9 +33,9 @@ public class TestWallFollowing {
         long current = System.currentTimeMillis();
         long begin = System.currentTimeMillis();
         double bias = 0;
-        double p = 3.5; // .012;
+        double p = 4; // .012;
         double i = 1; // .0005;
-        double d = 0.05; // .03;
+        double d = 0.1; // .03;
         double integral = 0;
         double derivative = 0;
         double separation = .1;
@@ -56,10 +56,7 @@ public class TestWallFollowing {
             long end = System.currentTimeMillis();
             frontSep = forwardSensor.distanceToObject();
             rearSep = rearSensor.distanceToObject(); 
-            diff = frontSep - rearSep;
-            if (diff > 0.0001) {
-                diff = 0;
-            }
+            diff = frontSep - rearSep; 
             double deltaT = .001 * (end - begin);
             integral += diff * deltaT;
             derivative = diff - prevDiff;
