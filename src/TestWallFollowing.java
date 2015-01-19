@@ -36,24 +36,46 @@ public class TestWallFollowing {
         
         // Initial Settings 
         long current = System.currentTimeMillis();
+        long begin = System.currentTimeMillis();
         double bias = .2;
-        double p = .001;
+        double p = .012;
+        double i = .0005;
+        double d = .03;
+        double integral = 0;
+        double derivative = 0;
         double separation = .1;
         double diff = 1;
+        double prevDiff = 0;
         leftMotor.setSpeed(bias);
         rightMotor.setSpeed(bias);
 
         // Main loop with P control
         parallelLoop: while (Math.abs(diff) > 0.01) {
+            long end = System.currentTimeMillis();
             double frontSep = forwardSensor.distanceToObject();
             double rearSep = rearSensor.distanceToObject();  
-            diff = (frontSep - separation) - (rearSep - separation);
-            double power = p * diff;
+            diff = frontSep - rearSep;
+            double deltaT = .001 * (end - begin);
+            integral += diff * deltaT;
+            double power = p * diff + i * integral + d * derivative;
             leftMotor.setSpeed(bias - power);
             rightMotor.setSpeed(bias + power);
+            begin = end;
+            prevDiff = diff;
             System.out.println("Front: " + frontSep + "Rear: " + rearSep);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed());
+            System.out.println("Integral: " + integral + "Derivative: " + derivative + "Power: " + power);
+            if ((frontSep == rearSep) && (frontSep != separation)) {
+                if (frontSep > rearSep)
+                    
+            }
+            try {
+                Thread.sleep(33);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             long fin = System.currentTimeMillis();
             if ((fin - current) >= 5000) {
                 leftMotor.setSpeed(0);

@@ -66,7 +66,6 @@ public class TestStayStraight {
 
         // Main loop with PID control implemented
         outerloop: while (true) {
-            double omega = gyro.getAngularVelocity();
             double diff = desired - heading;          
             long finish = System.currentTimeMillis();
             double deltaT = .001 * (finish - begin); // from milli to sec
