@@ -10,7 +10,7 @@ import sensorIO.Aio;
  */
 public class IRSensor implements Sensor {
     private final Aio aio;
-    private final int aioPin;
+    private final int aioPin;ojgh 
     private final long aioPointer;
 
     /**
