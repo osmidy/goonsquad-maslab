@@ -33,7 +33,7 @@ public class TestWallFollowing {
         long current = System.currentTimeMillis();
         long begin = System.currentTimeMillis();
         double bias = 0;
-        double p = 2; // .012;
+        double p = 2.5; // .012;
         double i = 0.1; // .0005;
         double d = 0.1; // .03;
         double integral = 0;
@@ -85,15 +85,15 @@ public class TestWallFollowing {
                 e.printStackTrace();
             }
             
-            long fin = System.currentTimeMillis();
-            if ((fin - current) >= 10000) {
-                leftMotor.setSpeed(0);
-                rightMotor.setSpeed(0);
-                break mainLoop;
-            }
-        
+//            long fin = System.currentTimeMillis();
+//            if ((fin - current) >= 10000) {
+//                leftMotor.setSpeed(0);
+//                rightMotor.setSpeed(0);
+//                break mainLoop;
+//            }
+//        
         }
-        System.out.println("Fin.");
+//        System.out.println("Fin.");
     }
 }
 
