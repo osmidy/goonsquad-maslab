@@ -30,12 +30,12 @@ float readSensor(char* recv) {
 	return total;
 }
 
-jdouble fixDrift(float drift) {
-	// TODO: Adjust for driting
-	float correct = drift;
-	return (jdouble)correct;
+//jdouble fixDrift(float drift) {
+//	// TODO: Adjust for driting
+//	float correct = drift;
+//	return (jdouble)correct;
 
-}
+//}
 
 JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getAngularVelocity(JNIEnv *env,
 		jobject thisObj, jlong chipPointer, jlong spiPointer) {
@@ -57,8 +57,8 @@ JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getAngularVelocity(JNIEnv *e
 	chipSelect->write(1);
 	if (recv != NULL) {
 		float driftedAngle = readSensor(recv);
-		jdouble correctedAngle = fixDrift(driftedAngle);
-		return correctedAngle;
+		//jdouble correctedAngle = fixDrift(driftedAngle);
+		return driftedAngle;
 
 	} else {
 		return 0.03421;  // Indicating recv was null
