@@ -80,8 +80,10 @@ public class TestWallFollowing {
             	Arrays.sort(rearSepData);
                 frontSep = frontSepData[5];
                 rearSep = rearSepData[5];
-                frontSepCounter = 0;
-                rearSepCounter = 0;
+                if (frontSepCounter > 10){
+                	frontSepCounter = 0;
+                	rearSepCounter = 0;
+                {
                 long end = System.currentTimeMillis();
                 double diff = (180 / Math.PI)
                         * Math.atan(((frontSep - rearSep) / IRSep));
