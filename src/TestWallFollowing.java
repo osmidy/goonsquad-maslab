@@ -3,6 +3,7 @@ import robotparts.Motor;
 import sensors.IRSensor;
 import sensorIO.Gpio;
 import sensorIO.Pwm;
+import java.util.Arrays;
 
 public class TestWallFollowing {
     public static void main(String[] args) {
@@ -69,6 +70,8 @@ public class TestWallFollowing {
                 frontSepCounter++;
                 rearSepCounter++;
             } else {
+            	Arrays.sort(frontSepData);
+            	Arrays.sort(rearSepData);
                 frontSep = frontSepData[5];
                 rearSep = rearSepData[5];
                 frontSepCounter = 0;
