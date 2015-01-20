@@ -68,10 +68,10 @@ public class TestWallFollowing {
             rightMotor.setSpeed(bias + power);
             begin = end;
             prevDiff = diff;
-            System.out.println("Front: " + frontSep + "Rear: " + rearSep);
-            System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
-                    + rightMotor.getSpeed());
-            System.out.println("Integral: " + integral + "Derivative: " + derivative + "Power: " + power);
+            System.out.println("Diff: " + (frontSep - rearSep));
+            // System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
+            //        + rightMotor.getSpeed());
+            // System.out.println("Integral: " + integral + "Derivative: " + derivative + "Power: " + power);
             // Use slight turns in place to change distance from wall
 //            if (!(Math.abs(diff) > 0.01)) {
 //                if (frontSep > separation) { 
