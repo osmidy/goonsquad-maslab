@@ -7,6 +7,7 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 
 public class ImageProcessor {
     private static final int numBuffers = 1;
@@ -35,9 +36,14 @@ public class ImageProcessor {
     // (In practice it's a little different:
     //  the output image will be for your visual reference,
     //  but you will mainly want to output a list of the locations of detected objects.)
-    public void process(Mat rawImage) {
-        long pointer = rawImage.getNativeObjAddr();
+    public void process(Mat image) {
+        long pointer = image.getNativeObjAddr();
         process(pointer);
+//        Imgproc.cvtColor(rawImage, buffers.get(0), Imgproc.COLOR_BGR2HSV);
+//        Core.split(buffers.get(0), buffers.subList(1,4));
+//        Imgproc.blur(buffers.get(3), processedImage, new Size(9, 9));
+//        long pointer = processedImage.getNativeObjAddr();
+//        process(pointer);
     }
     
     private native void process(long rawImagePointer);

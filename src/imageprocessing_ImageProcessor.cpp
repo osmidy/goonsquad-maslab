@@ -3,27 +3,54 @@
 #include <iostream>
 #include <array>
 #include <opencv2/opencv.hpp>
+#include "imageprocessing_ImageProcessor.h"
 
 using namespace cv;
+using namespace std;
 
 JNIEXPORT void JNICALL Java_imageprocessing_ImageProcessor_process
 (JNIEnv *env, jobject thisObj, jlong pointer) {
 	Mat* image = (Mat*)pointer;
+
+	float rgRatio = 3.0f;
+	float rbRatio = 2.5f;
+	float gbRatio = 1.5f;
+	float grRatio = 1.7f;
+	float bgRatio = 1.65f;
+	float brRatio = 3.5f;
+
 	int channels = image->channels();
 	for (int i = 0; i < image->rows; i++) {
 		for (int j = 0; j < image->cols; j++) {
-			image->data[channels * (image->cols*i + j) + 0] = 255;
-			image->data[channels * (image->cols*i + j) + 1] = 255;
-			image->data[channels * (image->cols*i + j) + 2] = 98;
+			uchar b = image->data[channels * (image->cols*i + j) + 0];
+			uchar g = image->data[channels * (image->cols*i + j) + 1];
+			uchar r = image->data[channels * (image->cols*i + j) + 2];
+
+			float blue = b / 255.0f;
+			float green = g / 255.0f;
+			float red = r / 255.0f;
+
+			if (blue/green > bgRatio && blue/red > brRatio) {
+				image->data[channels * (image->cols*i + j) + 0] = 255;
+				image->data[channels * (image->cols*i + j) + 1] = 0;
+				image->data[channels * (image->cols*i + j) + 2] = 0;
+			}
+			else if (green/red > grRatio && green/blue > gbRatio) {
+				image->data[channels * (image->cols*i + j) + 0] = 0;
+				image->data[channels * (image->cols*i + j) + 1] = 255;
+				image->data[channels * (image->cols*i + j) + 2] = 0;
+			}
+			else if (red/green > rgRatio && red/blue > rbRatio) {
+				image->data[channels * (image->cols*i + j) + 0] = 0;
+				image->data[channels * (image->cols*i + j) + 1] = 0;
+				image->data[channels * (image->cols*i + j) + 2] = 255;
+			}
+			else {
+				image->data[channels * (image->cols*i + j) + 0] = 0;
+				image->data[channels * (image->cols*i + j) + 1] = 0;
+				image->data[channels * (image->cols*i + j) + 2] = 0;
+			}
+
 		}
 	}
-//	int size = image->total() * image->elemSize();
-//	for (int i = 0; i < size; i++) {
-//		if (i % 3 == 0) {
-//			image->data[i] = 98;
-//		}
-//		else {
-//			image->data[i] = 255;
-//		}
-//	}
 }

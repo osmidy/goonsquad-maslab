@@ -49,10 +49,12 @@ public class ImageUtil {
             }
             
             // Process the image however you like
-            processor.process(rawImage); //, processedImage.data);
+            processedImage = rawImage.clone();
+            processor.process(processedImage); //, processedImage.data);
             
             // Update the GUI windows
             updateWindow(cameraPane, rawImage, rawImageConverter);
+            //processor.process(rawImage);
             updateWindow(opencvPane, processedImage, processedImageConverter);
             
             try {

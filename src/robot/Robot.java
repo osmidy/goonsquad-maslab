@@ -28,38 +28,41 @@ public class Robot {
         assert motors.size() >= 2;
     }
 
-    private final Set<Sensor> sensors;
-    private final Map<Sensor, Double> sensorHeadings;
     private final List<Motor> motors;
     private final List<Servo> servos;
+    private final Set<Sensor> sensors;
+    private final Map<Sensor, Double> sensorHeadings;
     private final Gyroscope gyro;
 
     private double heading = 0.0;
-    private final double radius = 0.1524;
+    private final double radius = 0.1524; // 6 inches
     private State state = State.FINDWALL;
 
-    enum State {
-        WALLFOLLOW, FINDWALL, DROPSTACK, FINDDROPZONE, DRIVETOCUBE, COLLECTCUBE;
+    public enum State {
+        FINDWALL, WALLFOLLOW, DRIVETOCUBE, COLLECTCUBE, FINDDROPZONE, DROPSTACK;
     }
 
     /**
      * Constructor method
      * 
-     * @parm sensorMap a mapping of Sensors mounted on this Robot to the angle
-     *       at which they are aligned
      * @param motors
      *            a List of Motor mounted on this Robot
      * @param servos
      *            a List of Servos mounted on this Robot
+     * @param sensorMap
+     *            a mapping of Sensors mounted on this Robot to the angle at
+     *            which they are aligned
+     * 
+     * 
      * @param gyro
      *            a Gyroscope mounted on this Robot
      */
-    public Robot(Map<Sensor, Double> sensorMap, List<Motor> motors,
-            List<Servo> servos, Gyroscope gyro) {
-        this.sensorHeadings = sensorMap;
-        this.sensors = sensorMap.keySet();
+    public Robot(List<Motor> motors, List<Servo> servos,
+            Map<Sensor, Double> sensorMap, Gyroscope gyro) {
         this.motors = motors;
         this.servos = servos;
+        this.sensors = sensorMap.keySet();
+        this.sensorHeadings = sensorMap;
         this.gyro = gyro;
 
     }
@@ -159,7 +162,7 @@ public class Robot {
     public double angleOfClosestObject(Map<Sensor, Double> sensorMap) {
         double angle = Double.MAX_VALUE;
         double closest = Double.MAX_VALUE;
-        for (Sensor sensor: sensorMap.keySet()) {
+        for (Sensor sensor : sensorMap.keySet()) {
             double dist = sensor.distanceToObject();
             double dir = sensorMap.get(sensor);
             if (dist < closest) {
@@ -168,6 +171,23 @@ public class Robot {
             }
         }
         return angle;
+    }
+
+    /**
+     * @return the current state of the Robot
+     */
+    public State getState() {
+        return this.state;
+    }
+
+    /**
+     * Sets the current state of the Robot
+     * 
+     * @param state
+     *            One of the enumerated states for the Robot class
+     */
+    public void setState(State state) {
+        this.state = state;
     }
 
     /**
