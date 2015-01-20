@@ -48,10 +48,14 @@ public class TestWallFollowing {
         double[] frontSepData;
         frontSepData = new double[11];
         int frontSepCounter = 0;
+        double[] frontSepWindow;
+        frontSepWindow  = new double[11];
 
         double[] rearSepData;
         rearSepData = new double[11];
         int rearSepCounter = 0;
+        double[] rearSepWindow;
+        rearSepWindow = new double[11];
 
         leftMotor.setSpeed(bias);
         rightMotor.setSpeed(bias);
@@ -63,13 +67,15 @@ public class TestWallFollowing {
                 rightMotor.setSpeed(0);
                 break mainLoop;
             }
-            if ((frontSepCounter < 10) && (rearSepCounter < 10)) {
-                frontSepData[frontSepCounter] = forwardSensor
-                        .distanceToObject();
-                rearSepData[rearSepCounter] = rearSensor.distanceToObject();
-                frontSepCounter++;
-                rearSepCounter++;
-            } else {
+            
+           frontSepWindow[frontSepCounter] = forwardSensor
+                   .distanceToObject();
+           rearSepWindow[rearSepCounter] = rearSensor.distanceToObject();
+           frontSepCounter++;
+           rearSepCounter++;
+           //else {
+            	frontSepData = frontSepWindow;
+            	rearSepData = rearSepWindow;
             	Arrays.sort(frontSepData);
             	Arrays.sort(rearSepData);
                 frontSep = frontSepData[5];
@@ -105,7 +111,7 @@ public class TestWallFollowing {
                         e.printStackTrace();
                     }
 
-                }
+                //}
                 // Use slight turns in place to change distance from wall
                 // if (!(Math.abs(diff) > 0.01)) {
                 // if (frontSep > separation) {
