@@ -69,11 +69,19 @@ public class TestWallFollowing {
             begin = end;
             prevDiff = diff;
             if (log == true) {
+                System.out.println("Tan: " + Math.atan(((frontSep - rearSep) / IRSep)));
                 System.out.println("Diff: " + diff);
                 System.out.println("Front: " + frontSep + "Rear:" + rearSep);
                 System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                        + rightMotor.getSpeed());
                 System.out.println("Integral: " + integral + "Derivative: " + derivative + "Power: " + power);
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                
             }
             // Use slight turns in place to change distance from wall
 //            if (!(Math.abs(diff) > 0.01)) {
