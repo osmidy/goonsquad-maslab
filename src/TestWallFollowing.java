@@ -46,16 +46,16 @@ public class TestWallFollowing {
         double prevDiff = 0;
 
         double[] frontSepData;
-        frontSepData = new double[11];
+        frontSepData = new double[20];
         int frontSepCounter = 0;
         double[] frontSepWindow;
-        frontSepWindow  = new double[11];
+        frontSepWindow  = new double[20];
 
         double[] rearSepData;
-        rearSepData = new double[11];
+        rearSepData = new double[20];
         int rearSepCounter = 0;
         double[] rearSepWindow;
-        rearSepWindow = new double[11];
+        rearSepWindow = new double[20];
 
         leftMotor.setSpeed(bias);
         rightMotor.setSpeed(bias);
@@ -80,7 +80,7 @@ public class TestWallFollowing {
             	Arrays.sort(rearSepData);
                 frontSep = frontSepData[5];
                 rearSep = rearSepData[5];
-                if (frontSepCounter > 10){
+                if (frontSepCounter > 19){
                 	frontSepCounter = 0;
                 	rearSepCounter = 0;
                 {
