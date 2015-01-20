@@ -19,6 +19,7 @@ public class TestWallFollowing {
         
         int forwardPin = 0;
         int rearPin = 1;
+        double desired = 0.0;
 
         Motor leftMotor = new Motor(pwmPinLeft, dirPinLeft, leftForward,
                 leftReverse);
@@ -33,15 +34,14 @@ public class TestWallFollowing {
         long current = System.currentTimeMillis();
         long begin = System.currentTimeMillis();
         double bias = 0;
-        double p = 3; // .012;
-        double i =0; // .0005;
-        double d = 0; // .03;
+        double IRSep = 0.0508;
+        double p = .012; 
+        double i = 0.0005; 
+        double d = 0.03; 
         double integral = 0;
         double derivative = 0;
-        double separation = .1;
         double frontSep = forwardSensor.distanceToObject();
-        double rearSep = rearSensor.distanceToObject();  
-        double diff = frontSep - rearSep;
+        double rearSep = rearSensor.distanceToObject(); 
         double prevDiff = 0;
         leftMotor.setSpeed(bias);
         rightMotor.setSpeed(bias);
@@ -56,7 +56,7 @@ public class TestWallFollowing {
             long end = System.currentTimeMillis();
             frontSep = forwardSensor.distanceToObject();
             rearSep = rearSensor.distanceToObject(); 
-            diff = frontSep - rearSep; 
+            double diff = ((180 / Math.PI) * Math.asin(((rearSep - frontSep) / IRSep)) - desired);
             double deltaT = .001 * (end - begin);
             integral += diff * deltaT;
             derivative = diff - prevDiff;
