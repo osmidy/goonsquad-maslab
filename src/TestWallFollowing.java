@@ -19,7 +19,6 @@ public class TestWallFollowing {
         
         int forwardPin = 0;
         int rearPin = 1;
-        double desired = 0.0;
 
         Motor leftMotor = new Motor(pwmPinLeft, dirPinLeft, leftForward,
                 leftReverse);
@@ -33,6 +32,7 @@ public class TestWallFollowing {
         // Initial Settings 
         long current = System.currentTimeMillis();
         long begin = System.currentTimeMillis();
+        boolean log = true;
         double bias = 0;
         double IRSep = 0.0508;
         double p = .012; 
@@ -56,7 +56,7 @@ public class TestWallFollowing {
             long end = System.currentTimeMillis();
             frontSep = forwardSensor.distanceToObject();
             rearSep = rearSensor.distanceToObject(); 
-            double diff = ((180 / Math.PI) * Math.asin(((rearSep - frontSep) / IRSep)) - desired);
+            double diff = (180 / Math.PI) * Math.asin(((frontSep - rearSep) / IRSep));
             double deltaT = .001 * (end - begin);
             integral += diff * deltaT;
             derivative = diff - prevDiff;
@@ -68,10 +68,13 @@ public class TestWallFollowing {
             rightMotor.setSpeed(bias + power);
             begin = end;
             prevDiff = diff;
-            System.out.println("Diff: " + diff);
-            System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
-                   + rightMotor.getSpeed());
-            System.out.println("Integral: " + integral + "Derivative: " + derivative + "Power: " + power);
+            if (log == true) {
+                System.out.println("Diff: " + diff);
+                System.out.println("Front: " + frontSep + "Rear:" + rearSep);
+                System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
+                       + rightMotor.getSpeed());
+                System.out.println("Integral: " + integral + "Derivative: " + derivative + "Power: " + power);
+            }
             // Use slight turns in place to change distance from wall
 //            if (!(Math.abs(diff) > 0.01)) {
 //                if (frontSep > separation) { 
