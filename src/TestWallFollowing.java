@@ -117,12 +117,12 @@ public class TestWallFollowing {
                 // rightMotor.setSpeed(-0.02);
                 // }
                 // }
-                try {
-                    Thread.sleep(33);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+//                try {
+//                    Thread.sleep(33);
+//                } catch (InterruptedException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
 
                 // long fin = System.currentTimeMillis();
                 // if ((fin - current) >= 10000) {
