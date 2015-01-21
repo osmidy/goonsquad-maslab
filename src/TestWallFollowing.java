@@ -103,6 +103,8 @@ public class TestWallFollowing {
                 prevDiff = diff;
                 if (frontVolt < 400) {
                     System.out.println("Too Close: " + frontVolt);
+                    leftMotor.setSpeed(0);
+                    rightMotor.setSpeed(0);
                     leftMotor.setSpeed(.1);
                     rightMotor.setSpeed(-.1);
                     try {
