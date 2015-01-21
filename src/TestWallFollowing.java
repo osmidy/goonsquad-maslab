@@ -20,7 +20,7 @@ public class TestWallFollowing {
 
         int frontPin = 1;
         int sidePin = 0;
-        
+
         Motor leftMotor = new Motor(pwmPinLeft, dirPinLeft, leftForward,
                 leftReverse);
 
@@ -43,7 +43,7 @@ public class TestWallFollowing {
         double sideSep = sideSensor.distanceToObject();
         double prevDiff = 0;
         double desired = 0.2;
-//        double frontVolt = frontSensor.getVoltage();
+        // double frontVolt = frontSensor.getVoltage();
 
         // double[] sideSepData;
         // sideSepData = new double[20];
@@ -96,12 +96,12 @@ public class TestWallFollowing {
                 }
 
                 double power = p * diff + i * integral + d * derivative;
-                
+
                 leftMotor.setSpeed(bias - power);
                 rightMotor.setSpeed(bias + power);
                 begin = end;
                 prevDiff = diff;
-                if (frontVolt < 400);
+                if (frontVolt < 400) {
                     System.out.println("Too Close: " + frontVolt);
                     leftMotor.setSpeed(.1);
                     rightMotor.setSpeed(-.1);
@@ -111,8 +111,8 @@ public class TestWallFollowing {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
+                }
 
-                
                 try {
                     Thread.sleep(33);
                 } catch (InterruptedException e) {
