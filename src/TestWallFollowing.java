@@ -37,7 +37,7 @@ public class TestWallFollowing {
         double bias = 0.15;
         double p = 0.3; // .012;
         double i = 0; // 0.005; // 0.0005;
-        double d = .25; // 0.03;
+        double d = .4; // 0.03;
         double integral = 0;
         double derivative = 0;
         double sideSep = sideSensor.distanceToObject();
