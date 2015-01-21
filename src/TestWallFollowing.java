@@ -98,7 +98,7 @@ public class TestWallFollowing {
                 
                 if (frontSep < 0.15) {
                     System.out.println("Too Close: " + frontSep);
-                    power -= 0.05;
+                    power -= 0.02;
                 }
 
                 leftMotor.setSpeed(bias - power);
