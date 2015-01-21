@@ -88,7 +88,7 @@ public class TestWallFollowing {
                 long end = System.currentTimeMillis();
 //                double diff = (180 / Math.PI)
 //                        * Math.atan(((frontSep - rearSep) / IRSep));
-                double diff = frontSep - desired;
+                double diff = forwardSensor.distanceToObject() - desired;
                 double deltaT = .001 * (end - begin);
                 integral += diff * deltaT;
                 derivative = diff - prevDiff;
