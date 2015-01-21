@@ -37,7 +37,7 @@ public class TestWallFollowing {
         double bias = 0.2;
         double p = 0.2; // .012;
         double i = 0; // 0.005; // 0.0005;
-        double d = .4; // 0.03;
+        double d = .5; // 0.03;
         double integral = 0;
         double derivative = 0;
         double sideSep = sideSensor.distanceToObject();
@@ -84,7 +84,6 @@ public class TestWallFollowing {
 
                 long end = System.currentTimeMillis();
                 double frontSep = frontSensor.distanceToObject();
-                System.out.println("Front Volt; " + frontSep);
                 sideSep = sideSensor.distanceToObject();
                 double diff = sideSep - desired;
                 double deltaT = .001 * (end - begin);
@@ -124,7 +123,8 @@ public class TestWallFollowing {
 
                 if (log == true) {
                     System.out.println("Diff: " + diff);
-                    System.out.println("side: " + sideSep);
+                    System.out.println("Front; " + frontSep);
+                    System.out.println("Side: " + sideSep);
                     System.out.println("Left: " + leftMotor.getSpeed()
                             + " Right: " + rightMotor.getSpeed());
                     System.out.println("Integral: " + integral + "Derivative: "
