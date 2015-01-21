@@ -31,75 +31,75 @@ public class TestWallFollowing {
         IRSensor rearSensor = new IRSensor(rearPin);
 
         // Initial Settings
-        long current = System.currentTimeMillis();
+//        long current = System.currentTimeMillis();
         long begin = System.currentTimeMillis();
         boolean log = true;
         double bias = 0.15;
-        double IRSep = 0.0508;
-        double p = 0.5; //.012;
-        double i = 0.005; //0.0005;
-        double d = 0.05; //0.03;
+//        double IRSep = 0.0508;
+        double p = 0.5; // .012;
+        double i = 0.005; // 0.0005;
+        double d = 0.05; // 0.03;
         double integral = 0;
         double derivative = 0;
         double frontSep = forwardSensor.distanceToObject();
-        double rearSep = rearSensor.distanceToObject();
+        // double rearSep = rearSensor.distanceToObject();
         double prevDiff = 0;
         double desired = 0.2;
 
-//        double[] frontSepData;
-//        frontSepData = new double[20];
-//        int frontSepCounter = 0;
-//        double[] frontSepWindow;
-//        frontSepWindow  = new double[20];
-//
-//        double[] rearSepData;
-//        rearSepData = new double[20];
-//        int rearSepCounter = 0;
-//        double[] rearSepWindow;
-//        rearSepWindow = new double[20];
+        // double[] frontSepData;
+        // frontSepData = new double[20];
+        // int frontSepCounter = 0;
+        // double[] frontSepWindow;
+        // frontSepWindow = new double[20];
+        //
+        // double[] rearSepData;
+        // rearSepData = new double[20];
+        // int rearSepCounter = 0;
+        // double[] rearSepWindow;
+        // rearSepWindow = new double[20];
 
         leftMotor.setSpeed(bias);
         rightMotor.setSpeed(bias);
 
         // Main loop with PID control
         mainLoop: while (true) {
-            if ((frontSep > 0.5) || (rearSep > 0.5)) {
+            if (frontSep > 0.5) {
                 leftMotor.setSpeed(0);
                 rightMotor.setSpeed(0);
                 break mainLoop;
             }
-            
-//           frontSepWindow[frontSepCounter] = forwardSensor
-//                   .distanceToObject();
-//           rearSepWindow[rearSepCounter] = rearSensor.distanceToObject();
-//           frontSepCounter++;
-//           rearSepCounter++;
-//           //else {
-//            	frontSepData = frontSepWindow;
-//            	rearSepData = rearSepWindow;
-//            	Arrays.sort(frontSepData);
-//            	Arrays.sort(rearSepData);
-//                frontSep = frontSepData[10];
-//                rearSep = rearSepData[10];
-//                
-//                if (frontSepCounter > 19){
-//                	frontSepCounter = 0;
-//                	rearSepCounter = 0;
 
-                {
-                    
+            // frontSepWindow[frontSepCounter] = forwardSensor
+            // .distanceToObject();
+            // rearSepWindow[rearSepCounter] = rearSensor.distanceToObject();
+            // frontSepCounter++;
+            // rearSepCounter++;
+            // //else {
+            // frontSepData = frontSepWindow;
+            // rearSepData = rearSepWindow;
+            // Arrays.sort(frontSepData);
+            // Arrays.sort(rearSepData);
+            // frontSep = frontSepData[10];
+            // rearSep = rearSepData[10];
+            //
+            // if (frontSepCounter > 19){
+            // frontSepCounter = 0;
+            // rearSepCounter = 0;
+
+            {
+
                 long end = System.currentTimeMillis();
-//                double diff = (180 / Math.PI)
-//                        * Math.atan(((frontSep - rearSep) / IRSep));
+                // double diff = (180 / Math.PI)
+                // * Math.atan(((frontSep - rearSep) / IRSep));
                 double diff = forwardSensor.distanceToObject() - desired;
                 double deltaT = .001 * (end - begin);
                 integral += diff * deltaT;
                 derivative = diff - prevDiff;
-                
+
                 if (integral > 500) {
                     integral = 500;
                 }
-                
+
                 double power = p * diff + i * integral + d * derivative;
                 leftMotor.setSpeed(bias - power);
                 rightMotor.setSpeed(bias + power);
@@ -107,8 +107,7 @@ public class TestWallFollowing {
                 prevDiff = diff;
                 if (log == true) {
                     System.out.println("Diff: " + diff);
-                    System.out
-                            .println("Front: " + frontSep + "Rear:" + rearSep);
+                    System.out.println("Front: " + frontSep);
                     System.out.println("Left: " + leftMotor.getSpeed()
                             + " Right: " + rightMotor.getSpeed());
                     System.out.println("Integral: " + integral + "Derivative: "
@@ -120,35 +119,35 @@ public class TestWallFollowing {
                         e.printStackTrace();
                     }
 
-                //}
-                // Use slight turns in place to change distance from wall
-                // if (!(Math.abs(diff) > 0.01)) {
-                // if (frontSep > separation) {
-                // leftMotor.setSpeed(-0.02);
-                // rightMotor.setSpeed(0.02);
-                // }
-                // else {
-                // leftMotor.setSpeed(0.02);
-                // rightMotor.setSpeed(-0.02);
-                // }
-                // }
-//                try {
-//                    Thread.sleep(33);
-//                } catch (InterruptedException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
+                    // }
+                    // Use slight turns in place to change distance from wall
+                    // if (!(Math.abs(diff) > 0.01)) {
+                    // if (frontSep > separation) {
+                    // leftMotor.setSpeed(-0.02);
+                    // rightMotor.setSpeed(0.02);
+                    // }
+                    // else {
+                    // leftMotor.setSpeed(0.02);
+                    // rightMotor.setSpeed(-0.02);
+                    // }
+                    // }
+                    // try {
+                    // Thread.sleep(33);
+                    // } catch (InterruptedException e) {
+                    // // TODO Auto-generated catch block
+                    // e.printStackTrace();
+                    // }
 
-                // long fin = System.currentTimeMillis();
-                // if ((fin - current) >= 10000) {
-                // leftMotor.setSpeed(0);
-                // rightMotor.setSpeed(0);
-                // break mainLoop;
-                // }
-                //
+                    // long fin = System.currentTimeMillis();
+                    // if ((fin - current) >= 10000) {
+                    // leftMotor.setSpeed(0);
+                    // rightMotor.setSpeed(0);
+                    // break mainLoop;
+                    // }
+                    //
+                }
+                // System.out.println("Fin.");
             }
-            // System.out.println("Fin.");
         }
     }
 }
-    }
