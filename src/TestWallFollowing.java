@@ -80,19 +80,23 @@ public class TestWallFollowing {
             	Arrays.sort(rearSepData);
                 frontSep = frontSepData[10];
                 rearSep = rearSepData[10];
+                
                 if (frontSepCounter > 19){
                 	frontSepCounter = 0;
                 	rearSepCounter = 0;
                 {
+                    
                 long end = System.currentTimeMillis();
                 double diff = (180 / Math.PI)
                         * Math.atan(((frontSep - rearSep) / IRSep));
                 double deltaT = .001 * (end - begin);
                 integral += diff * deltaT;
                 derivative = diff - prevDiff;
+                
                 if (integral > 500) {
                     integral = 500;
                 }
+                
                 double power = p * diff + i * integral + d * derivative;
                 leftMotor.setSpeed(bias - power);
                 rightMotor.setSpeed(bias + power);
