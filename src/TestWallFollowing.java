@@ -41,6 +41,7 @@ public class TestWallFollowing {
         double integral = 0;
         double derivative = 0;
         double sideSep = sideSensor.distanceToObject();
+        double frontSep = frontSensor.distanceToObject();
         double prevDiff = 0;
         double desired = 0.2;
         // double frontSep = frontSensor.getVoltage();
@@ -83,7 +84,7 @@ public class TestWallFollowing {
             {
 
                 long end = System.currentTimeMillis();
-                double frontSep = frontSensor.distanceToObject();
+                frontSep = frontSensor.distanceToObject();
                 sideSep = sideSensor.distanceToObject();
                 double diff = sideSep - desired;
                 double deltaT = .001 * (end - begin);
@@ -105,8 +106,8 @@ public class TestWallFollowing {
                     System.out.println("Too Close: " + frontSep);
                     leftMotor.setSpeed(0);
                     rightMotor.setSpeed(0);
-                    leftMotor.setSpeed(.3); // .25
-                    rightMotor.setSpeed(.15); // .1
+                    leftMotor.setSpeed(.25); // .25
+                    rightMotor.setSpeed(.1); // .1
                     try {
                         Thread.sleep(80);
                     } catch (InterruptedException e) {
@@ -123,13 +124,12 @@ public class TestWallFollowing {
                 }
 
                 if (log == true) {
-                    System.out.println("Diff: " + diff);
                     System.out.println("Front; " + frontSep);
                     System.out.println("Side: " + sideSep);
                     System.out.println("Left: " + leftMotor.getSpeed()
                             + " Right: " + rightMotor.getSpeed());
-                    System.out.println("Integral: " + integral + "Derivative: "
-                            + derivative + "Power: " + power);
+                    System.out.println("Diff: " + p * diff + "Integral: " + i * integral + "Derivative: "
+                            + d * derivative + "Power: " + power);
                     try {
                         Thread.sleep(150);
                     } catch (InterruptedException e) {
