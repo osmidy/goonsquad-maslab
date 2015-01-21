@@ -83,7 +83,7 @@ public class TestWallFollowing {
             {
 
                 long end = System.currentTimeMillis();
-                frontInd = frontSensor.getVoltage();
+                frontVolt = frontSensor.getVoltage();
                 sideSep = sideSensor.distanceToObject();
                 double diff = sideSep - desired;
                 double deltaT = .001 * (end - begin);
