@@ -105,8 +105,8 @@ public class TestWallFollowing {
                     System.out.println("Too Close: " + frontSep);
                     leftMotor.setSpeed(0);
                     rightMotor.setSpeed(0);
-                    leftMotor.setSpeed(.1);
-                    rightMotor.setSpeed(-.1);
+                    leftMotor.setSpeed(.15);
+                    rightMotor.setSpeed(.05);
                     try {
                         Thread.sleep(80);
                     } catch (InterruptedException e) {
