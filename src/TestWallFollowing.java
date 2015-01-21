@@ -108,7 +108,7 @@ public class TestWallFollowing {
                     leftMotor.setSpeed(.1);
                     rightMotor.setSpeed(-.1);
                     try {
-                        Thread.sleep(60);
+                        Thread.sleep(80);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
