@@ -102,10 +102,11 @@ public class TestWallFollowing {
                 prevDiff = diff;
                 
                 if (frontVolt < 190);
+                    System.out.println("Front Voltage: " + frontVolt);
                     leftMotor.setSpeed(.1);
                     rightMotor.setSpeed(-.1);
                     try {
-                        Thread.sleep(300);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
