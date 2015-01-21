@@ -35,9 +35,9 @@ public class TestWallFollowing {
         long begin = System.currentTimeMillis();
         boolean log = true;
         double bias = 0.2;
-        double p = 0.15; // .012;
-        double i = 0.01; // 0.0005;
-        double d = 0.7; // 0.03;
+        double p = 0.15; // 0.15;
+        double i = 0.01; // 0.01;
+        double d = 0.6; // 0.7
         double integral = 0;
         double derivative = 0;
         double sideSep = sideSensor.distanceToObject();
