@@ -95,29 +95,25 @@ public class TestWallFollowing {
                 }
                 
                 double power = p * diff + i * integral + d * derivative;
-                
-                if (frontSep < 0.15) {
-                    System.out.println("Too Close: " + frontSep);
-                    power -= 0.02;
-                }
 
                 leftMotor.setSpeed(bias - power);
                 rightMotor.setSpeed(bias + power);
                 begin = end;
                 prevDiff = diff;
-//                if (frontSep < 0.15) {
-//                    System.out.println("Too Close: " + frontSep);
-//                    leftMotor.setSpeed(0);
-//                    rightMotor.setSpeed(0);
-//                    leftMotor.setSpeed(.1);
-//                    rightMotor.setSpeed(-.1);
-//                    try {
-//                        Thread.sleep(80);
-//                    } catch (InterruptedException e) {
-//                        // TODO Auto-generated catch block
-//                        e.printStackTrace();
-//                    }
-//                }
+                
+                if (frontSep < 0.15) {
+                    System.out.println("Too Close: " + frontSep);
+                    leftMotor.setSpeed(0);
+                    rightMotor.setSpeed(0);
+                    leftMotor.setSpeed(.1);
+                    rightMotor.setSpeed(-.1);
+                    try {
+                        Thread.sleep(60);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
 
                 try {
                     Thread.sleep(33);
