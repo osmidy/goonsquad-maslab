@@ -8,20 +8,20 @@ import org.opencv.core.Size;
 
 public class ImageTest {
     public static void main(String[] args) {
-        ImageReturn("C:/Users/George/Dropbox (MIT)/goonsquad-maslab/src/imageprocessing/test-images/Logitech Webcam/Picture 5.jpg");       
+        ImageReturn("C:/Users/George/Dropbox (MIT)/MASLAB/newImages/2015-01-20-144240.jpg");       
     }
     
     public static void ImageReturn(String filename) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         Mat img = Highgui.imread(filename); 
-        Mat scaledImg = new Mat();
+        // Mat scaledImg = new Mat();
         int count = 0;
-        Imgproc.resize(img,scaledImg ,new Size(320, 240)); 
-        for (int row = 134 ; row < 178; row += 2) {
-            for (int col = 0 ; col < 474; col += 2) {
-                // if (Math.pow(row-221,2) + Math.pow(col-343, 2) < Math.pow(43, 2)) {
-                // count++;
-                System.out.println(scaledImg.get(row/2,col/2)[2]);
+        // Imgproc.resize(img,scaledImg ,new Size(320, 240)); 
+        for (int row = 176 ; row < 220; row++) {
+            for (int col = 320 ; col < 500; col++) {
+                // if (!(((row > 304) && (row < 356)) && ((col > 630) && (col < 668)))) {
+                count++;
+                System.out.println(img.get(row,col)[0]);
                 // System.out.println("Count:" + count);
                 // }
             }
