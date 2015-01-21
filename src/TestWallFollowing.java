@@ -66,7 +66,7 @@ public class TestWallFollowing {
             if (frontSep > 0.5) {
                 leftMotor.setSpeed(0);
                 rightMotor.setSpeed(0);
-                System.out.println("Print Statement");
+                System.out.println(forwardSensor.distanceToObject());
                 break mainLoop;
             }
 
