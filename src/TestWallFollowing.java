@@ -37,7 +37,7 @@ public class TestWallFollowing {
         double bias = 0.2;
         double p = 0.15; // 0.15;
         double i = 0.01; // 0.01;
-        double d = 0.5; // 0.7
+        double d = 0.7; // 0.7
         double integral = 0;
         double derivative = 0;
         double sideSep = sideSensor.distanceToObject();
@@ -102,7 +102,7 @@ public class TestWallFollowing {
                 begin = end;
                 prevDiff = diff;
                 
-                if (frontSep < 0.15) {
+                if (frontSep < 0.2) {
                     System.out.println("Too Close: " + frontSep);
                     leftMotor.setSpeed(0);
                     rightMotor.setSpeed(0);
