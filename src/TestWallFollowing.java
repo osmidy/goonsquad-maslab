@@ -37,7 +37,7 @@ public class TestWallFollowing {
         double bias = 0.2;
         double p = 0.15; // .012;
         double i = 0; // 0.005; // 0.0005;
-        double d = 1; // 0.03;
+        double d = 0.7; // 0.03;
         double integral = 0;
         double derivative = 0;
         double sideSep = sideSensor.distanceToObject();
@@ -93,26 +93,30 @@ public class TestWallFollowing {
                 if (integral > 500) {
                     integral = 500;
                 }
-
+                
                 double power = p * diff + i * integral + d * derivative;
+                
+                if (frontSep < 0.15) {
+                    power -= 0.1;
+                }
 
                 leftMotor.setSpeed(bias - power);
                 rightMotor.setSpeed(bias + power);
                 begin = end;
                 prevDiff = diff;
-                if (frontSep < 0.15) {
-                    System.out.println("Too Close: " + frontSep);
-                    leftMotor.setSpeed(0);
-                    rightMotor.setSpeed(0);
-                    leftMotor.setSpeed(.1);
-                    rightMotor.setSpeed(-.1);
-                    try {
-                        Thread.sleep(80);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
+//                if (frontSep < 0.15) {
+//                    System.out.println("Too Close: " + frontSep);
+//                    leftMotor.setSpeed(0);
+//                    rightMotor.setSpeed(0);
+//                    leftMotor.setSpeed(.1);
+//                    rightMotor.setSpeed(-.1);
+//                    try {
+//                        Thread.sleep(80);
+//                    } catch (InterruptedException e) {
+//                        // TODO Auto-generated catch block
+//                        e.printStackTrace();
+//                    }
+//                }
 
                 try {
                     Thread.sleep(33);
