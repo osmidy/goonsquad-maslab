@@ -97,7 +97,8 @@ public class TestWallFollowing {
                 double power = p * diff + i * integral + d * derivative;
                 
                 if (frontSep < 0.15) {
-                    power -= 0.1;
+                    System.out.println("Too Close: " + frontSep);
+                    power -= 0.05;
                 }
 
                 leftMotor.setSpeed(bias - power);
