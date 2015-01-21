@@ -35,7 +35,7 @@ public class Robot {
     private final Gyroscope gyro;
 
     private double heading = 0.0;
-    private final double radius = 0.1524; // 6 inches
+    private final double radius = 9.0;
     private State state = State.FINDWALL;
 
     public enum State {
@@ -225,7 +225,7 @@ public class Robot {
     // public void followWall(List<Wall> walls);
 
     /**
-     * @return the radius, in meters, of this Robot
+     * @return the radius, in inches, of this Robot
      */
     public double getRadius() {
         return this.radius;

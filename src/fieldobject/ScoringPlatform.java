@@ -11,6 +11,7 @@ public class ScoringPlatform implements FieldObject {
     private final int y1;
     private final int x2;
     private final int y2;
+    private final Color color = Color.RED;
     
     public ScoringPlatform(int x1, int y1, int x2, int y2) {
         height = 4;
@@ -55,15 +56,8 @@ public class ScoringPlatform implements FieldObject {
     }
 
     @Override
-    public void setMaterial() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public int getColor() {
-        // TODO Auto-generated method stub
-        return 0;
+    public Color getColor() {
+        return this.color;
     }
 
     @Override

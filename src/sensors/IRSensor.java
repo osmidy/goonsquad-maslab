@@ -24,12 +24,20 @@ public class IRSensor implements Sensor {
         aio = new Aio(this.aioPin);
         aioPointer = aio.getPointer();
     }
-
+    
     @Override
     public double distanceToObject() {
         double voltage = aio.read(aioPointer);
         double distance = computeDistance(voltage);
         return distance;
+    }
+    
+    /**
+     * @return Voltage read by the IRSensor
+     */
+    public double getVoltage() {
+        double voltage = aio.read(aioPointer);
+        return voltage;
     }
 
     /**

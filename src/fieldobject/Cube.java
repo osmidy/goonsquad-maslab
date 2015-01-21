@@ -19,13 +19,16 @@ public class Cube implements FieldObject {
     private final int x;
     private final int y;
     
-    public Cube(int x, int y) {
+    private final Color color;
+    
+    public Cube(int x, int y, Color color) {
         height = 2;
         width = 2;
         depth = 2;
         
         this.x = x;
         this.y = y;
+        this.color = color;
     }
 
     @Override
@@ -54,31 +57,21 @@ public class Cube implements FieldObject {
     public List<Integer> getDimensions() {
         List<Integer> dimensions = Arrays.asList(height, width, depth);
         return dimensions;
-        
     }
 
     @Override
-    public void setMaterial() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public int getColor() {
-        // TODO Auto-generated method stub
-        return 0;
+    public Color getColor() {
+        return this.color;
     }
 
     @Override
     public int getX() {
-        // TODO Auto-generated method stub
-        return 0;
+        return x;
     }
 
     @Override
     public int getY() {
-        // TODO Auto-generated method stub
-        return 0;
+        return y;
     }
 
 }

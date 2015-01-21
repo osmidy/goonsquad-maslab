@@ -12,6 +12,9 @@ import java.util.List;
  */
 public interface FieldObject {
 
+    public enum Color {
+        RED, GREEN, BLUE, YELLOW, PURPLE
+    }
     /**
      * Covnert measurements from inches to meters.
      * 
@@ -56,16 +59,7 @@ public interface FieldObject {
     public int getY();
 
     /**
-     * Assigns a lighting profile identifying the Material making up this
-     * FieldObject.
-     * 
-     * @param TBD
+     * @return the Color of this FieldObject
      */
-    public void setMaterial();
-
-    /**
-     * @return the rgb color of this FieldObject
-     */
-    // TODO: rgb or hex?
-    public int getColor();
+    public Color getColor();
 }

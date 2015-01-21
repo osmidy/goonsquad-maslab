@@ -7,7 +7,6 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
 
 public class ImageProcessor {
     private static final int numBuffers = 1;
@@ -39,24 +38,7 @@ public class ImageProcessor {
     public void process(Mat image) {
         long pointer = image.getNativeObjAddr();
         process(pointer);
-//        Imgproc.cvtColor(rawImage, buffers.get(0), Imgproc.COLOR_BGR2HSV);
-//        Core.split(buffers.get(0), buffers.subList(1,4));
-//        Imgproc.blur(buffers.get(3), processedImage, new Size(9, 9));
-//        long pointer = processedImage.getNativeObjAddr();
-//        process(pointer);
     }
     
-    private native void process(long rawImagePointer);
-        
-        // These two lines are a workaround for the fact that CvtColor throws weird errors
-        // when you try to convert from a 3-channel (BGR) image to a 1-channel (grayscale) image.
-        // The following is a workaround: convert BGR to HSV, and take only the V channel
-        // (which will end up in buffers.get(3)).
-        // Imgproc.cvtColor(rawImage, buffers.get(0), Imgproc.COLOR_BGR2HSV);
-        // Core.split(buffers.get(0), buffers.subList(1, 4));
-        
-        // Imgproc.blur(buffers.get(3), processedImage, new Size(1, 1));
-    
-        // Imgproc.GaussianBlur(rawImage, processedImage, new Size(5,5), 1, 1);
-    // }
+    private native void process(long imagePointer);
 }

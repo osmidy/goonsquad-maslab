@@ -12,12 +12,12 @@ JNIEXPORT void JNICALL Java_imageprocessing_ImageProcessor_process
 (JNIEnv *env, jobject thisObj, jlong pointer) {
 	Mat* image = (Mat*)pointer;
 
-	float rgRatio = 3.0f;
-	float rbRatio = 2.5f;
-	float gbRatio = 1.5f;
-	float grRatio = 1.7f;
-	float bgRatio = 1.65f;
-	float brRatio = 3.5f;
+	float rgRatio = 1.5f; // 2.5f;
+	float rbRatio = 1.3f; // 2.1f;
+	float gbRatio = 1.2f;
+	float grRatio = 1.6f;
+	float bgRatio = 1.3f;
+	float brRatio = 2.1f;
 
 	int channels = image->channels();
 	for (int i = 0; i < image->rows; i++) {

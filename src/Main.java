@@ -17,6 +17,7 @@ public class Main {
         // Enter the Squadbot
         Robot squadbot = makeRobot();
         State state = squadbot.getState();
+        // TODO:  when stack is hit, remove stack from list, create new cubes and add to list
         
         while (true) {
             if (state.equals(State.FINDWALL)) {

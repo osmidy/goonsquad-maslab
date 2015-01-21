@@ -9,8 +9,10 @@ import javax.swing.JLabel;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
 import org.opencv.highgui.VideoCapture;
+import org.opencv.imgproc.Imgproc;
 
 public class ImageUtil {
     /**
@@ -25,8 +27,8 @@ public class ImageUtil {
         camera.open(0);
         
         // Create GUI windows to display camera output and OpenCV output
-        int width = (int) (camera.get(Highgui.CV_CAP_PROP_FRAME_WIDTH));
-        int height = (int) (camera.get(Highgui.CV_CAP_PROP_FRAME_HEIGHT));
+        int width = 320;
+        int height = 240;
         JLabel cameraPane = createWindow("Camera output", width, height);
         JLabel opencvPane = createWindow("OpenCV output", width, height);
        
@@ -34,6 +36,7 @@ public class ImageUtil {
         // Set up structures for processing images
         ImageProcessor processor = new ImageProcessor();
         Mat rawImage = new Mat();
+        Mat resizedImage = new Mat();
         Mat processedImage = new Mat();
         Mat2Image rawImageConverter = new Mat2Image(BufferedImage.TYPE_3BYTE_BGR);
         Mat2Image processedImageConverter = new Mat2Image(BufferedImage.TYPE_3BYTE_BGR);
@@ -48,13 +51,15 @@ public class ImageUtil {
                 }
             }
             
-            // Process the image however you like
-            processedImage = rawImage.clone();
-            processor.process(processedImage); //, processedImage.data);
+            Imgproc.resize(rawImage, resizedImage, new Size(width, height)); // Halves resolution
+            processedImage = resizedImage.clone();
+            processor.process(processedImage);
+            
+            // Find objects in processedImage
+            
             
             // Update the GUI windows
-            updateWindow(cameraPane, rawImage, rawImageConverter);
-            //processor.process(rawImage);
+            updateWindow(cameraPane, resizedImage, rawImageConverter);
             updateWindow(opencvPane, processedImage, processedImageConverter);
             
             try {
