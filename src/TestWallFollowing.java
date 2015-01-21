@@ -34,28 +34,29 @@ public class TestWallFollowing {
         long current = System.currentTimeMillis();
         long begin = System.currentTimeMillis();
         boolean log = true;
-        double bias = 0;
+        double bias = 0.15;
         double IRSep = 0.0508;
-        double p = 0.01; //.012;
-        double i = 0; //0.0005;
-        double d = 0.01; //0.03;
+        double p = 0.5; //.012;
+        double i = 0.005; //0.0005;
+        double d = 0.05; //0.03;
         double integral = 0;
         double derivative = 0;
         double frontSep = forwardSensor.distanceToObject();
         double rearSep = rearSensor.distanceToObject();
         double prevDiff = 0;
+        double desired = 0.2;
 
-        double[] frontSepData;
-        frontSepData = new double[20];
-        int frontSepCounter = 0;
-        double[] frontSepWindow;
-        frontSepWindow  = new double[20];
-
-        double[] rearSepData;
-        rearSepData = new double[20];
-        int rearSepCounter = 0;
-        double[] rearSepWindow;
-        rearSepWindow = new double[20];
+//        double[] frontSepData;
+//        frontSepData = new double[20];
+//        int frontSepCounter = 0;
+//        double[] frontSepWindow;
+//        frontSepWindow  = new double[20];
+//
+//        double[] rearSepData;
+//        rearSepData = new double[20];
+//        int rearSepCounter = 0;
+//        double[] rearSepWindow;
+//        rearSepWindow = new double[20];
 
         leftMotor.setSpeed(bias);
         rightMotor.setSpeed(bias);
@@ -68,27 +69,29 @@ public class TestWallFollowing {
                 break mainLoop;
             }
             
-           frontSepWindow[frontSepCounter] = forwardSensor
-                   .distanceToObject();
-           rearSepWindow[rearSepCounter] = rearSensor.distanceToObject();
-           frontSepCounter++;
-           rearSepCounter++;
-           //else {
-            	frontSepData = frontSepWindow;
-            	rearSepData = rearSepWindow;
-            	Arrays.sort(frontSepData);
-            	Arrays.sort(rearSepData);
-                frontSep = frontSepData[10];
-                rearSep = rearSepData[10];
-                
-                if (frontSepCounter > 19){
-                	frontSepCounter = 0;
-                	rearSepCounter = 0;
+//           frontSepWindow[frontSepCounter] = forwardSensor
+//                   .distanceToObject();
+//           rearSepWindow[rearSepCounter] = rearSensor.distanceToObject();
+//           frontSepCounter++;
+//           rearSepCounter++;
+//           //else {
+//            	frontSepData = frontSepWindow;
+//            	rearSepData = rearSepWindow;
+//            	Arrays.sort(frontSepData);
+//            	Arrays.sort(rearSepData);
+//                frontSep = frontSepData[10];
+//                rearSep = rearSepData[10];
+//                
+//                if (frontSepCounter > 19){
+//                	frontSepCounter = 0;
+//                	rearSepCounter = 0;
+
                 {
                     
                 long end = System.currentTimeMillis();
-                double diff = (180 / Math.PI)
-                        * Math.atan(((frontSep - rearSep) / IRSep));
+//                double diff = (180 / Math.PI)
+//                        * Math.atan(((frontSep - rearSep) / IRSep));
+                double diff = forwardSensor.distanceToObject() - desired;
                 double deltaT = .001 * (end - begin);
                 integral += diff * deltaT;
                 derivative = diff - prevDiff;
@@ -149,4 +152,3 @@ public class TestWallFollowing {
     }
 }
     }
-}
