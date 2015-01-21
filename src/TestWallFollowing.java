@@ -34,7 +34,7 @@ public class TestWallFollowing {
         // long current = System.currentTimeMillis();
         long begin = System.currentTimeMillis();
         boolean log = true;
-        double bias = 0.15;
+        double bias = 0;
         double p = 0.35; // .012;
         double i = 0; // 0.005; // 0.0005;
         double d = 1; // 0.03;
@@ -103,8 +103,8 @@ public class TestWallFollowing {
                 
                 if (frontVolt < 190);
                     System.out.println("Front Voltage: " + frontVolt);
-                    leftMotor.setSpeed(.1);
-                    rightMotor.setSpeed(-.1);
+                    leftMotor.setSpeed(0);
+                    rightMotor.setSpeed(0);
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
