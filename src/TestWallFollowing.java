@@ -37,7 +37,7 @@ public class TestWallFollowing {
         double bias = 0.2;
         double p = 0.2; // .012;
         double i = 0; // 0.005; // 0.0005;
-        double d = .3; // 0.03;
+        double d = .4; // 0.03;
         double integral = 0;
         double derivative = 0;
         double sideSep = sideSensor.distanceToObject();
@@ -108,7 +108,7 @@ public class TestWallFollowing {
                     leftMotor.setSpeed(.1);
                     rightMotor.setSpeed(-.1);
                     try {
-                        Thread.sleep(150);
+                        Thread.sleep(120);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
