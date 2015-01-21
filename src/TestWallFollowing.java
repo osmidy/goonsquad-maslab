@@ -43,7 +43,7 @@ public class TestWallFollowing {
         double sideSep = sideSensor.distanceToObject();
         double prevDiff = 0;
         double desired = 0.2;
-        // double frontVolt = frontSensor.getVoltage();
+        // double frontSep = frontSensor.getVoltage();
 
         // double[] sideSepData;
         // sideSepData = new double[20];
@@ -83,8 +83,8 @@ public class TestWallFollowing {
             {
 
                 long end = System.currentTimeMillis();
-                double frontVolt = frontSensor.getVoltage();
-                System.out.println("Front Volt; " + frontVolt);
+                double frontSep = frontSensor.distanceToObject();
+                System.out.println("Front Volt; " + frontSep);
                 sideSep = sideSensor.distanceToObject();
                 double diff = sideSep - desired;
                 double deltaT = .001 * (end - begin);
@@ -101,8 +101,8 @@ public class TestWallFollowing {
                 rightMotor.setSpeed(bias + power);
                 begin = end;
                 prevDiff = diff;
-                if (frontVolt < 400) {
-                    System.out.println("Too Close: " + frontVolt);
+                if (frontSep < 0.2) {
+                    System.out.println("Too Close: " + frontSep);
                     leftMotor.setSpeed(0);
                     rightMotor.setSpeed(0);
                     leftMotor.setSpeed(.1);
