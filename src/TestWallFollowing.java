@@ -18,15 +18,17 @@ public class TestWallFollowing {
         int pwmPinRight = 3;
         int dirPinRight = 4;
 
-        int forwardPin = 0;
-
+        int frontPin = 1;
+        int sidePin = 0;
+        
         Motor leftMotor = new Motor(pwmPinLeft, dirPinLeft, leftForward,
                 leftReverse);
 
         Motor rightMotor = new Motor(pwmPinRight, dirPinRight, rightForward,
                 rightReverse);
 
-        IRSensor forwardSensor = new IRSensor(forwardPin);
+        IRSensor sideSensor = new IRSensor(sidePin);
+        IRSensor frontSensor = new IRSensor(frontPin);
 
         // Initial Settings
         // long current = System.currentTimeMillis();
@@ -38,50 +40,52 @@ public class TestWallFollowing {
         double d = 1; // 0.03;
         double integral = 0;
         double derivative = 0;
-        double frontSep = forwardSensor.distanceToObject();
+        double sideSep = sideSensor.distanceToObject();
         double prevDiff = 0;
         double desired = 0.2;
+        double frontVolt = frontSensor.getVoltage();
 
-        // double[] frontSepData;
-        // frontSepData = new double[20];
-        // int frontSepCounter = 0;
-        // double[] frontSepWindow;
-        // frontSepWindow = new double[20];
+        // double[] sideSepData;
+        // sideSepData = new double[20];
+        // int sideSepCounter = 0;
+        // double[] sideSepWindow;
+        // sideSepWindow = new double[20];
 
         leftMotor.setSpeed(bias);
         rightMotor.setSpeed(bias);
 
         // Main loop with PID control
         mainLoop: while (true) {
-            if (frontSep > 0.5) {
+            if (sideSep > 0.5) {
                 leftMotor.setSpeed(0);
                 rightMotor.setSpeed(0);
-                System.out.println(frontSep);
+                System.out.println(sideSep);
                 break mainLoop;
             }
 
-            // frontSepWindow[frontSepCounter] = forwardSensor
+            // sideSepWindow[sideSepCounter] = forwardSensor
             // .distanceToObject();
             // rearSepWindow[rearSepCounter] = rearSensor.distanceToObject();
-            // frontSepCounter++;
+            // sideSepCounter++;
             // rearSepCounter++;
             // //else {
-            // frontSepData = frontSepWindow;
+            // sideSepData = sideSepWindow;
             // rearSepData = rearSepWindow;
-            // Arrays.sort(frontSepData);
+            // Arrays.sort(sideSepData);
             // Arrays.sort(rearSepData);
-            // frontSep = frontSepData[10];
+            // sideSep = sideSepData[10];
             // rearSep = rearSepData[10];
             //
-            // if (frontSepCounter > 19){
-            // frontSepCounter = 0;
+            // if (sideSepCounter > 19){
+            // sideSepCounter = 0;
             // rearSepCounter = 0;
 
             {
 
                 long end = System.currentTimeMillis();
-                frontSep = forwardSensor.distanceToObject();
-                double diff = frontSep - desired;
+                frontInd = frontSensor.getVoltage();
+                sideSep = sideSensor.distanceToObject();
+                double diff = sideSep - desired;
                 double deltaT = .001 * (end - begin);
                 integral += diff * deltaT;
                 derivative = diff - prevDiff;
@@ -91,10 +95,22 @@ public class TestWallFollowing {
                 }
 
                 double power = p * diff + i * integral + d * derivative;
+                
                 leftMotor.setSpeed(bias - power);
                 rightMotor.setSpeed(bias + power);
                 begin = end;
                 prevDiff = diff;
+                
+                if (frontVolt < 190);
+                    leftMotor.setSpeed(.1);
+                    rightMotor.setSpeed(-.1);
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+
                 
                 try {
                     Thread.sleep(33);
@@ -105,7 +121,7 @@ public class TestWallFollowing {
 
                 if (log == true) {
                     System.out.println("Diff: " + diff);
-                    System.out.println("Front: " + frontSep);
+                    System.out.println("side: " + sideSep);
                     System.out.println("Left: " + leftMotor.getSpeed()
                             + " Right: " + rightMotor.getSpeed());
                     System.out.println("Integral: " + integral + "Derivative: "
@@ -116,20 +132,6 @@ public class TestWallFollowing {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-
-                    // }
-                    // Use slight turns in place to change distance from wall
-                    // if (!(Math.abs(diff) > 0.01)) {
-                    // if (frontSep > separation) {
-                    // leftMotor.setSpeed(-0.02);
-                    // rightMotor.setSpeed(0.02);
-                    // }
-                    // else {
-                    // leftMotor.setSpeed(0.02);
-                    // rightMotor.setSpeed(-0.02);
-                    // }
-                    // }
-
 
                     // long fin = System.currentTimeMillis();
                     // if ((fin - current) >= 10000) {
