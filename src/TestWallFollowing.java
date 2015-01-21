@@ -35,7 +35,7 @@ public class TestWallFollowing {
         long begin = System.currentTimeMillis();
         boolean log = true;
         double bias = 0.2;
-        double p = 0.17; // 0.15;
+        double p = 0.15; // 0.15;
         double i = 0.01; // 0.01;
         double d = 0.7; // 0.7
         double integral = 0;
@@ -105,8 +105,8 @@ public class TestWallFollowing {
                     System.out.println("Too Close: " + frontSep);
                     leftMotor.setSpeed(0);
                     rightMotor.setSpeed(0);
-                    leftMotor.setSpeed(.25);
-                    rightMotor.setSpeed(.1);
+                    leftMotor.setSpeed(.3); // .25
+                    rightMotor.setSpeed(.15); // .1
                     try {
                         Thread.sleep(80);
                     } catch (InterruptedException e) {
