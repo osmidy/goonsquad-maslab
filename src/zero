@@ -1,0 +1,2 @@
+cd ~/goonsquad-maslab/src
+java -Djava.library.path=. SetZero
