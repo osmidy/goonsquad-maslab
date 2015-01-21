@@ -29,7 +29,7 @@ public class TestWallFollowing {
         IRSensor forwardSensor = new IRSensor(forwardPin);
 
         // Initial Settings
-//        long current = System.currentTimeMillis();
+        // long current = System.currentTimeMillis();
         long begin = System.currentTimeMillis();
         boolean log = true;
         double bias = 0.15;
@@ -47,7 +47,7 @@ public class TestWallFollowing {
         // int frontSepCounter = 0;
         // double[] frontSepWindow;
         // frontSepWindow = new double[20];
-       
+
         leftMotor.setSpeed(bias);
         rightMotor.setSpeed(bias);
 
@@ -96,6 +96,13 @@ public class TestWallFollowing {
                 begin = end;
                 prevDiff = diff;
                 
+                try {
+                    Thread.sleep(33);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
                 if (log == true) {
                     System.out.println("Diff: " + diff);
                     System.out.println("Front: " + frontSep);
@@ -122,12 +129,7 @@ public class TestWallFollowing {
                     // rightMotor.setSpeed(-0.02);
                     // }
                     // }
-                    // try {
-                    // Thread.sleep(33);
-                    // } catch (InterruptedException e) {
-                    // // TODO Auto-generated catch block
-                    // e.printStackTrace();
-                    // }
+
 
                     // long fin = System.currentTimeMillis();
                     // if ((fin - current) >= 10000) {
