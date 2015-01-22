@@ -149,7 +149,7 @@ public class TestWallFollowing {
 //                  // TODO Auto-generated catch block
 //                  e.printStackTrace();
 //              }
-                }
+//                }
 //                //only works with wall follow
 //                if (frontSep < 0.2) {
 //                    System.out.println("Too Close: " + frontSep);
