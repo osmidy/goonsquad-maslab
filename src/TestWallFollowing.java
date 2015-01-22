@@ -96,7 +96,7 @@ public class TestWallFollowing {
                 }
                 
                 double power = p * diff + i * integral + d * derivative;
-
+                bias = 0.2;
                 leftMotor.setSpeed(bias - power);
                 rightMotor.setSpeed(bias + power);
                 begin = end;
@@ -108,7 +108,7 @@ public class TestWallFollowing {
 //                	double b = 1/50;
 //                	double c = -3/10;
 //                	double newBias = a*frontSep*frontSep + b*frontSep + c;
-                	double newBias = (0.2/20) * (frontSep - 20);
+                	double newBias = (0.2/0.2) * (frontSep - 0.2);
                 	leftMotor.setSpeed(newBias + 0.05);
                 	rightMotor.setSpeed(newBias - 0.05);
                   try {
