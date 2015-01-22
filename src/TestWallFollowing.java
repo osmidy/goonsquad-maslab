@@ -102,19 +102,41 @@ public class TestWallFollowing {
                 begin = end;
                 prevDiff = diff;
                 
-                if (frontSep < 0.2) {
-                    System.out.println("Too Close: " + frontSep);
-                    leftMotor.setSpeed(0);
-                    rightMotor.setSpeed(0);
-                    leftMotor.setSpeed(0.1); //.23 // .25
-                    rightMotor.setSpeed(-0.1); // .1
-                    try {
-                        Thread.sleep(80);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                if (frontSep<0.5 && frontSep>0.2){
+                	leftMotor.setSpeed(bias*frontSep - power - 0.1);
+                	rightMotor.setSpeed(bias*frontSep + power + 0.1);
+                  try {
+                  Thread.sleep(80);
+              } catch (InterruptedException e) {
+                  // TODO Auto-generated catch block
+                  e.printStackTrace();
+              }
+                	
                 }
+                if (frontSep <= 0.2){
+                	leftMotor.setSpeed(0.1);
+                	rightMotor.setSpeed(-0.1);
+                  try {
+                  Thread.sleep(80);
+              } catch (InterruptedException e) {
+                  // TODO Auto-generated catch block
+                  e.printStackTrace();
+              }
+                }
+                
+//                if (frontSep < 0.2) {
+//                    System.out.println("Too Close: " + frontSep);
+//                    leftMotor.setSpeed(0);
+//                    rightMotor.setSpeed(0);
+//                    leftMotor.setSpeed(0.1); //.23 // .25
+//                    rightMotor.setSpeed(-0.1); // .1
+//                    try {
+//                        Thread.sleep(80);
+//                    } catch (InterruptedException e) {
+//                        // TODO Auto-generated catch block
+//                        e.printStackTrace();
+//                    }
+//                }
 
                 try {
                     Thread.sleep(33);
