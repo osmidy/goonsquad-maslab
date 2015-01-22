@@ -65,7 +65,7 @@ public class TestWallFollowing {
 //            }
             
             // left turns
-            leftLoop: while (sideSep > 0.6) {
+            if (sideSep > 0.6) {
                 leftMotor.setSpeed(0.07);
                 rightMotor.setSpeed(0.2);
                 try {
