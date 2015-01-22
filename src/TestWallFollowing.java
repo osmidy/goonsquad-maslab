@@ -104,10 +104,11 @@ public class TestWallFollowing {
                 
               //approach turns smoothly
                 if (frontSep < 0.4 && frontSep > 0.2){
-                	double a = -1/4000;
-                	double b = 1/50;
-                	double c = -3/10;
-                	double newBias = a*frontSep*frontSep + b*frontSep + c;
+//                	double a = -1/4000;
+//                	double b = 1/50;
+//                	double c = -3/10;
+//                	double newBias = a*frontSep*frontSep + b*frontSep + c;
+                	double newBias = (0.2/20) * (frontSep - 20);
                 	leftMotor.setSpeed(newBias + 0.05);
                 	rightMotor.setSpeed(newBias - 0.05);
                   try {
