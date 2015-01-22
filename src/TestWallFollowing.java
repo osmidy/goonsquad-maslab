@@ -102,7 +102,7 @@ public class TestWallFollowing {
                 begin = end;
                 prevDiff = diff;
                 
-                if (frontSep<0.5 && frontSep>0.2){
+                if (frontSep<0.4 && frontSep>0.2){
                 	leftMotor.setSpeed(bias*frontSep - 0.05);
                 	rightMotor.setSpeed(bias*frontSep + 0.05);
                   try {
