@@ -102,28 +102,55 @@ public class TestWallFollowing {
                 begin = end;
                 prevDiff = diff;
                 
-                if (frontSep<0.4 && frontSep>0.2){
-                	leftMotor.setSpeed(0.23);
-                	rightMotor.setSpeed(0.1);
+              //approach turns smoothly
+                if (frontSep < 0.4 && frontSep > 0.2){
+                	double a = -1/4000;
+                	double b = 1/50;
+                	double c = -3/10;
+                	double newBias = a*frontSep*frontSep + b*frontSep + c;
+                	leftMotor.setSpeed(newBias + 0.05);
+                	rightMotor.setSpeed(newBias - 0.05);
                   try {
                   Thread.sleep(80);
               } catch (InterruptedException e) {
                   // TODO Auto-generated catch block
                   e.printStackTrace();
               }
-                	
                 }
                 if (frontSep <= 0.2){
                 	leftMotor.setSpeed(0.1);
                 	rightMotor.setSpeed(-0.1);
-                  try {
-                  Thread.sleep(80);
-              } catch (InterruptedException e) {
-                  // TODO Auto-generated catch block
-                  e.printStackTrace();
-              }
+              try {
+              Thread.sleep(80);
+          } catch (InterruptedException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+          }       
                 }
                 
+                //Approach turns in steps
+//                if (frontSep<0.4 && frontSep>0.2){
+//                	leftMotor.setSpeed(0.23);
+//                	rightMotor.setSpeed(0.1);
+//                  try {
+//                  Thread.sleep(80);
+//              } catch (InterruptedException e) {
+//                  // TODO Auto-generated catch block
+//                  e.printStackTrace();
+//              }
+//                	
+//                }
+//                if (frontSep <= 0.2){
+//                	leftMotor.setSpeed(0.1);
+//                	rightMotor.setSpeed(-0.1);
+//                  try {
+//                  Thread.sleep(80);
+//              } catch (InterruptedException e) {
+//                  // TODO Auto-generated catch block
+//                  e.printStackTrace();
+//              }
+//                }
+                //only works with wall follow
 //                if (frontSep < 0.2) {
 //                    System.out.println("Too Close: " + frontSep);
 //                    leftMotor.setSpeed(0);
