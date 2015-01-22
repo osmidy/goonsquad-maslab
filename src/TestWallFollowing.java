@@ -137,14 +137,14 @@ public class TestWallFollowing {
                         e.printStackTrace();
                     }
 
-                     long fin = System.currentTimeMillis();
-                     if ((fin - begin) >= 5000) {
-                     leftMotor.setSpeed(0);
-                     rightMotor.setSpeed(0);
-                     System.out.println("Time.");
-                     break mainLoop;
-                     }
-                    
+//                     long fin = System.currentTimeMillis();
+//                     if ((fin - current) >= 5000) {
+//                     leftMotor.setSpeed(0);
+//                     rightMotor.setSpeed(0);
+//                     System.out.println("Time.");
+//                     break mainLoop;
+//                     }
+//                    
                 }
                 // System.out.println("Fin.");
             }
