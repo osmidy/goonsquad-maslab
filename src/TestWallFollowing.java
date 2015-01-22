@@ -104,16 +104,16 @@ public class TestWallFollowing {
                 prevDiff = diff;
                 
               //left turns
-            	if (sideSep > 0.6) {
-            		leftMotor.setSpeed(0.05);
-            		rightMotor.setSpeed(0.2);
-            		try {
-                    Thread.sleep(30);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            	}
+//            	if (sideSep > 0.6) {
+//            		leftMotor.setSpeed(0.05);
+//            		rightMotor.setSpeed(0.2);
+//            		try {
+//                    Thread.sleep(30);
+//                } catch (InterruptedException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            	}
                 
               //approach right turns smoothly
                 if (frontSep < 0.4 && frontSep > 0.2){
