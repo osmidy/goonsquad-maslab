@@ -57,12 +57,13 @@ public class TestWallFollowing {
 
         // Main loop with PID control
         mainLoop: while (true) {
-            if (sideSep > 0.5) {
-                leftMotor.setSpeed(0);
-                rightMotor.setSpeed(0);
-                System.out.println(sideSep);
-                break mainLoop;
-            }
+//            if (sideSep > 0.5) {
+//                leftMotor.setSpeed(0);
+//                rightMotor.setSpeed(0);
+//                System.out.println(sideSep);
+//                break mainLoop;
+//            }
+
 
             // sideSepWindow[sideSepCounter] = forwardSensor
             // .distanceToObject();
@@ -102,7 +103,19 @@ public class TestWallFollowing {
                 begin = end;
                 prevDiff = diff;
                 
-              //approach turns smoothly
+              //left turns
+            	if (sideSep > 0.6) {
+            		leftMotor.setSpeed(0.05);
+            		rightMotor.setSpeed(0.25);
+            		try {
+                    Thread.sleep(30);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            	}
+                
+              //approach right turns smoothly
                 if (frontSep < 0.4 && frontSep > 0.2){
 //                	double a = -1/4000;
 //                	double b = 1/50;
