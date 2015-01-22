@@ -57,12 +57,12 @@ public class TestWallFollowing {
 
         // Main loop with PID control
         mainLoop: while (true) {
-//            if (sideSep > 0.5) {
-//                leftMotor.setSpeed(0);
-//                rightMotor.setSpeed(0);
-//                System.out.println(sideSep);
-//                break mainLoop;
-//            }
+            // if (sideSep > 0.5) {
+            // leftMotor.setSpeed(0);
+            // rightMotor.setSpeed(0);
+            // System.out.println(sideSep);
+            // break mainLoop;
+            // }
 
             long end = System.currentTimeMillis();
             frontSep = frontSensor.distanceToObject();
@@ -82,7 +82,7 @@ public class TestWallFollowing {
             rightMotor.setSpeed(bias + power);
             begin = end;
             prevDiff = diff;
-            
+
             // left turns
             if (sideSep > 0.6) {
                 System.out.println("TURNING");
@@ -160,21 +160,21 @@ public class TestWallFollowing {
             // }
             // }
             //
-            // try {
-            // Thread.sleep(33);
-            // } catch (InterruptedException e) {
-            // // TODO Auto-generated catch block
-            // e.printStackTrace();
-            // }
+            try {
+                Thread.sleep(33);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
             if (log == true) {
                 System.out.println("Front; " + frontSep);
                 System.out.println("Side: " + sideSep);
                 System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                         + rightMotor.getSpeed());
-//                System.out.println("Diff: " + p * diff + "Integral: " + i
-//                        * integral + "Derivative: " + d * derivative
-//                        + "Power: " + power);
+                // System.out.println("Diff: " + p * diff + "Integral: " + i
+                // * integral + "Derivative: " + d * derivative
+                // + "Power: " + power);
                 try {
                     Thread.sleep(150);
                 } catch (InterruptedException e) {
