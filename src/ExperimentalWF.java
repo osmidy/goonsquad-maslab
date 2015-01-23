@@ -87,7 +87,7 @@ public class ExperimentalWF {
                         e.printStackTrace();
                     }
                 }
-                continue;
+                continue mainLoop;
             }
             
             if ((diagonalSep < 0.3) && (sideSep >= 0.3)) {
@@ -106,7 +106,7 @@ public class ExperimentalWF {
                         e.printStackTrace();
                     }
                 }
-                continue;
+                continue mainLoop;
             }
 
             if ((diagonalSep >= 0.3) && (sideSep >= 0.3)) {
@@ -125,7 +125,7 @@ public class ExperimentalWF {
                         e.printStackTrace();
                     }
                 }
-                continue;
+                continue mainLoop;
             }
 
             // // left turns
