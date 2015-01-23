@@ -18,9 +18,9 @@ public class ExperimentalWF {
         int pwmPinRight = 3;
         int dirPinRight = 4;
 
-        int frontPin = 0;
+        // int frontPin = 0;
         int diagonalPin = 1;
-        int sidePin = 2;
+        int sidePin = 0;
 
         Motor leftMotor = new Motor(pwmPinLeft, dirPinLeft, leftForward,
                 leftReverse);
@@ -30,7 +30,7 @@ public class ExperimentalWF {
 
         IRSensor sideSensor = new IRSensor(sidePin);
         IRSensor diagonalSensor = new IRSensor(diagonalPin);
-        IRSensor frontSensor = new IRSensor(frontPin);
+        // IRSensor frontSensor = new IRSensor(frontPin);
 
         // Initial Settings
         // long current = System.currentTimeMillis();
