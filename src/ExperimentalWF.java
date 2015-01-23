@@ -44,7 +44,7 @@ public class ExperimentalWF {
         double derivative = 0;
         double sideSep = sideSensor.distanceToObject();
         double diagonalSep = diagonalSensor.distanceToObject();
-//        double frontSep = frontSensor.distanceToObject();
+        // double frontSep = frontSensor.distanceToObject();
         double prevDiff = 0;
         double desired = 0.1;
         // double frontSep = frontSensor.getVoltage();
@@ -67,53 +67,65 @@ public class ExperimentalWF {
             // break mainLoop;
             // }
 
-//            frontSep = frontSensor.distanceToObject();
+            // frontSep = frontSensor.distanceToObject();
             diagonalSep = diagonalSensor.distanceToObject();
             sideSep = sideSensor.distanceToObject();
-
-            while ((diagonalSep < 0.3) && (sideSep < 0.3)) {
-                System.out.println("(1,1)" + "(" + sideSep + "," + diagonalSep + ")");
-                diagonalSep = diagonalSensor.distanceToObject();
-                leftMotor.setSpeed(0.1);
-                rightMotor.setSpeed(-0.1);
-                // leftMotor.setSpeed(0.25); // .23 // .25
-                // rightMotor.setSpeed(0.1); // .1
-                try {
-                    Thread.sleep(40);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+            
+            if ((diagonalSep < 0.3) && (sideSep < 0.3)) {
+                while ((diagonalSep < 0.3) && (sideSep < 0.3)) {
+                    System.out.println("(1,1)" + "(" + sideSep + "," + diagonalSep
+                            + ")");
+                    diagonalSep = diagonalSensor.distanceToObject();
+                    leftMotor.setSpeed(0.1);
+                    rightMotor.setSpeed(-0.1);
+                    // leftMotor.setSpeed(0.25); // .23 // .25
+                    // rightMotor.setSpeed(0.1); // .1
+                    try {
+                        Thread.sleep(33);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
+                continue;
+            }
+            
+            if ((diagonalSep < 0.3) && (sideSep >= 0.3)) {
+                while ((diagonalSep < 0.3) && (sideSep >= 0.3)) {
+                    System.out.println("(0,1)" + "(" + sideSep + "," + diagonalSep
+                            + ")");
+                    diagonalSep = diagonalSensor.distanceToObject();
+                    leftMotor.setSpeed(0.05);
+                    rightMotor.setSpeed(0.15);
+                    // leftMotor.setSpeed(0.25); // .23 // .25
+                    // rightMotor.setSpeed(0.1); // .1
+                    try {
+                        Thread.sleep(33);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                continue;
             }
 
-            while ((diagonalSep < 0.3) && (sideSep >= 0.3)) {
-                System.out.println("(0,1)" + "(" + sideSep + "," + diagonalSep + ")");
-                diagonalSep = diagonalSensor.distanceToObject();
-                leftMotor.setSpeed(0.05);
-                rightMotor.setSpeed(0.15);
-                // leftMotor.setSpeed(0.25); // .23 // .25
-                // rightMotor.setSpeed(0.1); // .1
-                try {
-                    Thread.sleep(40);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+            if ((diagonalSep >= 0.3) && (sideSep >= 0.3)) {
+                while ((diagonalSep >= 0.3) && (sideSep >= 0.3)) {
+                    System.out.println("(0,0)" + "(" + sideSep + "," + diagonalSep
+                            + ")");
+                    diagonalSep = diagonalSensor.distanceToObject();
+                    leftMotor.setSpeed(0.05);
+                    rightMotor.setSpeed(0.15);
+                    // leftMotor.setSpeed(0.25); // .23 // .25
+                    // rightMotor.setSpeed(0.1); // .1
+                    try {
+                        Thread.sleep(33);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
-            }
-
-            while ((diagonalSep >= 0.3) && (sideSep >= 0.3)) {
-                System.out.println("(0,0)" + "(" + sideSep + "," + diagonalSep + ")");
-                diagonalSep = diagonalSensor.distanceToObject();
-                leftMotor.setSpeed(0.05);
-                rightMotor.setSpeed(0.15);
-                // leftMotor.setSpeed(0.25); // .23 // .25
-                // rightMotor.setSpeed(0.1); // .1
-                try {
-                    Thread.sleep(40);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                continue;
             }
 
             // // left turns
@@ -213,9 +225,9 @@ public class ExperimentalWF {
                         + diagonalSep);
                 System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                         + rightMotor.getSpeed());
-                // System.out.println("Diff: " + p * diff + "Integral: " + i
-                // * integral + "Derivative: " + d * derivative
-                // + "Power: " + power);
+                System.out.println("Diff: " + p * diff + "Integral: " + i
+                        * integral + "Derivative: " + d * derivative
+                        + "Power: " + power);
                 try {
                     Thread.sleep(150);
                 } catch (InterruptedException e) {
