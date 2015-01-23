@@ -89,19 +89,31 @@ public class ExperimentalWF {
             else if ((diagonalSep < 0.3) && (sideSep >= 0.25)) {
                 System.out.println("(0,1)" + "(" + sideSep + "," + diagonalSep
                         + ")");
-                leftMotor.setSpeed(0.05);
-                rightMotor.setSpeed(0.1);
-                // leftMotor.setSpeed(0.25); // .23 // .25
-                // rightMotor.setSpeed(0.1); // .1
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
+                if (diagonalSep < 0.1) {
+                    System.out.println("Too Close");
+                    // diagonalSep = diagonalSensor.distanceToObject();
+                    leftMotor.setSpeed(0.1);
+                    rightMotor.setSpeed(-0.1);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
 
-            else if ((diagonalSep >= 0.3) && (sideSep >= 0.25)) {
+                } else {
+                    leftMotor.setSpeed(0.05);
+                    rightMotor.setSpeed(0.1);
+                    // leftMotor.setSpeed(0.25); // .23 // .25
+                    // rightMotor.setSpeed(0.1); // .1
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            } else if ((diagonalSep >= 0.3) && (sideSep >= 0.25)) {
                 System.out.println("(0,0)" + "(" + sideSep + "," + diagonalSep
                         + ")");
                 // leftMotor.setSpeed(0.05);
@@ -137,24 +149,6 @@ public class ExperimentalWF {
                     e.printStackTrace();
                 }
             }
-
-            // // left turns
-            // if ((sideSep > 0.6) && (frontSep > 0.6)) {
-            // System.out.println("TURNING");
-            // while (frontSep > 0.4) {
-            // System.out.println("Front: " + frontSep);
-            // frontSep = frontSensor.distanceToObject();
-            // leftMotor.setSpeed(0.12);
-            // rightMotor.setSpeed(0.22);
-            // try {
-            // Thread.sleep(100);
-            // } catch (InterruptedException e) {
-            // // TODO Auto-generated catch block
-            // e.printStackTrace();
-            // }
-            // }
-            // }
-
             else {
                 long end = System.currentTimeMillis();
                 double diff = sideSep - desired;
@@ -167,7 +161,7 @@ public class ExperimentalWF {
                 }
 
                 double power = p * diff + i * integral + d * derivative;
-                bias = 0.1;
+                bias = 0.2;
                 leftMotor.setSpeed(bias - power);
                 rightMotor.setSpeed(bias + power);
                 begin = end;
