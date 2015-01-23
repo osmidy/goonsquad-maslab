@@ -64,9 +64,25 @@ public class TestWallFollowing {
             // break mainLoop;
             // }
 
-            long end = System.currentTimeMillis();
             frontSep = frontSensor.distanceToObject();
             sideSep = sideSensor.distanceToObject();
+
+            // left turns
+            if (sideSep > 0.6) {
+                System.out.println("TURNING");
+                while (frontSep > 0.4) {
+                    leftMotor.setSpeed(0.12);
+                    rightMotor.setSpeed(0.25);
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            long end = System.currentTimeMillis();
             double diff = sideSep - desired;
             double deltaT = .001 * (end - begin);
             integral += diff * deltaT;
@@ -82,21 +98,6 @@ public class TestWallFollowing {
             rightMotor.setSpeed(bias + power);
             begin = end;
             prevDiff = diff;
-
-            // left turns
-            if (sideSep > 0.6) {
-                System.out.println("TURNING");
-                leftMotor.setSpeed(0.12);
-                rightMotor.setSpeed(0.25);
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                leftMotor.setSpeed(0.1);
-                rightMotor.setSpeed(0.1);
-            }
 
             // approach right turns smoothly
             if (frontSep < 0.4 && frontSep > 0.2) {
