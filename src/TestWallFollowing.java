@@ -43,7 +43,7 @@ public class TestWallFollowing {
         double sideSep = sideSensor.distanceToObject();
         double frontSep = frontSensor.distanceToObject();
         double prevDiff = 0;
-        double desired = 0.2;
+        double desired = 0.1;
         // double frontSep = frontSensor.getVoltage();
 
         // double[] sideSepData;
