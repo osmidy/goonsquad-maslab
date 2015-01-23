@@ -93,7 +93,7 @@ public class ExperimentalWF {
                         + ")");
                 diagonalSep = diagonalSensor.distanceToObject();
                 leftMotor.setSpeed(0.08);
-                rightMotor.setSpeed(0.25);
+                rightMotor.setSpeed(0.1);
                 // leftMotor.setSpeed(0.25); // .23 // .25
                 // rightMotor.setSpeed(0.1); // .1
                 try {
