@@ -44,7 +44,7 @@ public class ExperimentalWF {
         double derivative = 0;
         double sideSep = sideSensor.distanceToObject();
         double diagonalSep = diagonalSensor.distanceToObject();
-        double frontSep = frontSensor.distanceToObject();
+//        double frontSep = frontSensor.distanceToObject();
         double prevDiff = 0;
         double desired = 0.1;
         // double frontSep = frontSensor.getVoltage();
@@ -67,7 +67,7 @@ public class ExperimentalWF {
             // break mainLoop;
             // }
 
-            frontSep = frontSensor.distanceToObject();
+//            frontSep = frontSensor.distanceToObject();
             diagonalSep = diagonalSensor.distanceToObject();
             sideSep = sideSensor.distanceToObject();
 
