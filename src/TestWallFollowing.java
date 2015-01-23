@@ -94,6 +94,8 @@ public class TestWallFollowing {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
+                leftMotor.setSpeed(0.1);
+                rightMotor.setSpeed(0.1);
             }
 
             // approach right turns smoothly
