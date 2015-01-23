@@ -97,7 +97,7 @@ public class TestWallFollowing {
             }
 
             // approach right turns smoothly
-            if (frontSep < 0.3 && frontSep > 0.2) {
+            if (frontSep < 0.4 && frontSep > 0.2) {
                 // double a = -1/4000;
                 // double b = 1/50;
                 // double c = -3/10;
