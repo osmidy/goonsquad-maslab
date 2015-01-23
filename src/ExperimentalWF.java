@@ -71,8 +71,8 @@ public class ExperimentalWF {
             diagonalSep = diagonalSensor.distanceToObject();
             sideSep = sideSensor.distanceToObject();
 
-            while ((diagonalSep < 0.2) && (sideSep < 0.2)) {
-                System.out.println("(1,1)" + frontSep);
+            while ((diagonalSep < 0.3) && (sideSep < 0.3)) {
+                System.out.println("(1,1)" + "(" + sideSep + "," + diagonalSep + ")");
                 diagonalSep = diagonalSensor.distanceToObject();
                 leftMotor.setSpeed(0.1);
                 rightMotor.setSpeed(-0.1);
@@ -86,8 +86,8 @@ public class ExperimentalWF {
                 }
             }
 
-            while ((diagonalSep < 0.2) && (sideSep >= 0.2)) {
-                System.out.println("(0,1)" + frontSep);
+            while ((diagonalSep < 0.3) && (sideSep >= 0.3)) {
+                System.out.println("(0,1)" + "(" + sideSep + "," + diagonalSep + ")");
                 diagonalSep = diagonalSensor.distanceToObject();
                 leftMotor.setSpeed(0.05);
                 rightMotor.setSpeed(0.15);
@@ -101,8 +101,8 @@ public class ExperimentalWF {
                 }
             }
 
-            while ((diagonalSep >= 0.2) && (sideSep >= 0.2)) {
-                System.out.println("(0,0)" + frontSep);
+            while ((diagonalSep >= 0.3) && (sideSep >= 0.3)) {
+                System.out.println("(0,0)" + "(" + sideSep + "," + diagonalSep + ")");
                 diagonalSep = diagonalSensor.distanceToObject();
                 leftMotor.setSpeed(0.05);
                 rightMotor.setSpeed(0.15);
