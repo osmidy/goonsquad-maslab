@@ -121,11 +121,17 @@ public class ExperimentalWF {
                     rightMotor.setSpeed(0.25);
                     // leftMotor.setSpeed(0.25); // .23 // .25
                     // rightMotor.setSpeed(0.1); // .1
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
                 leftMotor.setSpeed(0.05);
                 rightMotor.setSpeed(0.05);
                 try {
-                    Thread.sleep(60);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
