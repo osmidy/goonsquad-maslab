@@ -71,6 +71,7 @@ public class TestWallFollowing {
             if ((sideSep > 0.6) && (frontSep > 0.6)) {
                 System.out.println("TURNING");
                 while (frontSep > 0.6) {
+                    System.out.println("Front: " + frontSep);
                     leftMotor.setSpeed(0.12);
                     rightMotor.setSpeed(0.22);
 //                    try {
@@ -171,7 +172,7 @@ public class TestWallFollowing {
             }
 
             if (log == true) {
-                System.out.println("Front; " + frontSep);
+                System.out.println("Front: " + frontSep);
                 System.out.println("Side: " + sideSep);
                 System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                         + rightMotor.getSpeed());
