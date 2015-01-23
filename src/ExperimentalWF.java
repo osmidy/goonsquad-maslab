@@ -120,6 +120,14 @@ public class ExperimentalWF {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
+                leftMotor.setSpeed(0.05);
+                rightMotor.setSpeed(0.05);
+                try {
+                    Thread.sleep(60);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
             }
 
