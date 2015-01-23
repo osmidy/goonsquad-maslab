@@ -155,7 +155,7 @@ public class TestWallFollowing {
 			// }
 			// }
 			// only works with wall follow
-			while (frontSep < 0.10) {
+			while (frontSep < 0.2) {
 				System.out.println("Too Close: " + frontSep);
 				leftMotor.setSpeed(0.1);
 				rightMotor.setSpeed(-0.1);
