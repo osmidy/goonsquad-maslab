@@ -68,7 +68,7 @@ public class TestWallFollowing {
             sideSep = sideSensor.distanceToObject();
 
             // left turns
-            if (sideSep > 0.6) {
+            if ((sideSep > 0.6) && (frontSep > 0.6)) {
                 System.out.println("TURNING");
                 while (frontSep > 0.4) {
                     leftMotor.setSpeed(0.12);
