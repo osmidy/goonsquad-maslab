@@ -60,12 +60,12 @@ public class TestWallFollowing {
 
 		// Main loop with PID control
 		mainLoop: while (true) {
-			// if (sideSep > 0.5) {
-			// leftMotor.setSpeed(0);
-			// rightMotor.setSpeed(0);
-			// System.out.println(sideSep);
-			// break mainLoop;
-			// }
+			 if (sideSep > 0.5) {
+			 leftMotor.setSpeed(0);
+			 rightMotor.setSpeed(0);
+			 System.out.println(sideSep);
+			 break mainLoop;
+			 }
 
 			frontSep = frontSensor.distanceToObject();
 			diagonalSep = diagonalSensor.distanceToObject();
