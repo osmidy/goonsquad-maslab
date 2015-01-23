@@ -37,7 +37,7 @@ public class TestWallFollowing {
 		long begin = System.currentTimeMillis();
 		boolean log = true;
 		double bias = 0.2;
-		double p = 0.3;
+		double p = 0.5;
 		double i = 0.005; // .005 // 0.01;
 		double d = 0.3; // .3 // 0.7
 		double integral = 0;
@@ -79,7 +79,7 @@ public class TestWallFollowing {
 //	              leftMotor.setSpeed(0.25); // .23 // .25
 //	              rightMotor.setSpeed(0.1); // .1
 	              try {
-	                  Thread.sleep(60);
+	                  Thread.sleep(40);
 	              } catch (InterruptedException e) {
 	                  // TODO Auto-generated catch block
 	                  e.printStackTrace();
