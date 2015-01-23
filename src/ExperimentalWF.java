@@ -115,10 +115,10 @@ public class ExperimentalWF {
                 // e.printStackTrace();
                 // }
 
-                while (diagonalSep > 0.15) {
+                while (diagonalSep > 0.2) {
                     diagonalSep = diagonalSensor.distanceToObject();
                     leftMotor.setSpeed(0.1);
-                    rightMotor.setSpeed(0.22);
+                    rightMotor.setSpeed(0.25);
                     // leftMotor.setSpeed(0.25); // .23 // .25
                     // rightMotor.setSpeed(0.1); // .1
                     try {
