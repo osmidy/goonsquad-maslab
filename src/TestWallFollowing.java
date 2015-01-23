@@ -86,10 +86,10 @@ public class TestWallFollowing {
             // left turns
             if (sideSep > 0.6) {
                 System.out.println("TURNING");
-                leftMotor.setSpeed(0.06);
-                rightMotor.setSpeed(0.18);
+                leftMotor.setSpeed(0.07);
+                rightMotor.setSpeed(0.19);
                 try {
-                    Thread.sleep(1650);
+                    Thread.sleep(1300);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
