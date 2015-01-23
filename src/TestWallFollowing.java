@@ -37,7 +37,7 @@ public class TestWallFollowing {
 		long begin = System.currentTimeMillis();
 		boolean log = true;
 		double bias = 0.2;
-		double p = 0.05; // 0.15;
+		double p = 0.1; // 0.15;
 		double i = 0.005; // .005 // 0.01;
 		double d = 0.3; // .3 // 0.7
 		double integral = 0;
