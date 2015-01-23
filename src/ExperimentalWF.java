@@ -18,8 +18,8 @@ public class ExperimentalWF {
         int pwmPinRight = 3;
         int dirPinRight = 4;
 
-        int frontPin = 2;
-        int diagonalPin = 1;
+        int frontPin = 1;
+        int diagonalPin = 2;
         int sidePin = 0;
 
         Motor leftMotor = new Motor(pwmPinLeft, dirPinLeft, leftForward,
