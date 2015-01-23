@@ -73,12 +73,12 @@ public class TestWallFollowing {
                 while (frontSep > 0.6) {
                     leftMotor.setSpeed(0.12);
                     rightMotor.setSpeed(0.22);
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        Thread.sleep(100);
+//                    } catch (InterruptedException e) {
+//                        // TODO Auto-generated catch block
+//                        e.printStackTrace();
+//                    }
                 }
             }
 
