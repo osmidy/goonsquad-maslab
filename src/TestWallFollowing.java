@@ -43,7 +43,7 @@ public class TestWallFollowing {
         double sideSep = sideSensor.distanceToObject();
         double frontSep = frontSensor.distanceToObject();
         double prevDiff = 0;
-        double desired = 0.1;
+        double desired = 0.2;
         // double frontSep = frontSensor.getVoltage();
 
         // double[] sideSepData;
@@ -97,7 +97,7 @@ public class TestWallFollowing {
             }
 
             // approach right turns smoothly
-            if (frontSep < 0.4 && frontSep > 0.2) {
+            if (frontSep < 0.3 && frontSep > 0.2) {
                 // double a = -1/4000;
                 // double b = 1/50;
                 // double c = -3/10;
