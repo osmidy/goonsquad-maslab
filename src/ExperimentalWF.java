@@ -104,32 +104,32 @@ public class ExperimentalWF {
             else if ((diagonalSep >= 0.3) && (sideSep >= 0.25)) {
                 System.out.println("(0,0)" + "(" + sideSep + "," + diagonalSep
                         + ")");
-                leftMotor.setSpeed(0.05);
-                rightMotor.setSpeed(0.25);
-                // leftMotor.setSpeed(0.25); // .23 // .25
-                // rightMotor.setSpeed(0.1); // .1
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-                // while (diagonalSep > 0.15) {
-                // diagonalSep = diagonalSensor.distanceToObject();
-                // leftMotor.setSpeed(0.02);
+                // leftMotor.setSpeed(0.05);
                 // rightMotor.setSpeed(0.25);
                 // // leftMotor.setSpeed(0.25); // .23 // .25
                 // // rightMotor.setSpeed(0.1); // .1
-                // }
-                // leftMotor.setSpeed(0.05);
-                // rightMotor.setSpeed(0.05);
                 // try {
-                // Thread.sleep(60);
+                // Thread.sleep(100);
                 // } catch (InterruptedException e) {
                 // // TODO Auto-generated catch block
                 // e.printStackTrace();
                 // }
+
+                while (diagonalSep > 0.15) {
+                    diagonalSep = diagonalSensor.distanceToObject();
+                    leftMotor.setSpeed(0.02);
+                    rightMotor.setSpeed(0.25);
+                    // leftMotor.setSpeed(0.25); // .23 // .25
+                    // rightMotor.setSpeed(0.1); // .1
+                }
+                leftMotor.setSpeed(0.05);
+                rightMotor.setSpeed(0.05);
+                try {
+                    Thread.sleep(60);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
 
             // // left turns
