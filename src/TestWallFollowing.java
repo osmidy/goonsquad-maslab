@@ -46,7 +46,7 @@ public class TestWallFollowing {
 		double diagonalSep = diagonalSensor.distanceToObject();
 		double frontSep = frontSensor.distanceToObject();
 		double prevDiff = 0;
-		double desired = 0.15;
+		double desired = 0.1;
 		// double frontSep = frontSensor.getVoltage();
 
 		// double[] sideSepData;
@@ -78,12 +78,12 @@ public class TestWallFollowing {
 	                rightMotor.setSpeed(-0.1);
 //	              leftMotor.setSpeed(0.25); // .23 // .25
 //	              rightMotor.setSpeed(0.1); // .1
-//	              try {
-//	                  Thread.sleep(80);
-//	              } catch (InterruptedException e) {
-//	                  // TODO Auto-generated catch block
-//	                  e.printStackTrace();
-//	              }
+	              try {
+	                  Thread.sleep(40);
+	              } catch (InterruptedException e) {
+	                  // TODO Auto-generated catch block
+	                  e.printStackTrace();
+	              }
 	            }
 
 			// // left turns
