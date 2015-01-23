@@ -70,6 +70,21 @@ public class TestWallFollowing {
 			frontSep = frontSensor.distanceToObject();
 			diagonalSep = diagonalSensor.distanceToObject();
 			sideSep = sideSensor.distanceToObject();
+			
+	         while (frontSep < 0.15) {
+	                System.out.println("Too Close: " + frontSep);
+	                frontSep = frontSensor.distanceToObject();
+	                leftMotor.setSpeed(0.1);
+	                rightMotor.setSpeed(-0.1);
+//	              leftMotor.setSpeed(0.25); // .23 // .25
+//	              rightMotor.setSpeed(0.1); // .1
+//	              try {
+//	                  Thread.sleep(80);
+//	              } catch (InterruptedException e) {
+//	                  // TODO Auto-generated catch block
+//	                  e.printStackTrace();
+//	              }
+	            }
 
 			// // left turns
 			// if ((sideSep > 0.6) && (frontSep > 0.6)) {
@@ -155,20 +170,6 @@ public class TestWallFollowing {
 			// }
 			// }
 			// only works with wall follow
-			while (frontSep < 0.15) {
-				System.out.println("Too Close: " + frontSep);
-				frontSep = frontSensor.distanceToObject();
-				leftMotor.setSpeed(0.1);
-				rightMotor.setSpeed(-0.1);
-//				leftMotor.setSpeed(0.25); // .23 // .25
-//				rightMotor.setSpeed(0.1); // .1
-//				try {
-//					Thread.sleep(80);
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-			}
 
 			try {
 				Thread.sleep(33);
