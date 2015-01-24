@@ -15,7 +15,7 @@ public class TestStayStraight {
         int dirPinLeft = 8;
         int pwmPinRight = 3;
         int dirPinRight = 4;
-        double desired = 90.0;
+        double desired = 0.0;
 
         Motor leftMotor = new Motor(pwmPinLeft, dirPinLeft, leftForward,
                 leftReverse);
@@ -42,7 +42,7 @@ public class TestStayStraight {
 
         // Initial Settings
         getHeading.start();
-        double motorBias = 0.2;
+        double motorBias = 0.1;
         double p = .012;
         double i = .0005;
         double d = .03;
@@ -70,7 +70,7 @@ public class TestStayStraight {
             rightMotor.setSpeed(motorBias - power);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed() + " Heading: " + heading);
-            System.out.println("Integral: " + integral + "Derivative: " + derivative + "Power: " + power);
+            System.out.println("Diff" + p * diff + "Integral: " + i * integral + "Derivative: " + d * derivative + "Power: " + power);
             try {
                 Thread.sleep(33);
             } catch (InterruptedException e) {
