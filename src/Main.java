@@ -14,9 +14,9 @@ import sensors.UltraSonicSensor;
 
 public class Main {
     public static void main(String[] args) {
-        // Enter the Squadbot
-        Robot squadbot = makeRobot();
-        State state = squadbot.getState();
+        // Free CokeBot!
+        Robot cokebot = makeRobot();
+        State state = cokebot.getState();
         // TODO:  when stack is hit, remove stack from list, create new cubes and add to list
         
         while (true) {

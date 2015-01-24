@@ -54,8 +54,8 @@ public class Cube implements FieldObject {
     }
 
     @Override
-    public List<Integer> getDimensions() {
-        List<Integer> dimensions = Arrays.asList(height, width, depth);
+    public int[] getDimensions() {
+        int[] dimensions = new int[] {height, width, depth};
         return dimensions;
     }
 

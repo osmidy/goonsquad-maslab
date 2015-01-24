@@ -50,7 +50,7 @@ public class ScoringPlatform implements FieldObject {
     }
 
     @Override
-    public List<Integer> getDimensions() {
+    public int[] getDimensions() {
         // TODO Auto-generated method stub
         return null;
     }

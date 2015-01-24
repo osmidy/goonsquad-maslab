@@ -15,6 +15,7 @@ public interface FieldObject {
     public enum Color {
         RED, GREEN, BLUE, YELLOW, PURPLE
     }
+    
     /**
      * Covnert measurements from inches to meters.
      * 
@@ -46,7 +47,7 @@ public interface FieldObject {
      * @return a List of the dimensions of this FieldObject, in the order
      *         <height, width, depth>.
      */
-    public List<Integer> getDimensions();
+    public int[] getDimensions();
     
     /**
      * @return the x-coordinate for this field object

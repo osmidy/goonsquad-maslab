@@ -57,11 +57,13 @@ public class Stack implements FieldObject {
     public double getDepth() {
         return depth;
     }
+    
     @Override
-    public List<Integer> getDimensions() {
-        List<Integer> dimensions = Arrays.asList(height, width, depth);
+    public int[] getDimensions() {
+        int[] dimensions = new int[] {height, width, depth};
         return dimensions;
     }
+    
     @Override
     public int getX() {
         return x;
