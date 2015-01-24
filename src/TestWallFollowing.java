@@ -21,7 +21,7 @@ public class TestWallFollowing {
 	    for (String line = read.readLine(); line != null; line = read.readLine()) {
 	        String[] tokens = line.split("\\s+");
 	        String constant = tokens[0];
-	        int value = Integer.parseInt(tokens[1]);
+	        double value = Double.parseDouble(tokens[1]);
 	        if (constant.equals("p")) {
 	            p = value;
 	        }
