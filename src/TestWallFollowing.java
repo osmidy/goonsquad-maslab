@@ -91,8 +91,8 @@ public class TestWallFollowing {
                 System.out.println("Too Close: " + diagonalSep);
                 diagonalSep = diagonalSensor.distanceToObject();
                 sideSep = sideSensor.distanceToObject();
-                leftMotor.setSpeed(0.2);
-                rightMotor.setSpeed(-0.2);
+                leftMotor.setSpeed(0.1);
+                rightMotor.setSpeed(-0.1);
                 // leftMotor.setSpeed(0.25); // .23 // .25
                 // rightMotor.setSpeed(0.1); // .1
                 try {
