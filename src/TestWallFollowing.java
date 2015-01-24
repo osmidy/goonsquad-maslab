@@ -3,11 +3,36 @@ import robotparts.Motor;
 import sensors.IRSensor;
 import sensorIO.Gpio;
 import sensorIO.Pwm;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class TestWallFollowing {
-	public static void main(String[] args) {
-
+	public static void main(String[] args) throws IOException {
+	    File pid = new File("WallFollowPID.txt");
+	    double p = 0;
+	    double i = 0;
+	    double d = 0;
+	    BufferedReader read = new BufferedReader(new FileReader(pid));
+	    for (String line = read.readLine(); line != null; line = read.readLine()) {
+	        String[] tokens = line.split("\\s+");
+	        String constant = tokens[0];
+	        int value = Integer.parseInt(tokens[1]);
+	        if (constant.equals("p")) {
+	            p = value;
+	        }
+	        if (constant.equals("i")) {
+	            i = value;
+	        }
+	        if (constant.equals("d")) {
+	            d = value;
+	        }
+	    }
+	    
 		int leftForward = 1;
 		int leftReverse = 0;
 		int rightForward = 0;
@@ -37,9 +62,6 @@ public class TestWallFollowing {
 		long begin = System.currentTimeMillis();
 		boolean log = true;
 		double bias = 0.2;
-		double p = 0.5;
-		double i = 0.005; // .005 // 0.01;
-		double d = 0.5;// .3 // 0.7
 		double integral = 0;
 		double derivative = 0;
 		double sideSep = sideSensor.distanceToObject();
