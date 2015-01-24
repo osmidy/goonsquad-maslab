@@ -21,17 +21,17 @@ public class ImageUtil {
      * Main method
      */
     public static void main(String args[]) {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);  // Load the OpenCV library
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load the OpenCV library
 
         int width = 320;
         int height = 240;
         // Diagonal FOV is ~70; 56 horizontal, 42 vertical
         // Resized images have 320 horizontal pixels
         double thetaX = 56;
-        double pixelsPerDegree = width / thetaX;  // Horizontal direction
+        double pixelsPerDegree = width / thetaX; // Horizontal direction
         double radiansToDegrees = 180 / Math.PI;
         double radiansX = thetaX / radiansToDegrees;
-        double arctanHalfX = Math.atan(thetaX/2);
+        double arctanHalfX = Math.atan(thetaX / 2);
         double focalLength = width * .5 / arctanHalfX;
 
         // Setup the camera
@@ -45,7 +45,7 @@ public class ImageUtil {
         // Set up structures for processing images
         ImageProcessor processor = new ImageProcessor();
         ObjectFinder finder = new ObjectFinder();
-        Mat rawImage = Highgui.imread("/home/osmidy/center.jpg");//new Mat();
+        Mat rawImage = Highgui.imread("/home/osmidy/center.jpg");// new Mat();
         Mat resizedImage = new Mat();
         Mat processedImage = new Mat();
         Mat2Image rawImageConverter = new Mat2Image(
@@ -53,39 +53,40 @@ public class ImageUtil {
         Mat2Image processedImageConverter = new Mat2Image(
                 BufferedImage.TYPE_3BYTE_BGR);
 
-//        while (true) {
-//            // Wait until the camera has a new frame
-//            while (!camera.read(rawImage)) {
-//                try {
-//                    Thread.sleep(1);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+        // while (true) {
+        // // Wait until the camera has a new frame
+        // while (!camera.read(rawImage)) {
+        // try {
+        // Thread.sleep(1);
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
+        // }
+        // }
 
-            Imgproc.resize(rawImage, resizedImage, new Size(width, height)); // Halves resolution
-            processor.process(resizedImage, processedImage);
+        Imgproc.resize(rawImage, resizedImage, new Size(width, height)); // Halves
+                                                                         // resolution
+        processor.process(resizedImage, processedImage);
 
-            // Find objects in processedImage
-            // 1. check pixels
-            // 2. check surrounding pixels for color/object match (flood fill?)
-            // 3. if match, get take pixel(center), convert to location for robot to travel to
-            
-            List<int[]> blocks = finder.findBlocks(processedImage);
-            for (int[] block : blocks) {
-                System.out.println(Arrays.toString(block));
-            }
-            
+        // Find objects in processedImage
+        // 1. check pixels
+        // 2. check surrounding pixels for color/object match (flood fill?)
+        // 3. if match, get take pixel(center), convert to location for robot to
+        // travel to
 
-            // Update the GUI windows
-            updateWindow(cameraPane, resizedImage, rawImageConverter);
-            updateWindow(opencvPane, processedImage, processedImageConverter);
+        List<int[]> blocks = finder.findBlocks(processedImage);
+        for (int[] block : blocks) {
+            System.out.println(Arrays.toString(block));
+        }
 
-//            try {
-//                Thread.sleep(10);
-//            } catch (InterruptedException e) {
-//            }
-//        }
+        // Update the GUI windows
+        updateWindow(cameraPane, resizedImage, rawImageConverter);
+        updateWindow(opencvPane, processedImage, processedImageConverter);
+
+        // try {
+        // Thread.sleep(10);
+        // } catch (InterruptedException e) {
+        // }
+        // }
     }
 
     private static JLabel createWindow(String name, int width, int height) {
