@@ -42,7 +42,7 @@ public class TestStayStraight {
 
         // Initial Settings
         getHeading.start();
-        double motorBias = -0.1;
+        double motorBias = 0.1;
         double p = .012;
         double i = .0005;
         double d = .03;
