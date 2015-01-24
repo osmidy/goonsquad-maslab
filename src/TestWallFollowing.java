@@ -63,8 +63,8 @@ public class TestWallFollowing {
         long begin = System.currentTimeMillis();
         boolean log = true;
         double bias = 0.2;
-        double integral = 0;
-        double derivative = 0;
+        double integral;
+        double derivative;
         double sideSep = sideSensor.distanceToObject();
         double diagonalSep = diagonalSensor.distanceToObject();
         double frontSep = frontSensor.distanceToObject();
