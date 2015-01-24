@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
@@ -28,8 +27,8 @@ public class ImageUtil {
         int height = 240;
         // Diagonal FOV is ~70; 56 horizontal, 42 vertical
         // Resized images have 320 horizontal pixels
-        double pixelsPerDegree = 320.0/56;  // Horizontal direction
         double thetaX = 56;
+        double pixelsPerDegree = width / thetaX;  // Horizontal direction
         double radiansToDegrees = 180 / Math.PI;
         double radiansX = thetaX / radiansToDegrees;
         double arctanHalfX = Math.atan(thetaX/2);
@@ -46,7 +45,7 @@ public class ImageUtil {
         // Set up structures for processing images
         ImageProcessor processor = new ImageProcessor();
         ObjectFinder finder = new ObjectFinder();
-        Mat rawImage = Highgui.imread("/home/osmidy/pic1.jpg");//new Mat();
+        Mat rawImage = Highgui.imread("/home/osmidy/center.jpg");//new Mat();
         Mat resizedImage = new Mat();
         Mat processedImage = new Mat();
         Mat2Image rawImageConverter = new Mat2Image(
@@ -54,8 +53,8 @@ public class ImageUtil {
         Mat2Image processedImageConverter = new Mat2Image(
                 BufferedImage.TYPE_3BYTE_BGR);
 
-        //while (true) {
-            // Wait until the camera has a new frame
+//        while (true) {
+//            // Wait until the camera has a new frame
 //            while (!camera.read(rawImage)) {
 //                try {
 //                    Thread.sleep(1);
@@ -65,16 +64,15 @@ public class ImageUtil {
 //            }
 
             Imgproc.resize(rawImage, resizedImage, new Size(width, height)); // Halves resolution
-            processedImage = resizedImage.clone();
-            processor.process(processedImage);
+            processor.process(resizedImage, processedImage);
 
             // Find objects in processedImage
             // 1. check pixels
             // 2. check surrounding pixels for color/object match (flood fill?)
             // 3. if match, get take pixel(center), convert to location for robot to travel to
             
-            List<double[]> blocks = finder.findBlocks(processedImage);
-            for (double[] block : blocks) {
+            List<int[]> blocks = finder.findBlocks(processedImage);
+            for (int[] block : blocks) {
                 System.out.println(Arrays.toString(block));
             }
             
@@ -87,7 +85,7 @@ public class ImageUtil {
 //                Thread.sleep(10);
 //            } catch (InterruptedException e) {
 //            }
-        //}
+//        }
     }
 
     private static JLabel createWindow(String name, int width, int height) {

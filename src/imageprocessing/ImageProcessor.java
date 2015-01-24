@@ -7,6 +7,7 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 
 public class ImageProcessor {
     private static final int numBuffers = 1;
@@ -35,8 +36,9 @@ public class ImageProcessor {
     // (In practice it's a little different:
     //  the output image will be for your visual reference,
     //  but you will mainly want to output a list of the locations of detected objects.)
-    public void process(Mat image) {
-        long pointer = image.getNativeObjAddr();
+    public void process(Mat resizedImage, Mat processedImage) {
+        Imgproc.GaussianBlur(resizedImage, processedImage, new Size(5, 5), 1.0);
+        long pointer = processedImage.getNativeObjAddr();
         process(pointer);
     }
     
