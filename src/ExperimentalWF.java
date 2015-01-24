@@ -79,7 +79,7 @@ public class ExperimentalWF {
                 // leftMotor.setSpeed(0.25); // .23 // .25
                 // rightMotor.setSpeed(0.1); // .1
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(200);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -107,7 +107,7 @@ public class ExperimentalWF {
                     // leftMotor.setSpeed(0.25); // .23 // .25
                     // rightMotor.setSpeed(0.1); // .1
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(200);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -174,7 +174,7 @@ public class ExperimentalWF {
                 // // double c = -3/10;
                 // // double newBias = a*frontSep*frontSep + b*frontSep + c;
                 // double newBias = (frontSep - 0.2);
-                // leftMotor.setSpeed(newBias + 0.05);
+                // leftMotor.setSpeed(newBias + 0.05);./ze
                 // rightMotor.setSpeed(newBias - 0.05);
                 // try {
                 // Thread.sleep(30);
