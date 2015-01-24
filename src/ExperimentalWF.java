@@ -161,7 +161,7 @@ public class ExperimentalWF {
                 }
 
                 double power = p * diff + i * integral + d * derivative;
-                bias = 0.15;
+                bias = 0.25;
                 leftMotor.setSpeed(bias - power);
                 rightMotor.setSpeed(bias + power);
                 begin = end;
