@@ -30,4 +30,11 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/imageprocessing_ObjectFinder.h</name>
+			<type>1</type>
+			<location>/home/osmidy/maslab/goonsquad-maslab/src/imageprocessing_ObjectFinder.h</location>
+		</link>
+	</linkedResources>
 </projectDescription>

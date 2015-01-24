@@ -31,8 +31,8 @@ public class ImageUtil {
         double pixelsPerDegree = width / thetaX; // Horizontal direction
         double radiansToDegrees = 180 / Math.PI;
         double radiansX = thetaX / radiansToDegrees;
-        double arctanHalfX = Math.atan(thetaX / 2);
-        double focalLength = width * .5 / arctanHalfX;
+        double arctanHalfX = Math.atan(thetaX/2);
+        double focalLength = width * 0.5 / arctanHalfX;
 
         // Setup the camera
         VideoCapture camera = new VideoCapture();
@@ -45,7 +45,7 @@ public class ImageUtil {
         // Set up structures for processing images
         ImageProcessor processor = new ImageProcessor();
         ObjectFinder finder = new ObjectFinder();
-        Mat rawImage = Highgui.imread("/home/osmidy/center.jpg");// new Mat();
+        Mat rawImage = Highgui.imread("/home/osmidy/pic4.jpg");//new Mat();
         Mat resizedImage = new Mat();
         Mat processedImage = new Mat();
         Mat2Image rawImageConverter = new Mat2Image(
