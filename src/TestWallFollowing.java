@@ -87,7 +87,7 @@ public class TestWallFollowing {
             diagonalSep = diagonalSensor.distanceToObject();
             sideSep = sideSensor.distanceToObject();
 
-            while (diagonalSep < 0.15) {
+            while (diagonalSep < 0.25) {
                 System.out.println("Too Close: " + diagonalSep);
                 diagonalSep = diagonalSensor.distanceToObject();
                 sideSep = sideSensor.distanceToObject();
