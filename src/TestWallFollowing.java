@@ -68,7 +68,7 @@ public class TestWallFollowing {
 		double diagonalSep = diagonalSensor.distanceToObject();
 		double frontSep = frontSensor.distanceToObject();
 		double prevDiff = 0;
-		double desired = 0.1;
+		double desired = 0.2;
 		// double frontSep = frontSensor.getVoltage();
 
 		// double[] sideSepData;
@@ -93,8 +93,8 @@ public class TestWallFollowing {
 			diagonalSep = diagonalSensor.distanceToObject();
 			sideSep = sideSensor.distanceToObject();
 			
-	         while (diagonalSep < 0.2) {
-	                System.out.println("Too Close: " + frontSep);
+	         while (diagonalSep < 0.15) {
+	                System.out.println("Too Close: " + diagonalSep);
 	                diagonalSep = diagonalSensor.distanceToObject();
 	                leftMotor.setSpeed(0.1);
 	                rightMotor.setSpeed(-0.1);
@@ -201,14 +201,13 @@ public class TestWallFollowing {
 			}
 
 			if (log == true) {
-				System.out.println("Front: " + frontSep);
 				System.out.println("Side: " + sideSep + "Diagonal: "
 						+ diagonalSep);
 				System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
 						+ rightMotor.getSpeed());
-				// System.out.println("Diff: " + p * diff + "Integral: " + i
-				// * integral + "Derivative: " + d * derivative
-				// + "Power: " + power);
+                System.out.println("Diff: " + p * diff + "Integral: " + i
+                        * integral + "Derivative: " + d * derivative
+                        + "Power: " + power);
 				try {
 					Thread.sleep(150);
 				} catch (InterruptedException e) {
