@@ -164,7 +164,7 @@ public class ExperimentalWF {
                 bias = 0.15;
                 if (diagonalSep < 0.45){
                 	bias = diagonalSep - 0.3;
-                	power = power - ((diagonalSep-0.45)/4.5);
+                	//power = power - ((diagonalSep-0.45)/4.5);
                 }
                 leftMotor.setSpeed(bias - power);
                 rightMotor.setSpeed(bias + power);
