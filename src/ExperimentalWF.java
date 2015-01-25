@@ -39,7 +39,7 @@ public class ExperimentalWF {
         double bias = 0.2;
         double p = 0.5;
         double i = 0.005; // .005 // 0.01;
-        double d = 0.7; //0.5;// .3 // 0.7
+        double d = 0.8; //0.5;// .3 // 0.7
         double integral = 0;
         double derivative = 0;
         double sideSep = sideSensor.distanceToObject();
