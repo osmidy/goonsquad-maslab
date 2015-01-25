@@ -1,3 +1,5 @@
+import imageprocessing.ImageUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +19,8 @@ public class Main {
     private final static Robot cokebot = makeRobot();
     private final static ImageUtil imageUtil = new ImageUtil();
     public static void main(String[] args) {
+        // Enter the Squadbot
+        Robot squadbot = makeRobot();
         // TODO:  when stack is hit, remove stack from list, create new cubes and add to list
         
         while (true) {
