@@ -36,10 +36,10 @@ JNIEXPORT jboolean JNICALL Java_imageprocessing_ObjectFinder_checkCube(
 			int val1 = image->data[channels * (image->cols * i + j) + 1];
 			int val2 = image->data[channels * (image->cols * i + j) + 2];
 			// if green or red
-			if (((val0 == 0) && (val1 == 255) && (val2 == 0)) {
+			if ( (val0 == 0) && (val1 == 255) && (val2 == 0) ) {
 				count++;
 			}
-			else if ((val0 == 0) && (val1 == 0) && (val2 == 255))) {
+			else if ( (val0 == 0) && (val1 == 0) && (val2 == 255) ) {
 				count++;
 				if (!red) {
 					threshold *= .75;
