@@ -1,5 +1,6 @@
 package robot;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,14 +24,16 @@ public class Robot {
     // Datatype Definition: Robot ::= sensors:Set<Sensor> + gyro:Gyroscope +
     // motors:List<Motor> + servos:List<Servo>
 
-    // Rep Invariant: robot has at least two motors
+    // Rep Invariant: robot has at least two motors; at least one servo; each sensor has a heading
     private void checkRep() {
         assert motors.size() >= 2;
+        assert !servos.isEmpty();
+        assert sensors.size() == sensorHeadings.size();
     }
 
     private final List<Motor> motors;
     private final List<Servo> servos;
-    private final Set<Sensor> sensors;
+    private final List<Sensor> sensors;
     private final Map<Sensor, Double> sensorHeadings;
     private final Gyroscope gyro;
 
@@ -62,10 +65,10 @@ public class Robot {
             Map<Sensor, Double> sensorMap, Gyroscope gyro) {
         this.motors = motors;
         this.servos = servos;
-        this.sensors = sensorMap.keySet();
         this.sensorHeadings = sensorMap;
+        this.sensors = new ArrayList<Sensor>(sensorMap.keySet());
         this.gyro = gyro;
-
+        checkRep();
     }
 
     /**
@@ -74,6 +77,7 @@ public class Robot {
      * @return the heading, in radians, of the Robot
      */
     public double getCurrentHeading() {
+        checkRep();
         return this.currentHeading;
     }
     
@@ -82,6 +86,7 @@ public class Robot {
      * @param angle the new heading
      */
     public synchronized void updateHeading(double angle) {
+        checkRep();
         this.currentHeading = angle;
     }
     
@@ -89,6 +94,7 @@ public class Robot {
      * @return the desired heading of the robot
      */
     public double getDesiredHeading() {
+        checkRep();
         return this.desiredHeading;
     }
     
@@ -97,6 +103,7 @@ public class Robot {
      * @param desired heading desired by this Robot
      */
     public synchronized void setDesiredHeading(double desired) {
+        checkRep();
         this.desiredHeading = desired;
     }
 
@@ -107,7 +114,13 @@ public class Robot {
      *            the new value for the Robot heading
      */
     public synchronized void setHeading(double angle) {
+        checkRep();
         this.currentHeading = angle;
+    }
+    
+    public Map<Sensor, Double> getSensorMap() {
+        checkRep();
+        return this.sensorHeadings;
     }
 
     /**
@@ -119,14 +132,21 @@ public class Robot {
      */
     public double getSensorHeading(Sensor sensor) {
         double angle = sensorHeadings.get(sensor);
+        checkRep();
         return angle;
+    }
+    
+    public List<Sensor> getSensors() {
+        checkRep();
+        return this.sensors;
     }
 
     /**
-     * @return the current speed of the robot
+     * @return the current speed of the robot (motor bias)
      */
     public double getSpeed() {
-        return 0.0;
+        checkRep();
+        return motors.get(0).getSpeed();
     }
 
     /**
@@ -136,7 +156,9 @@ public class Robot {
      *            double in range [0.0, 1.0]
      */
     public void setVelocity(double speed) {
-
+        motors.get(0).setSpeed(speed);
+        motors.get(1).setSpeed(speed);
+        checkRep();
     }
 
     /**
@@ -144,6 +166,7 @@ public class Robot {
      */
     public double getAngularVelocity() {
         double omega = gyro.getAngularVelocity();
+        checkRep();
         return omega;
     }
 
@@ -152,7 +175,7 @@ public class Robot {
      */
     // TODO: robot parts or whole robot?
     public void action() {
-
+        checkRep();
     }
 
     /**
@@ -171,6 +194,7 @@ public class Robot {
                 closest = dist;
             }
         }
+        checkRep();
         return closest;
     }
 
@@ -194,6 +218,7 @@ public class Robot {
                 angle = dir;
             }
         }
+        checkRep();
         return angle;
     }
 
@@ -201,6 +226,7 @@ public class Robot {
      * @return the current state of the Robot
      */
     public State getState() {
+        checkRep();
         return this.state;
     }
 
@@ -212,6 +238,7 @@ public class Robot {
      */
     public void setState(State state) {
         this.state = state;
+        checkRep();
     }
 
     /**
@@ -234,24 +261,40 @@ public class Robot {
     /**
      * Searches for walls on the playing field.
      * 
-     * @param sensors
-     *            List of Sensors used to detect the walls
-     * @return a List of Walls detected by the Sensors
+     * @return the Sensor on the Robot which detects the nearest wall.
      */
-    // public List<Walls> findWall(List<Sensor> sensors);
+    public Sensor findClosestWallSensor() {
+        Sensor closestSensor = sensors.get(0);
+        double closestDistance = closestSensor.distanceToObject();
+        int length = sensors.size();
+        for (Sensor sensor : sensors.subList(1, length)) {
+            double distance = sensor.distanceToObject();
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestSensor = sensor;
+            }
+        }
+        checkRep();
+        return closestSensor;
+    }
 
     /**
      * Causes the Robot to follow and move along the closest Wall
      * 
-     * @param walls
-     *            a List of Walls on the playing field
+     * @param sensor
+     *            Sensor pointed towards the closest Wall
      */
-    // public void followWall(List<Wall> walls);
+    public void followWall(Sensor sensor) {
+        double heading = sensorHeadings.get(sensor);
+        this.setDesiredHeading(heading);
+        checkRep();
+    }
 
     /**
      * @return the radius, in inches, of this Robot
      */
     public double getRadius() {
+        checkRep();
         return this.radius;
     }
 }

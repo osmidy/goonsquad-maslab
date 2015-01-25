@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import robot.Robot;
 import robot.Robot.State;
@@ -13,13 +14,13 @@ import sensors.Sensor;
 import sensors.UltraSonicSensor;
 
 public class Main {
+    private final static Robot cokebot = makeRobot();
+    private final static ImageUtil imageUtil = new ImageUtil();
     public static void main(String[] args) {
-        // Free CokeBot!
-        Robot cokebot = makeRobot();
-        State state = cokebot.getState();
         // TODO:  when stack is hit, remove stack from list, create new cubes and add to list
         
         while (true) {
+            State state = cokebot.getState();
             if (state.equals(State.FINDWALL)) {
                 findWall();
             }
@@ -43,8 +44,12 @@ public class Main {
     }
     
     private static void findWall() {
-        // TODO Auto-generated method stub
-        
+        boolean wallFound = false;
+        while (!wallFound) {
+            Sensor wallSensor = cokebot.findClosestWallSensor();
+            cokebot.followWall(wallSensor);
+            
+        }
     }
 
     private static void followAndSearch() {
