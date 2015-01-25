@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -31,7 +32,7 @@ public class ImageUtil {
         double pixelsPerDegree = width / thetaX; // Horizontal direction
         double radiansToDegrees = 180 / Math.PI;
         double radiansX = thetaX / radiansToDegrees;
-        double arctanHalfX = Math.atan(thetaX/2);
+        double arctanHalfX = Math.atan(thetaX / 2);
         double focalLength = width * 0.5 / arctanHalfX;
 
         // Setup the camera
@@ -45,7 +46,9 @@ public class ImageUtil {
         // Set up structures for processing images
         ImageProcessor processor = new ImageProcessor();
         ObjectFinder finder = new ObjectFinder();
-        Mat rawImage = Highgui.imread("/home/osmidy/pic4.jpg");//new Mat();
+        Scanner input = new Scanner(System.in);
+        String file = input.nextLine();
+        Mat rawImage = new Mat();  // Highgui.imread("/home/osmidy/" + file + ".jpg");
         Mat resizedImage = new Mat();
         Mat processedImage = new Mat();
         Mat2Image rawImageConverter = new Mat2Image(
@@ -53,40 +56,40 @@ public class ImageUtil {
         Mat2Image processedImageConverter = new Mat2Image(
                 BufferedImage.TYPE_3BYTE_BGR);
 
-        // while (true) {
-        // // Wait until the camera has a new frame
-        // while (!camera.read(rawImage)) {
-        // try {
-        // Thread.sleep(1);
-        // } catch (InterruptedException e) {
-        // e.printStackTrace();
-        // }
-        // }
+        while (true) {
+            // Wait until the camera has a new frame
+            while (!camera.read(rawImage)) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 
-        Imgproc.resize(rawImage, resizedImage, new Size(width, height)); // Halves
-                                                                         // resolution
-        processor.process(resizedImage, processedImage);
+            Imgproc.resize(rawImage, resizedImage, new Size(width, height)); // Halves resolution
+            processor.process(resizedImage, processedImage);
 
-        // Find objects in processedImage
-        // 1. check pixels
-        // 2. check surrounding pixels for color/object match (flood fill?)
-        // 3. if match, get take pixel(center), convert to location for robot to
-        // travel to
+            // Find objects in processedImage
+            // 1. check pixels
+            // 2. check surrounding pixels for color/object match (flood fill?)
+            // 3. if match, get take pixel(center), convert to location for
+            // robot to
+            // travel to
 
-        List<int[]> blocks = finder.findBlocks(processedImage);
-        for (int[] block : blocks) {
-            System.out.println(Arrays.toString(block));
+            List<int[]> blocks = finder.findBlocks(processedImage);
+            for (int[] block : blocks) {
+                System.out.println(Arrays.toString(block));
+            }
+
+            // Update the GUI windows
+            updateWindow(cameraPane, resizedImage, rawImageConverter);
+            updateWindow(opencvPane, processedImage, processedImageConverter);
+
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+            }
         }
-
-        // Update the GUI windows
-        updateWindow(cameraPane, resizedImage, rawImageConverter);
-        updateWindow(opencvPane, processedImage, processedImageConverter);
-
-        // try {
-        // Thread.sleep(10);
-        // } catch (InterruptedException e) {
-        // }
-        // }
     }
 
     private static JLabel createWindow(String name, int width, int height) {

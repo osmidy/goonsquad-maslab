@@ -38,34 +38,33 @@ public class ObjectFinder {
                 }
             }
         }
-//        int[] firstPixel = queue.poll();
-//        int totalX = firstPixel[0];
-//        int totalY = firstPixel[1];
-//        int count = 1;
-//        int length = queue.size();
-//        for (int i = 0; i < length; i++) {
-//            int[] pixel = queue.get(i);
-//            int[] nextPixel;
-//            if (i + 1 >= length) {
-//                nextPixel = pixel;
-//            } else {
-//                nextPixel = queue.get(i + 1);
-//            }
-//            int x = pixel[0];
-//            int y = pixel[1];
-//            int nextX = nextPixel[0];
-//            int nextY = nextPixel[1];
-//            totalX += x;
-//            totalY += y;
-//            count++;
-//            if (Math.abs(nextX - x) > 1 && Math.abs(nextY - y) > 1) {
-//                blocks.add(new int[] { totalX / count, totalY / count });
-//                totalX = 0;
-//                totalY = 0;
-//                count = 0;
-//            }
-//        }
-        blocks = queue;
+        int[] firstPixel = queue.poll();
+        int totalX = firstPixel[0];
+        int totalY = firstPixel[1];
+        int count = 1;
+        int length = queue.size();
+        for (int i = 0; i < length; i++) {
+            int[] currentPixel = queue.get(i);
+            int[] nextPixel;
+            if (i + 1 == length) {
+                nextPixel = currentPixel;
+            } else {
+                nextPixel = queue.get(i + 1);
+            }
+            int currentX = currentPixel[0];
+            int currentY = currentPixel[1];
+            int nextX = nextPixel[0];
+            int nextY = nextPixel[1];
+            totalX += currentX;
+            totalY += currentY;
+            count++;
+            if ((Math.abs(nextX - currentX)) > 10 && (Math.abs(nextY - currentY) > 10) || i + 1 == length) {
+                blocks.add(new int[] { totalX / count, totalY / count });
+                totalX = 0;
+                totalY = 0;
+                count = 0;
+            }
+        }
         return blocks;
     }
 

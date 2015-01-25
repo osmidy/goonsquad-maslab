@@ -8,7 +8,7 @@ import org.opencv.core.Size;
 
 public class ImageTest {
     public static void main(String[] args) {
-        ImageReturn("C:/Users/George/Dropbox (MIT)/MASLAB/newImages/2015-01-20-144240.jpg");       
+        ImageReturn("/home/osmidy/test.jpg");       
     }
     
     public static void ImageReturn(String filename) {
@@ -17,11 +17,11 @@ public class ImageTest {
         // Mat scaledImg = new Mat();
         int count = 0;
         // Imgproc.resize(img,scaledImg ,new Size(320, 240)); 
-        for (int row = 176 ; row < 220; row++) {
-            for (int col = 320 ; col < 500; col++) {
+        for (int row = 167 ; row < 303; row++) {
+            for (int col = 204 ; col < 305; col++) {
                 // if (!(((row > 304) && (row < 356)) && ((col > 630) && (col < 668)))) {
                 count++;
-                System.out.println(img.get(row,col)[0]);
+                System.out.println(img.get(row,col)[2]);
                 // System.out.println("Count:" + count);
                 // }
             }
