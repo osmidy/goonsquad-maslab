@@ -34,8 +34,9 @@ public class Robot {
     private final Map<Sensor, Double> sensorHeadings;
     private final Gyroscope gyro;
 
-    private double heading = 0.0;
-    private final double radius = 9.0;
+    private double currentHeading = 0.0;
+    private double desiredHeading = 0.0;
+    private final double radius = 7.5;
     private State state = State.FINDWALL;
 
     public enum State {
@@ -72,8 +73,31 @@ public class Robot {
      * 
      * @return the heading, in radians, of the Robot
      */
-    public double getHeading() {
-        return this.heading;
+    public double getCurrentHeading() {
+        return this.currentHeading;
+    }
+    
+    /**
+     * Updates the current heading of this Robot
+     * @param angle the new heading
+     */
+    public synchronized void updateHeading(double angle) {
+        this.currentHeading = angle;
+    }
+    
+    /**
+     * @return the desired heading of the robot
+     */
+    public double getDesiredHeading() {
+        return this.desiredHeading;
+    }
+    
+    /**
+     * Updates the desired heading for this Robot
+     * @param desired heading desired by this Robot
+     */
+    public synchronized void setDesiredHeading(double desired) {
+        this.desiredHeading = desired;
     }
 
     /**
@@ -83,7 +107,7 @@ public class Robot {
      *            the new value for the Robot heading
      */
     public synchronized void setHeading(double angle) {
-        this.heading = angle;
+        this.currentHeading = angle;
     }
 
     /**
