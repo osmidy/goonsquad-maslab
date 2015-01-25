@@ -15,7 +15,7 @@ public class TestStayStraight {
         int dirPinLeft = 8;
         int pwmPinRight = 3;
         int dirPinRight = 4;
-        double desired = 90.0;
+        double desired = 40.0;
 
         Motor leftMotor = new Motor(pwmPinLeft, dirPinLeft, leftForward,
                 leftReverse);
