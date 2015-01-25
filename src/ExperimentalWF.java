@@ -39,7 +39,7 @@ public class ExperimentalWF {
         double bias = 0.2;
         double p = 0.5;
         double i = 0.005; // .005 // 0.01;
-        double d = 0.5;// .3 // 0.7
+        double d = 0.8; //0.5;// .3 // 0.7
         double integral = 0;
         double derivative = 0;
         double sideSep = sideSensor.distanceToObject();
@@ -79,7 +79,7 @@ public class ExperimentalWF {
                 // leftMotor.setSpeed(0.25); // .23 // .25
                 // rightMotor.setSpeed(0.1); // .1
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(150);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -107,7 +107,7 @@ public class ExperimentalWF {
                     // leftMotor.setSpeed(0.25); // .23 // .25
                     // rightMotor.setSpeed(0.1); // .1
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(200);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -161,7 +161,11 @@ public class ExperimentalWF {
                 }
 
                 double power = p * diff + i * integral + d * derivative;
-                bias = 0.15;
+                bias = 0.2; //0.15;
+//                if (diagonalSep < 0.4){
+//                	bias = 0.1;
+//                	power = power - ((diagonalSep-0.4)/8);
+//                }
                 leftMotor.setSpeed(bias - power);
                 rightMotor.setSpeed(bias + power);
                 begin = end;
@@ -174,7 +178,7 @@ public class ExperimentalWF {
                 // // double c = -3/10;
                 // // double newBias = a*frontSep*frontSep + b*frontSep + c;
                 // double newBias = (frontSep - 0.2);
-                // leftMotor.setSpeed(newBias + 0.05);
+                // leftMotor.setSpeed(newBias + 0.05);./ze
                 // rightMotor.setSpeed(newBias - 0.05);
                 // try {
                 // Thread.sleep(30);
