@@ -163,7 +163,7 @@ public class ExperimentalWF {
                 double power = p * diff + i * integral + d * derivative;
                 bias = 0.15;
                 if (diagonalSep < 0.45){
-                	bias = diagonalSep - 0.3;
+                	bias = 0.08;
                 	//power = power - ((diagonalSep-0.45)/4.5);
                 }
                 leftMotor.setSpeed(bias - power);
