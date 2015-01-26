@@ -32,8 +32,10 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube(
 	}
 	int greenCount = 0;
 	int redCount = 0;
+	//printf("C++ Before: %d, %d, %d\n", notCenter, redCenter, greenCenter);
 	for (int i = y - radius; i >= 0 && i < y + radius; i++) {
 		for (int j = x - radius; j >= 0 && j < x + radius; j++) {
+			//printf("C++ During: %d, %d, %d\n", notCenter, redCenter, greenCenter);
 			// Will change for specific color cubes; for now take red and green
 			int val0 = image->data[channels * (image->cols * i + j) + 0];
 			int val1 = image->data[channels * (image->cols * i + j) + 1];
@@ -46,11 +48,15 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube(
 			}
 		}
 	}
+	//printf("C++ After: %d, %d, %d\n", notCenter, redCenter, greenCenter);
+	//printf("GREEn: %d, RED: %d, AREA: %f\n", greenCount, redCount, minimumArea);
 	if ((redCount > 0)
-			&& (minimumArea > redCount >= (minimumArea * threshold))) {
+			&& ((minimumArea) > redCount && redCount >= (minimumArea * threshold))) {
 		cubeCenter = redCenter;
-	} else if ((greenCount > 0)
-			&& (minimumArea > greenCount >= (minimumArea * threshold))) {
+	}
+
+	if ((greenCount > 0)
+			&& ((minimumArea) > greenCount && greenCount >= (minimumArea * threshold))) {
 		cubeCenter = greenCenter;
 	}
 	return (jint) cubeCenter;
