@@ -28,7 +28,8 @@ public class ImageUtil {
     private static final double radiansX = thetaX / radiansToDegrees;
     private static final double tanHalfX = Math.tan(thetaX / 2);
     private static final double focalLength = width * 0.5 / tanHalfX;
-    private static List<int[]> cubeCenters = new ArrayList<int[]>();
+    private static List<int[]> redCenters = new ArrayList<int[]>();
+    private static List<int[]> greenCenters = new ArrayList<int[]>();
 
     /**
      * Main method
@@ -45,7 +46,6 @@ public class ImageUtil {
 
         // Set up structures for processing images
         ImageProcessor processor = new ImageProcessor();
-        ObjectFinder finder = new ObjectFinder();
         // Scanner input = new Scanner(System.in);
         // String file = input.nextLine();
         Mat rawImage = new Mat();// Highgui.imread("C:/Users/George/Dropbox (MIT)/goonsquad-maslab/src/imageprocessing/test-images/center.jpg");//new
@@ -71,9 +71,15 @@ public class ImageUtil {
             Imgproc.resize(rawImage, resizedImage, new Size(width, height)); // Halves
                                                                              // resolution
             processor.process(resizedImage, processedImage);
-            cubeCenters = finder.findCubes(processedImage);
-            for (int[] center : cubeCenters) {
-                System.out.println(Arrays.toString(center));
+            ObjectFinder finder = new ObjectFinder(processedImage);
+            redCenters = finder.getRedCubes();
+            greenCenters = finder.getGreenCubes();
+            
+            for (int[] center : redCenters) {
+                System.out.println("RED: " + Arrays.toString(center));
+            }
+            for (int[] x : greenCenters) {
+                System.out.println("GREEN: " + Arrays.toString(x));
             }
             // Update the GUI windows
             updateWindow(cameraPane, resizedImage, rawImageConverter);
@@ -87,12 +93,12 @@ public class ImageUtil {
     }
     
     public List<int[]> getCubeCenters() {
-        List<int[]> list = cubeCenters;
+        List<int[]> list = redCenters;
         return list;
     }
 
     /**
-     * @param cubeCenters
+     * @param redCenters
      * @return Image representation of the cube
      */
     public synchronized ImageCube getClosestCube() {
@@ -100,7 +106,7 @@ public class ImageUtil {
         int x = 0;
         int y = 0;
         double heading;
-        for (int[] pixel : cubeCenters) {
+        for (int[] pixel : redCenters) {
             y = pixel[1];
             double distance = 2129 * Math.pow(y, -0.876); // Equation from
                                                           // camera calibration

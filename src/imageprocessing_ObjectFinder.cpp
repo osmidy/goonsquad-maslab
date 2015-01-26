@@ -23,9 +23,9 @@ JNIEXPORT jboolean JNICALL Java_imageprocessing_ObjectFinder_checkCube(
 	// Check surrounding pixels; assume shape is roughly square
 	double radius = .5 * pow(minimumArea, .5);
 	if (x < radius || x > width - radius) {
-		threshold = 0.5;
+		threshold = 0.4;
 	} else {
-		threshold = 0.99;
+		threshold = 0.8;
 	}
 	int greenCount = 0;
 	int redCount = 0;
@@ -38,13 +38,16 @@ JNIEXPORT jboolean JNICALL Java_imageprocessing_ObjectFinder_checkCube(
 			// if green or red
 			if ((val0 == 0) && (val1 == 255) && (val2 == 0)) {
 				greenCount++;
-			}
-			else if ((val0 == 0) && (val1 == 0) && (val2 == 255)) {
+			} else if ((val0 == 0) && (val1 == 0) && (val2 == 255)) {
 				redCount++;
 			}
 		}
 	}
-	if ((((minimumArea > greenCount >= (minimumArea * threshold) || (minimumArea > redCount >= (minimumArea * threshold))) && count != 0)) {
+	if ((redCount > 0)
+			&& (minimumArea > redCount >= (minimumArea * threshold))) {
+		cubeCenter = true;
+	} else if ((greenCount > 0)
+			&& (minimumArea > greenCount >= (minimumArea * threshold))) {
 		cubeCenter = true;
 	}
 	return (jboolean) cubeCenter;
