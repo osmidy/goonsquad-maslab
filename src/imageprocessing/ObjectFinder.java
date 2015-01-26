@@ -41,7 +41,6 @@ public class ObjectFinder {
     public synchronized void findCubes() {
         int rows = image.rows();
         int cols = image.cols();
-        System.out.println("JAVA: " + notCenter + ", " + redCenter + ", " + greenCenter);
         long pointer = image.getNativeObjAddr();
         for (int y = 0; y < rows; y += 5) {
             for (int x = 0; x < cols; x += 5) {

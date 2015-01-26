@@ -48,8 +48,6 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube(
 			}
 		}
 	}
-	//printf("C++ After: %d, %d, %d\n", notCenter, redCenter, greenCenter);
-	//printf("GREEn: %d, RED: %d, AREA: %f\n", greenCount, redCount, minimumArea);
 	if ((redCount > 0)
 			&& ((minimumArea) > redCount && redCount >= (minimumArea * threshold))) {
 		cubeCenter = redCenter;
