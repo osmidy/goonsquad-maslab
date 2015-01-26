@@ -61,7 +61,7 @@ public class ObjectFinder {
             totalX += currentX;
             totalY += currentY;
             count++;
-            if ((Math.abs(nextX - currentX)) > 5 && (Math.abs(nextY - currentY) > 3) || i + 1 == length) {
+            if ((Math.abs(nextX - currentX)) > 15 && (Math.abs(nextY - currentY) > 15) || i + 1 == length) {
                 blocks.add(new int[] { totalX / count, totalY / count });
                 totalX = 0;
                 totalY = 0;
