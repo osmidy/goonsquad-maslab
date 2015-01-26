@@ -23,11 +23,12 @@ JNIEXPORT jboolean JNICALL Java_imageprocessing_ObjectFinder_checkCube(
 	// Check surrounding pixels; assume shape is roughly square
 	double radius = .5 * pow(minimumArea, .5);
 	if (x < radius || x > width - radius) {
-		threshold = 0.4;
+		threshold = 0.5;
 	} else {
-		threshold = 0.8;
+		threshold = 0.99;
 	}
-	int count = 0;
+	int greenCount = 0;
+	int redCount = 0;
 	for (int i = y - radius; i >= 0 && i < y + radius; i++) {
 		for (int j = x - radius; j >= 0 && j < x + radius; j++) {
 			// Will change for specific color cubes; for now take red and green
@@ -35,13 +36,15 @@ JNIEXPORT jboolean JNICALL Java_imageprocessing_ObjectFinder_checkCube(
 			int val1 = image->data[channels * (image->cols * i + j) + 1];
 			int val2 = image->data[channels * (image->cols * i + j) + 2];
 			// if green or red
-			if (((val0 == 0) && (val1 == 255) && (val2 == 0))
-					|| ((val0 == 0) && (val1 == 0) && (val2 == 255))) {
-				count++;
+			if ((val0 == 0) && (val1 == 255) && (val2 == 0)) {
+				greenCount++;
+			}
+			else if ((val0 == 0) && (val1 == 0) && (val2 == 255)) {
+				redCount++;
 			}
 		}
 	}
-	if (count >= (minimumArea * threshold) && count != 0) {
+	if ((((minimumArea > greenCount >= (minimumArea * threshold) || (minimumArea > redCount >= (minimumArea * threshold))) && count != 0)) {
 		cubeCenter = true;
 	}
 	return (jboolean) cubeCenter;

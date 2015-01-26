@@ -13,9 +13,9 @@ JNIEXPORT void JNICALL Java_imageprocessing_ImageProcessor_process
 	Mat* image = (Mat*)pointer;
 
 	float rgRatio = 1.8f; //1.5f; // 1.8f;
-	float rbRatio = 2.0f; //1.3f; // 1.7f;
-	float gbRatio = 1.0f;
-	float grRatio = 1.4f;
+	float rbRatio = 1.7f; //1.3f; // 1.7f;
+	float gbRatio = 1.3f;
+	float grRatio = 1.7f;
 	float bgRatio = 1.3f;
 	float brRatio = 2.1f;
 	float rgYellowRatio = 1.05f;
