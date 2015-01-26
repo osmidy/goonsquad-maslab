@@ -23,8 +23,8 @@ public class StayStraightPID implements PID {
     private final Gyroscope gyro;
     private final Robot robot;
     
-    private final double desiredHeading = 0;
-    private final double currentHeading = 0;
+    private double desiredHeading = 0;
+    private double currentHeading = 0;
     
     public StayStraightPID(File file, Robot robot, Motor leftMotor, Motor rightMotor, Gyroscope gyro) throws IOException {
         BufferedReader read = new BufferedReader(new FileReader(file));
@@ -49,7 +49,7 @@ public class StayStraightPID implements PID {
         this.rightMotor = rightMotor;
         this.gyro = gyro;
         this.desiredHeading = robot.getDesiredHeading();
-        this.currentHeading = robot.getCurrentHeading()
+        this.currentHeading = robot.getCurrentHeading();
     }
 
     @Override
