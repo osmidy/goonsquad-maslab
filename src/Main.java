@@ -34,20 +34,15 @@ public class Main {
             State state = cokebot.getState();
             if (state.equals(State.FINDWALL)) {
                 findWall();
-            }
-            if (state.equals(State.WALLFOLLOW)) {
+            } else if (state.equals(State.WALLFOLLOW)) {
                 followAndSearch();
-            }
-            if (state.equals(State.DRIVETOCUBE)) {
+            } else if (state.equals(State.DRIVETOCUBE)) {
                 driveToCube();
-            }
-            if (state.equals(State.COLLECTCUBE)) {
+            } else if (state.equals(State.COLLECTCUBE)) {
                 collectCube();
-            }
-            if (state.equals(State.FINDDROPZONE)) {
+            } else if (state.equals(State.FINDDROPZONE)) {
                 findDropZone();
-            }
-            if (state.equals(State.DROPSTACK)) {
+            } else if (state.equals(State.DROPSTACK)) {
                 dropStack();
             }
             sleep(30);
