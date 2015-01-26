@@ -136,6 +136,11 @@ public class Robot {
         return angle;
     }
     
+    public synchronized Gyroscope getGyro() {
+        checkRep();
+        return this.gyro;
+    }
+    
     public synchronized List<Sensor> getSensors() {
         checkRep();
         return this.sensors;

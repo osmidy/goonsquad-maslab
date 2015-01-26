@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import PID.StayStraightPID;
 import PID.WallFollowPID;
 import robot.Robot;
 import robot.Robot.State;
@@ -82,7 +83,7 @@ public class Main {
         Thread findCube = new Thread(new Runnable() {
             public void run() {
                 while (!cubeFound.get()) {
-                    List<int[]> centers = imageUtil.getCubeCenters();
+                    List<int[]> centers = imageUtil.getGreenCenters(); // TODO: desired color field
                     if (!centers.isEmpty()) {
                         ImageCube closestCube = imageUtil.getClosestCube();
                         double newDesiredHeading = closestCube.getHeading();
@@ -105,7 +106,95 @@ public class Main {
         cokebot.setState(State.DRIVETOCUBE);
     }
 
-    private static void driveToCube() {
+    private static void driveToCube() throws IOException {
+        List<Motor> motors = cokebot.getMotors();
+        List<Sensor> sensors = cokebot.getSensors();
+        Motor leftMotor = motors.get(0);
+        Motor rightMotor = motors.get(1);
+        Gyroscope gyro = cokebot.getGyro();
+//        StayStraightPID pid = new StayStraightPID(new File("StayStraightPID.conf"), cokebot, leftMotor, rightMotor, gyro);
+//        Thread thread = pid.thread();
+//        thread.start();
+        Thread getHeading = new Thread(new Runnable() {
+            public void run() {
+                double heading = cokebot.getCurrentHeading();
+                long start = System.currentTimeMillis();
+                while (true) {
+                    long end = System.currentTimeMillis();
+                    double deltaT = .001 * (end - start); // from milli to sec
+                    double omega = gyro.getAngularVelocity();
+                    double bias = ((.11 * end) - .3373);
+                    double prevBias = ((.11 * start) - .3373);
+                    double total = (omega - (bias - prevBias)) * deltaT;
+                    heading += total;
+                    start = end;
+                    cokebot.setHeading(heading);
+                }
+            }
+
+        });
+
+        // Initial Settings
+        getHeading.start();
+        double motorBias = 0.2;
+        double p = .012;
+        double i = .0005;
+        double d = .03;
+        long begin = System.currentTimeMillis();
+        double integral = 0;
+        double derivative = 0;
+        double prevDiff = 0;
+        leftMotor.setSpeed(motorBias);
+        rightMotor.setSpeed(motorBias);
+
+        // Main loop with PID control implemented
+        outerloop: while (true) {
+            double desired = cokebot.getDesiredHeading();
+            double heading = cokebot.getCurrentHeading();
+            double diff = desired - heading;          
+            long finish = System.currentTimeMillis();
+            double deltaT = .001 * (finish - begin); // from milli to sec
+            integral += diff * deltaT;
+            begin = finish;
+            derivative = diff - prevDiff;
+            prevDiff = diff;
+            if (integral > 500) {
+                integral = 500;
+            }
+            double power = p * diff + i * integral + d * derivative;
+            leftMotor.setSpeed(motorBias + power);
+            rightMotor.setSpeed(motorBias - power);
+            System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
+                    + rightMotor.getSpeed() + " Heading: " + heading);
+            System.out.println("Diff" + p * diff + "Integral: " + i * integral + "Derivative: " + d * derivative + "Power: " + power);
+            try {
+                Thread.sleep(33);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            CameraSensor camera = (CameraSensor) sensors.get(2);
+            double distanceIN = camera.distanceToObject();
+            double distance = distanceIN * 2.54; //in to cm
+            if (distance <= 20) {
+                leftMotor.setSpeed(.1);
+                rightMotor.setSpeed(.1);
+                sleep(1000);
+                break outerloop;
+            }
+            
+            long fin = System.currentTimeMillis();
+            // if ((fin - current) >= 10000) {
+            //    leftMotor.setSpeed(0);
+            //    rightMotor.setSpeed(0);
+            //    break outerloop;
+            // }
+            // }
+        }
+        getHeading.interrupt();
+        sleep(30);
+        cokebot.setState(State.FINDWALL);
+        
 
     }
 

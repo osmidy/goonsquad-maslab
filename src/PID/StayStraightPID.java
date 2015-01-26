@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import robot.Robot;
 import robotparts.Gyroscope;
 import robotparts.Motor;
 
@@ -20,8 +21,12 @@ public class StayStraightPID implements PID {
     private final Motor leftMotor;
     private final Motor rightMotor;
     private final Gyroscope gyro;
+    private final Robot robot;
     
-    public StayStraightPID(File file, Motor leftMotor, Motor rightMotor, Gyroscope gyro) throws IOException {
+    private final double desiredHeading = 0;
+    private final double currentHeading = 0;
+    
+    public StayStraightPID(File file, Robot robot, Motor leftMotor, Motor rightMotor, Gyroscope gyro) throws IOException {
         BufferedReader read = new BufferedReader(new FileReader(file));
         for (String line = read.readLine(); line != null; line = read
                 .readLine()) {
@@ -39,9 +44,12 @@ public class StayStraightPID implements PID {
             }
         }
         
+        this.robot = robot;
         this.leftMotor = leftMotor;
         this.rightMotor = rightMotor;
         this.gyro = gyro;
+        this.desiredHeading = robot.getDesiredHeading();
+        this.currentHeading = robot.getCurrentHeading()
     }
 
     @Override
