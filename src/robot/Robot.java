@@ -76,7 +76,7 @@ public class Robot {
      * 
      * @return the heading, in radians, of the Robot
      */
-    public double getCurrentHeading() {
+    public synchronized double getCurrentHeading() {
         checkRep();
         return this.currentHeading;
     }
@@ -93,7 +93,7 @@ public class Robot {
     /**
      * @return the desired heading of the robot
      */
-    public double getDesiredHeading() {
+    public synchronized double getDesiredHeading() {
         checkRep();
         return this.desiredHeading;
     }
@@ -118,7 +118,7 @@ public class Robot {
         this.currentHeading = angle;
     }
     
-    public Map<Sensor, Double> getSensorMap() {
+    public synchronized Map<Sensor, Double> getSensorMap() {
         checkRep();
         return this.sensorHeadings;
     }
@@ -130,15 +130,20 @@ public class Robot {
      *            Sensor mounted on the robot
      * @return the heading, in degrees, of the Sensor
      */
-    public double getSensorHeading(Sensor sensor) {
+    public synchronized double getSensorHeading(Sensor sensor) {
         double angle = sensorHeadings.get(sensor);
         checkRep();
         return angle;
     }
     
-    public List<Sensor> getSensors() {
+    public synchronized List<Sensor> getSensors() {
         checkRep();
         return this.sensors;
+    }
+    
+    public synchronized List<Motor> getMotors() {
+        checkRep();
+        return this.motors;
     }
 
     /**

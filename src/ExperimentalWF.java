@@ -39,7 +39,7 @@ public class ExperimentalWF {
         double bias = 0.2;
         double p = 0.5;
         double i = 0.005; // .005 // 0.01;
-        double d = 1.3; //0.08 //0.5;// .3 // 0.7
+        double d = 1.3; // 0.08 //0.5;// .3 // 0.7
         double integral = 0;
         double derivative = 0;
         double sideSep = sideSensor.distanceToObject();
@@ -71,7 +71,7 @@ public class ExperimentalWF {
             diagonalSep = diagonalSensor.distanceToObject();
             sideSep = sideSensor.distanceToObject();
 
-            if ((diagonalSep < 0.25) && (sideSep < 0.25)) { //diagonalSep < 0.3
+            if ((diagonalSep < 0.25) && (sideSep < 0.25)) { // diagonalSep < 0.3
                 System.out.println("(1,1)" + "(" + sideSep + "," + diagonalSep
                         + ")");
                 leftMotor.setSpeed(0.1);
@@ -86,7 +86,8 @@ public class ExperimentalWF {
                 }
             }
 
-            else if ((diagonalSep < 0.25) && (sideSep >= 0.25)) { //diagonalSep < 0.3
+            else if ((diagonalSep < 0.25) && (sideSep >= 0.25)) { // diagonalSep
+                                                                  // < 0.3
                 System.out.println("(0,1)" + "(" + sideSep + "," + diagonalSep
                         + ")");
                 if (diagonalSep < 0.1) {
@@ -102,8 +103,8 @@ public class ExperimentalWF {
                     }
 
                 } else {
-                    leftMotor.setSpeed(0.05); //0.05
-                    rightMotor.setSpeed(0.1); //0.1
+                    leftMotor.setSpeed(0.05); // 0.05
+                    rightMotor.setSpeed(0.1); // 0.1
                     // leftMotor.setSpeed(0.25); // .23 // .25
                     // rightMotor.setSpeed(0.1); // .1
                     try {
@@ -148,8 +149,7 @@ public class ExperimentalWF {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-            }
-            else {
+            } else {
                 long end = System.currentTimeMillis();
                 double diff = sideSep - desired;
                 double deltaT = .001 * (end - begin);
@@ -161,11 +161,11 @@ public class ExperimentalWF {
                 }
 
                 double power = p * diff + i * integral + d * derivative;
-                bias = 0.2; //0.15;
-//                if (diagonalSep < 0.4){
-//                	bias = 0.1;
-//                	power = power - ((diagonalSep-0.4)/8);
-//                }
+                bias = 0.2; // 0.15;
+                // if (diagonalSep < 0.4){
+                // bias = 0.1;
+                // power = power - ((diagonalSep-0.4)/8);
+                // }
                 leftMotor.setSpeed(bias - power);
                 rightMotor.setSpeed(bias + power);
                 begin = end;

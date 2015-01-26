@@ -24,7 +24,7 @@ public class ObjectFinder {
      *            Mat object representing the image to examine
      * @return a List of the center pixels of blocks in the image
      */
-    public synchronized List<int[]> findBlocks(Mat image) {
+    public synchronized List<int[]> findCubes(Mat image) {
         List<int[]> blocks = new ArrayList<int[]>();
         LinkedList<int[]> queue = new LinkedList<int[]>();
         int rows = image.rows();

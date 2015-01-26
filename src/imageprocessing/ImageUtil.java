@@ -2,9 +2,9 @@ package imageprocessing;
 
 import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -13,7 +13,6 @@ import javax.swing.JLabel;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
-import org.opencv.highgui.Highgui;
 import org.opencv.highgui.VideoCapture;
 import org.opencv.imgproc.Imgproc;
 
@@ -29,6 +28,7 @@ public class ImageUtil {
     private static final double radiansX = thetaX / radiansToDegrees;
     private static final double tanHalfX = Math.tan(thetaX / 2);
     private static final double focalLength = width * 0.5 / tanHalfX;
+    private static List<int[]> cubeCenters = new ArrayList<int[]>();
 
     /**
      * Main method
@@ -57,7 +57,6 @@ public class ImageUtil {
                 BufferedImage.TYPE_3BYTE_BGR);
         Mat2Image processedImageConverter = new Mat2Image(
                 BufferedImage.TYPE_3BYTE_BGR);
-        List<int[]> cubeCenters;
 
         while (true) {
             // Wait until the camera has a new frame
@@ -72,7 +71,7 @@ public class ImageUtil {
             Imgproc.resize(rawImage, resizedImage, new Size(width, height)); // Halves
                                                                              // resolution
             processor.process(resizedImage, processedImage);
-            cubeCenters = finder.findBlocks(processedImage);
+            cubeCenters = finder.findCubes(processedImage);
             for (int[] center : cubeCenters) {
                 System.out.println(Arrays.toString(center));
             }
@@ -86,33 +85,41 @@ public class ImageUtil {
             }
         }
     }
+    
+    public List<int[]> getCubeCenters() {
+        List<int[]> list = cubeCenters;
+        return list;
+    }
 
     /**
      * @param cubeCenters
-     * @return center pixel of closest cube
+     * @return Image representation of the cube
      */
-    public int[] findClosestCube(List<int[]> cubeCenters) {
-        int[] closestCenter = cubeCenters.get(0);
+    public synchronized ImageCube getClosestCube() {
         double closestDistance = Double.MAX_VALUE;
+        int x = 0;
+        int y = 0;
+        double heading;
         for (int[] pixel : cubeCenters) {
-            double y = pixel[1];
+            y = pixel[1];
             double distance = 2129 * Math.pow(y, -0.876); // Equation from
                                                           // camera calibration
             if (distance < closestDistance) {
                 closestDistance = distance;
-                closestCenter = pixel;
+                x = pixel[0];
+                y = pixel[1];
             }
         }
-        return closestCenter;
+        heading = getClosestCubeHeading(x);
+        return new ImageCube(x, y, closestDistance, heading);
     }
 
     /**
-     * @param center
-     *            of closest Cube
+     * @param x
+     *            horizontal center coordinate of closest Cube
      * @return the heading, in degrees, of the cube
      */
-    public double getClosestCubeHeading(int[] center) {
-        double x = center[0];
+    private synchronized double getClosestCubeHeading(int x) {
         double halfWidth = width * .5;
         double heading = Math.atan((x - halfWidth) / focalLength);
         return heading;

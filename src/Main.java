@@ -1,26 +1,30 @@
+import imageprocessing.ImageCube;
 import imageprocessing.ImageUtil;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import PID.WallFollowPID;
 import robot.Robot;
 import robot.Robot.State;
 import robotparts.Gyroscope;
 import robotparts.Motor;
 import robotparts.Servo;
+import sensors.CameraSensor;
 import sensors.IRSensor;
 import sensors.Sensor;
 import sensors.UltraSonicSensor;
 
 public class Main {
+    // Free Cokebot!
     private final static Robot cokebot = makeRobot();
     private final static ImageUtil imageUtil = new ImageUtil();
-    public static void main(String[] args) {
-        // Enter the Squadbot
-        Robot squadbot = makeRobot();
+    
+    public static void main(String[] args) throws IOException {
         // TODO:  when stack is hit, remove stack from list, create new cubes and add to list
         
         while (true) {
@@ -43,6 +47,7 @@ public class Main {
             if (state.equals(State.DROPSTACK)) {
                 dropStack();
             }
+            sleep(30);
         }
         
     }
@@ -52,13 +57,46 @@ public class Main {
         while (!wallFound) {
             Sensor wallSensor = cokebot.findClosestWallSensor();
             cokebot.followWall(wallSensor);
-            
+            sleep(30);
+            wallFound = true;
         }
+        sleep(30);
+        cokebot.setState(State.WALLFOLLOW);
     }
 
-    private static void followAndSearch() {
-        // TODO Auto-generated method stub
+    private static void followAndSearch() throws IOException {
+        List<Motor> motors = cokebot.getMotors();
+        List<Sensor> sensors = cokebot.getSensors();
+        Motor leftMotor = motors.get(0);
+        Motor rightMotor = motors.get(1);
+        IRSensor sideIR = (IRSensor)sensors.get(0);
+        IRSensor diagonalIR = (IRSensor)sensors.get(1);
+        WallFollowPID pid = new WallFollowPID(new File("WallFollowPID.txt"), leftMotor, rightMotor, sideIR, diagonalIR);
+        Thread pidThread = pid.thread();
+        pidThread.start();
         
+        boolean cubeFound = false;
+        CameraSensor camera = (CameraSensor)sensors.get(3);
+        Thread findCube = new Thread(new Runnable() {
+            public void run() {
+                while (!cubeFound) {
+                    List<int[]> centers = imageUtil.getCubeCenters();
+                    if (!centers.isEmpty()) {
+                        ImageCube closestCube = imageUtil.getClosestCube();
+                        double newDesiredHeading = closestCube.getHeading();
+                        sleep(30);
+                        cubeFound = true;
+                    }
+                }
+            }
+        });
+        findCube.start();
+        if (cubeFound) {
+            findCube.interrupt();
+            pidThread.interrupt();
+            sleep(30);
+        }
+        cokebot.setState(State.DRIVETOCUBE);
     }
 
     private static void driveToCube() {
@@ -79,6 +117,15 @@ public class Main {
     private static void dropStack() {
         // TODO Auto-generated method stub
         
+    }
+    
+    private static void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -113,15 +160,19 @@ public class Main {
         // Servos
 
         // Sensors
-        int frontIRPin = 0;
-        int rearIRPin = 1;
-        double frontIRHeading = -90;
-        double rearIRHeading = -90;
+        int sideIRPin = 0;
+        int diagonalIRPin = 1;
+        double sideIRHeading = -90;
+        double diagonalIRHeading = -30;
 
-        IRSensor frontIR = new IRSensor(frontIRPin);
-        IRSensor rearIR = new IRSensor(rearIRPin);
-        sensorHeadings.put(frontIR, frontIRHeading);
-        sensorHeadings.put(rearIR, rearIRHeading);
+        IRSensor sideIR = new IRSensor(sideIRPin);
+        IRSensor diagonalIR = new IRSensor(diagonalIRPin);
+        sensorHeadings.put(sideIR, sideIRHeading);
+        sensorHeadings.put(diagonalIR, diagonalIRHeading);
+        
+        CameraSensor camera = new CameraSensor(imageUtil);
+        double cameraHeading = 0.0;
+        sensorHeadings.put(camera, cameraHeading);
 
         int trigPin = 4;
         int echoPin = 7;

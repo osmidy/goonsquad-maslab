@@ -1,6 +1,6 @@
 package sensors;
 
-import fieldobject.FieldObject;
+import imageprocessing.ImageUtil;
 
 /**
  * A class providing methods for data retrieved from a physical camera. This
@@ -10,25 +10,17 @@ import fieldobject.FieldObject;
  *
  */
 public class CameraSensor implements Sensor {
-    // TODO:  use 320x240 resolutions
-    // TODO:  perspective projection falls off like 1/r (vertically)
+    private final ImageUtil imageUtil;
+    
+    public CameraSensor(ImageUtil imageUtil) {
+        this.imageUtil = imageUtil;
+    }
 
+    
+    // Will give distance of closest object in image
     @Override
     public double distanceToObject() {
         // TODO Auto-generated method stub
-        return 0;
+        return imageUtil.getClosestCube().getDistance();
     }
-    
-    /**
-     * Determines the material type of a received image.
-     * @param TBD, some type of image
-     * @return a FieldObject matching the profile of the detected object
-     */
-    public FieldObject processMaterial() {
-        return null;
-        
-    }
-
-    
-
 }

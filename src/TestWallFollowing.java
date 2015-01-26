@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public class TestWallFollowing {
     public static void main(String[] args) throws IOException {
-        File pid = new File("WallFollowPID.txt");
+        File pid = new File("WallFollowPID.conf");
         double p = 0;
         double i = 0;
         double d = 0;
