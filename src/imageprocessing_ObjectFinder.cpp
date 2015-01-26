@@ -57,9 +57,9 @@ JNIEXPORT jboolean JNICALL Java_imageprocessing_ObjectFinder_isRed
   (JNIEnv *env, jobject thisObj, jlong pointer, jint x, jint y) {
 	Mat* image = (Mat*) pointer;
 	int channels = image->channels();
-	int val0 = image->data[channels * (image->cols * i + j) + 0];
-	int val1 = image->data[channels * (image->cols * i + j) + 1];
-	int val2 = image->data[channels * (image->cols * i + j) + 2];
+	int val0 = image->data[channels * (image->cols * y + x) + 0];
+	int val1 = image->data[channels * (image->cols * y + x) + 1];
+	int val2 = image->data[channels * (image->cols * y + x) + 2];
 	bool isRed = ((val0 == 0) && (val1 == 0) && (val2 == 255));
 	return (jboolean) isRed;
 }
