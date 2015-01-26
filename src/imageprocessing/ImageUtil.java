@@ -23,17 +23,18 @@ public class ImageUtil {
     // Diagonal FOV is ~70; 56 horizontal, 42 vertical
     // Resized images have 320 horizontal pixels
     private static final double thetaX = 56;
-    private static final double pixelsPerDegree = width / thetaX; // Horizontal direction
+    private static final double pixelsPerDegree = width / thetaX; // Horizontal
+                                                                  // direction
     private static final double radiansToDegrees = 180 / Math.PI;
     private static final double radiansX = thetaX / radiansToDegrees;
     private static final double tanHalfX = Math.tan(thetaX / 2);
     private static final double focalLength = width * 0.5 / tanHalfX;
-    
+
     /**
      * Main method
      */
     public static void main(String args[]) {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load the OpenCV library        
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load the OpenCV library
         // Setup the camera
         VideoCapture camera = new VideoCapture();
         camera.open(0);
@@ -45,9 +46,11 @@ public class ImageUtil {
         // Set up structures for processing images
         ImageProcessor processor = new ImageProcessor();
         ObjectFinder finder = new ObjectFinder();
-        //Scanner input = new Scanner(System.in);
-        //String file = input.nextLine();
-        Mat rawImage = new Mat();//Highgui.imread("C:/Users/George/Dropbox (MIT)/goonsquad-maslab/src/imageprocessing/test-images/center.jpg");//new Mat();  // Highgui.imread("/home/osmidy/" + file + ".jpg");
+        // Scanner input = new Scanner(System.in);
+        // String file = input.nextLine();
+        Mat rawImage = new Mat();// Highgui.imread("C:/Users/George/Dropbox (MIT)/goonsquad-maslab/src/imageprocessing/test-images/center.jpg");//new
+                                 // Mat(); // Highgui.imread("/home/osmidy/" +
+                                 // file + ".jpg");
         Mat resizedImage = new Mat();
         Mat processedImage = new Mat();
         Mat2Image rawImageConverter = new Mat2Image(
@@ -66,13 +69,16 @@ public class ImageUtil {
                 }
             }
 
-            Imgproc.resize(rawImage, resizedImage, new Size(width, height)); // Halves resolution
+            Imgproc.resize(rawImage, resizedImage, new Size(width, height)); // Halves
+                                                                             // resolution
             processor.process(resizedImage, processedImage);
             cubeCenters = finder.findBlocks(processedImage);
-
+            for (int[] center : cubeCenters) {
+                System.out.println(Arrays.toString(center));
+            }
             // Update the GUI windows
-          updateWindow(cameraPane, resizedImage, rawImageConverter);
-          updateWindow(opencvPane, processedImage, processedImageConverter);
+            updateWindow(cameraPane, resizedImage, rawImageConverter);
+            updateWindow(opencvPane, processedImage, processedImageConverter);
 
             try {
                 Thread.sleep(10);
@@ -80,7 +86,7 @@ public class ImageUtil {
             }
         }
     }
-    
+
     /**
      * @param cubeCenters
      * @return center pixel of closest cube
@@ -90,7 +96,8 @@ public class ImageUtil {
         double closestDistance = Double.MAX_VALUE;
         for (int[] pixel : cubeCenters) {
             double y = pixel[1];
-            double distance = 2129 * Math.pow(y, -0.876);  // Equation from camera calibration
+            double distance = 2129 * Math.pow(y, -0.876); // Equation from
+                                                          // camera calibration
             if (distance < closestDistance) {
                 closestDistance = distance;
                 closestCenter = pixel;
@@ -98,14 +105,15 @@ public class ImageUtil {
         }
         return closestCenter;
     }
-    
+
     /**
-     * @param center of closest Cube
+     * @param center
+     *            of closest Cube
      * @return the heading, in degrees, of the cube
      */
     public double getClosestCubeHeading(int[] center) {
         double x = center[0];
-        double halfWidth = width *.5;
+        double halfWidth = width * .5;
         double heading = Math.atan((x - halfWidth) / focalLength);
         return heading;
     }

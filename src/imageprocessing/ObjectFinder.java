@@ -30,8 +30,8 @@ public class ObjectFinder {
         int rows = image.rows();
         int cols = image.cols();
         long pointer = image.getNativeObjAddr();
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < cols; x++) {
+        for (int y = 0; y < rows; y += 5) {
+            for (int x = 0; x < cols; x += 5) {
                 boolean cubeCenter = checkCube(pointer, x, y);
                 if (cubeCenter) {
                     queue.add(new int[] { x, y });
