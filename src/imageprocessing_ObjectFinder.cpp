@@ -8,13 +8,16 @@
 
 using namespace cv;
 
-JNIEXPORT jboolean JNICALL Java_imageprocessing_ObjectFinder_checkCube(
+JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube(
 		JNIEnv *env, jobject thisObj, jlong pointer, jint x, jint y) {
 	Mat* image = (Mat*) pointer;
 	int width = 320;
 	int height = 240;
+	int notCenter = 33;
+	int redCenter = 44;
+	int greenCenter = 55;
 	double threshold;
-	bool cubeCenter = false;
+	int cubeCenter = notCenter;
 	int channels = image->channels();
 	// Get distance in inches based on y-coordinate of pixel
 	double distance = 2129 * pow((double) y, -0.876); //(0.0005 * pow((double)y, 2)) - (0.3803 * (double)y) + 73.968;
@@ -45,21 +48,10 @@ JNIEXPORT jboolean JNICALL Java_imageprocessing_ObjectFinder_checkCube(
 	}
 	if ((redCount > 0)
 			&& (minimumArea > redCount >= (minimumArea * threshold))) {
-		cubeCenter = true;
+		cubeCenter = redCenter;
 	} else if ((greenCount > 0)
 			&& (minimumArea > greenCount >= (minimumArea * threshold))) {
-		cubeCenter = true;
+		cubeCenter = greenCenter;
 	}
-	return (jboolean) cubeCenter;
-}
-
-JNIEXPORT jboolean JNICALL Java_imageprocessing_ObjectFinder_isRed
-  (JNIEnv *env, jobject thisObj, jlong pointer, jint x, jint y) {
-	Mat* image = (Mat*) pointer;
-	int channels = image->channels();
-	int val0 = image->data[channels * (image->cols * y + x) + 0];
-	int val1 = image->data[channels * (image->cols * y + x) + 1];
-	int val2 = image->data[channels * (image->cols * y + x) + 2];
-	bool isRed = ((val0 == 0) && (val1 == 0) && (val2 == 255));
-	return (jboolean) isRed;
+	return (jint) cubeCenter;
 }

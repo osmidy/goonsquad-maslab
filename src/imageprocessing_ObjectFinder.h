@@ -10,17 +10,9 @@ extern "C" {
 /*
  * Class:     imageprocessing_ObjectFinder
  * Method:    checkCube
- * Signature: (JII)Z
+ * Signature: (JII)I
  */
-JNIEXPORT jboolean JNICALL Java_imageprocessing_ObjectFinder_checkCube
-  (JNIEnv *, jobject, jlong, jint, jint);
-
-/*
- * Class:     imageprocessing_ObjectFinder
- * Method:    isRed
- * Signature: (JII)Z
- */
-JNIEXPORT jboolean JNICALL Java_imageprocessing_ObjectFinder_isRed
+JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube
   (JNIEnv *, jobject, jlong, jint, jint);
 
 #ifdef __cplusplus
