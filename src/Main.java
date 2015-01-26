@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import PID.WallFollowPID;
 import robot.Robot;
@@ -23,10 +24,11 @@ public class Main {
     // Free Cokebot!
     private final static Robot cokebot = makeRobot();
     private final static ImageUtil imageUtil = new ImageUtil();
-    
+
     public static void main(String[] args) throws IOException {
-        // TODO:  when stack is hit, remove stack from list, create new cubes and add to list
-        
+        // TODO: when stack is hit, remove stack from list, create new cubes and
+        // add to list
+
         while (true) {
             State state = cokebot.getState();
             if (state.equals(State.FINDWALL)) {
@@ -49,9 +51,9 @@ public class Main {
             }
             sleep(30);
         }
-        
+
     }
-    
+
     private static void findWall() {
         boolean wallFound = false;
         while (!wallFound) {
@@ -69,56 +71,59 @@ public class Main {
         List<Sensor> sensors = cokebot.getSensors();
         Motor leftMotor = motors.get(0);
         Motor rightMotor = motors.get(1);
-        IRSensor sideIR = (IRSensor)sensors.get(0);
-        IRSensor diagonalIR = (IRSensor)sensors.get(1);
-        WallFollowPID pid = new WallFollowPID(new File("WallFollowPID.txt"), leftMotor, rightMotor, sideIR, diagonalIR);
+        IRSensor sideIR = (IRSensor) sensors.get(0);
+        IRSensor diagonalIR = (IRSensor) sensors.get(1);
+        WallFollowPID pid = new WallFollowPID(new File("WallFollowPID.txt"),
+                leftMotor, rightMotor, sideIR, diagonalIR);
         Thread pidThread = pid.thread();
         pidThread.start();
-        
-        boolean cubeFound = false;
-        CameraSensor camera = (CameraSensor)sensors.get(3);
+
+        AtomicBoolean cubeFound = new AtomicBoolean(false);
         Thread findCube = new Thread(new Runnable() {
             public void run() {
-                while (!cubeFound) {
+                while (!cubeFound.get()) {
                     List<int[]> centers = imageUtil.getCubeCenters();
                     if (!centers.isEmpty()) {
                         ImageCube closestCube = imageUtil.getClosestCube();
                         double newDesiredHeading = closestCube.getHeading();
-                        sleep(30);
-                        cubeFound = true;
+                        cokebot.setDesiredHeading(newDesiredHeading);
+                        cubeFound.set(true);
                     }
+                    sleep(30);
                 }
             }
         });
-        findCube.start();
-        if (cubeFound) {
-            findCube.interrupt();
-            pidThread.interrupt();
+        while (true) {
+            findCube.start();
+            if (cubeFound.get()) {
+                findCube.interrupt();
+                pidThread.interrupt();
+                break;
+            }
             sleep(30);
         }
         cokebot.setState(State.DRIVETOCUBE);
     }
 
     private static void driveToCube() {
-        // TODO Auto-generated method stub
-        
+
     }
 
     private static void collectCube() {
         // TODO Auto-generated method stub
-        
+
     }
 
     private static void findDropZone() {
         // TODO Auto-generated method stub
-        
+
     }
 
     private static void dropStack() {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
     private static void sleep(long millis) {
         try {
             Thread.sleep(millis);
@@ -130,6 +135,7 @@ public class Main {
 
     /**
      * Initializes the robot
+     * 
      * @return the new robot.
      */
     private static Robot makeRobot() {
@@ -169,7 +175,7 @@ public class Main {
         IRSensor diagonalIR = new IRSensor(diagonalIRPin);
         sensorHeadings.put(sideIR, sideIRHeading);
         sensorHeadings.put(diagonalIR, diagonalIRHeading);
-        
+
         CameraSensor camera = new CameraSensor(imageUtil);
         double cameraHeading = 0.0;
         sensorHeadings.put(camera, cameraHeading);
@@ -184,7 +190,7 @@ public class Main {
         // Gyro
         int gyroPin = 10;
         Gyroscope gyro = new Gyroscope(gyroPin);
-        
+
         return new Robot(motors, servos, sensorHeadings, gyro);
     }
 }

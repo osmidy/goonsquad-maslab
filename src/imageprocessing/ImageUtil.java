@@ -86,7 +86,7 @@ public class ImageUtil {
         }
     }
     
-    public List<int[]> getCubeCenters() {
+    public synchronized List<int[]> getCubeCenters() {
         List<int[]> list = cubeCenters;
         return list;
     }

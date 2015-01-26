@@ -14,7 +14,7 @@ import sensors.IRSensor;
  * @author osmidy
  *
  */
-public class WallFollowPID {
+public class WallFollowPID implements PID {
     private double p = 0;
     private double i = 0;
     private double d = 0;
@@ -53,6 +53,7 @@ public class WallFollowPID {
         this.diagonalSensor = diagonalIR;
     }
 
+    @Override
     public Thread thread() {
         Thread pid = new Thread(new Runnable() {
             public void run() {
@@ -181,9 +182,5 @@ public class WallFollowPID {
             }
         });
         return pid;
-    }
-
-    public double computePower(double integral, double derivative) {
-        return p * diff + i * integral + d * derivative;
     }
 }
