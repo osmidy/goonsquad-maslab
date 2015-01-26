@@ -41,8 +41,8 @@ public class ImageUtil {
         camera.open(0);
 
         // Create GUI windows to display camera output and OpenCV output
-        JLabel cameraPane = createWindow("Camera output", width, height);
-        JLabel opencvPane = createWindow("OpenCV output", width, height);
+//        JLabel cameraPane = createWindow("Camera output", width, height);
+//        JLabel opencvPane = createWindow("OpenCV output", width, height);
 
         // Set up structures for processing images
         ImageProcessor processor = new ImageProcessor();
@@ -82,8 +82,8 @@ public class ImageUtil {
                 System.out.println("GREEN: " + Arrays.toString(x));
             }
             // Update the GUI windows
-            updateWindow(cameraPane, resizedImage, rawImageConverter);
-            updateWindow(opencvPane, processedImage, processedImageConverter);
+//            updateWindow(cameraPane, resizedImage, rawImageConverter);
+//            updateWindow(opencvPane, processedImage, processedImageConverter);
 
             try {
                 Thread.sleep(10);
@@ -136,27 +136,27 @@ public class ImageUtil {
         return heading;
     }
 
-    private static JLabel createWindow(String name, int width, int height) {
-        JFrame imageFrame = new JFrame(name);
-        imageFrame.setSize(width, height);
-        imageFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JLabel imagePane = new JLabel();
-        imagePane.setLayout(new BorderLayout());
-        imageFrame.setContentPane(imagePane);
-
-        imageFrame.setVisible(true);
-        return imagePane;
-    }
-
-    private static void updateWindow(JLabel imagePane, Mat mat,
-            Mat2Image converter) {
-        int w = (int) (mat.size().width);
-        int h = (int) (mat.size().height);
-        if (imagePane.getWidth() != w || imagePane.getHeight() != h) {
-            imagePane.setSize(w, h);
-        }
-        BufferedImage bufferedImage = converter.getImage(mat);
-        imagePane.setIcon(new ImageIcon(bufferedImage));
-    }
+//    private static JLabel createWindow(String name, int width, int height) {
+//        JFrame imageFrame = new JFrame(name);
+//        imageFrame.setSize(width, height);
+//        imageFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//
+//        JLabel imagePane = new JLabel();
+//        imagePane.setLayout(new BorderLayout());
+//        imageFrame.setContentPane(imagePane);
+//
+//        imageFrame.setVisible(true);
+//        return imagePane;
+//    }
+//
+//    private static void updateWindow(JLabel imagePane, Mat mat,
+//            Mat2Image converter) {
+//        int w = (int) (mat.size().width);
+//        int h = (int) (mat.size().height);
+//        if (imagePane.getWidth() != w || imagePane.getHeight() != h) {
+//            imagePane.setSize(w, h);
+//        }
+//        BufferedImage bufferedImage = converter.getImage(mat);
+//        imagePane.setIcon(new ImageIcon(bufferedImage));
+//    }
 }
