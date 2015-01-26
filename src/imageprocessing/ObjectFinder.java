@@ -38,6 +38,9 @@ public class ObjectFinder {
                 }
             }
         }
+        if (queue.isEmpty()) {
+            return queue;
+        }
         int[] firstPixel = queue.poll();
         int totalX = firstPixel[0];
         int totalY = firstPixel[1];

@@ -28,7 +28,6 @@ JNIEXPORT jboolean JNICALL Java_imageprocessing_ObjectFinder_checkCube(
 		threshold = 0.8;
 	}
 	int count = 0;
-	bool red = false;
 	for (int i = y - radius; i >= 0 && i < y + radius; i++) {
 		for (int j = x - radius; j >= 0 && j < x + radius; j++) {
 			// Will change for specific color cubes; for now take red and green
@@ -36,15 +35,9 @@ JNIEXPORT jboolean JNICALL Java_imageprocessing_ObjectFinder_checkCube(
 			int val1 = image->data[channels * (image->cols * i + j) + 1];
 			int val2 = image->data[channels * (image->cols * i + j) + 2];
 			// if green or red
-			if ( (val0 == 0) && (val1 == 255) && (val2 == 0) ) {
+			if (((val0 == 0) && (val1 == 255) && (val2 == 0))
+					|| ((val0 == 0) && (val1 == 0) && (val2 == 255))) {
 				count++;
-			}
-			else if ( (val0 == 0) && (val1 == 0) && (val2 == 255) ) {
-				count++;
-				if (!red) {
-					threshold *= .75;
-					red = true;
-				}
 			}
 		}
 	}
