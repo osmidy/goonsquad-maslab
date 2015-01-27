@@ -19,10 +19,10 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube(JNIEnv *env,
 	double threshold;
 	int cubeCenter = notCenter;
 	int channels = image->channels();
-	// Get distance in inches based on y-coordinate of pixel
-	double distance = 2129 * pow((double) y, -0.876); //(0.0005 * pow((double)y, 2)) - (0.3803 * (double)y) + 73.968;
+	// Get distance in inches based on y-coordinate of pixel (240 * 180)
+	double distance = (0.002 * pow((double)y, 2)) - (0.7607 * (double)y) + 73.968; // 2129 * pow((double) y, -0.876);
 	// Get expected area/pixel count based on distance from camera
-	double minimumArea = 610099 * pow(distance, -1.892);
+	double minimumArea = 152525 *  pow(distance, -1.892); // 610099 * pow(distance, -1.892);
 	// Check surrounding pixels; assume shape is roughly square
 	double radius = .5 * pow(minimumArea, .5);
 	if (x < radius || x > width - radius) {

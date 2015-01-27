@@ -17,8 +17,8 @@ import org.opencv.highgui.VideoCapture;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageUtil {
-    private static final int width = 320;
-    private static final int height = 240;
+    private static final int width = 160;
+    private static final int height = 120;
     // Diagonal FOV is ~70; 56 horizontal, 42 vertical
     // Resized images have 320 horizontal pixels
     private static final double thetaX = 56;
@@ -41,8 +41,8 @@ public class ImageUtil {
         camera.open(0);
 
         // Create GUI windows to display camera output and OpenCV output
-//        JLabel cameraPane = createWindow("Camera output", width, height);
-//        JLabel opencvPane = createWindow("OpenCV output", width, height);
+        JLabel cameraPane = createWindow("Camera output", width, height);
+        JLabel opencvPane = createWindow("OpenCV output", width, height);
 
         // Set up structures for processing images
         ImageProcessor processor = new ImageProcessor();
@@ -53,6 +53,8 @@ public class ImageUtil {
                                  // file + ".jpg");
         Mat resizedImage = new Mat();
         Mat processedImage = new Mat();
+        ObjectFinder finder = new ObjectFinder(processedImage);
+        Size size = new Size(width, height);
         Mat2Image rawImageConverter = new Mat2Image(
                 BufferedImage.TYPE_3BYTE_BGR);
         Mat2Image processedImageConverter = new Mat2Image(
@@ -68,12 +70,16 @@ public class ImageUtil {
                 }
             }
 
-            Imgproc.resize(rawImage, resizedImage, new Size(width, height)); // Halves
-                                                                             // resolution
+            Imgproc.resize(rawImage, resizedImage, size); // Halves resolution
+            long start = System.currentTimeMillis();
             processor.process(resizedImage, processedImage);
-            ObjectFinder finder = new ObjectFinder(processedImage);
+            long end = System.currentTimeMillis();
+            System.out.println("Process:  "+ (end - start)/1000.);
+            start = System.currentTimeMillis();
             redCenters = finder.getRedCubes();
             greenCenters = finder.getGreenCubes();
+            end = System.currentTimeMillis();
+            System.out.println("Cubes: " + (end - start)/1000.);
             
             for (int[] center : redCenters) {
                 System.out.println("RED: " + Arrays.toString(center));
@@ -82,8 +88,8 @@ public class ImageUtil {
                 System.out.println("GREEN: " + Arrays.toString(x));
             }
             // Update the GUI windows
-//            updateWindow(cameraPane, resizedImage, rawImageConverter);
-//            updateWindow(opencvPane, processedImage, processedImageConverter);
+            updateWindow(cameraPane, resizedImage, rawImageConverter);
+            updateWindow(opencvPane, processedImage, processedImageConverter);
 
             try {
                 Thread.sleep(10);
@@ -122,6 +128,7 @@ public class ImageUtil {
             }
         }
         heading = getClosestCubeHeading(x);
+        ImageCube cube = new ImageCube(x, y, closestDistance, heading);
         return new ImageCube(x, y, closestDistance, heading);
     }
 
@@ -136,27 +143,27 @@ public class ImageUtil {
         return heading;
     }
 
-//    private static JLabel createWindow(String name, int width, int height) {
-//        JFrame imageFrame = new JFrame(name);
-//        imageFrame.setSize(width, height);
-//        imageFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//        JLabel imagePane = new JLabel();
-//        imagePane.setLayout(new BorderLayout());
-//        imageFrame.setContentPane(imagePane);
-//
-//        imageFrame.setVisible(true);
-//        return imagePane;
-//    }
-//
-//    private static void updateWindow(JLabel imagePane, Mat mat,
-//            Mat2Image converter) {
-//        int w = (int) (mat.size().width);
-//        int h = (int) (mat.size().height);
-//        if (imagePane.getWidth() != w || imagePane.getHeight() != h) {
-//            imagePane.setSize(w, h);
-//        }
-//        BufferedImage bufferedImage = converter.getImage(mat);
-//        imagePane.setIcon(new ImageIcon(bufferedImage));
-//    }
+    private static JLabel createWindow(String name, int width, int height) {
+        JFrame imageFrame = new JFrame(name);
+        imageFrame.setSize(width, height);
+        imageFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JLabel imagePane = new JLabel();
+        imagePane.setLayout(new BorderLayout());
+        imageFrame.setContentPane(imagePane);
+
+        imageFrame.setVisible(true);
+        return imagePane;
+    }
+
+    private static void updateWindow(JLabel imagePane, Mat mat,
+            Mat2Image converter) {
+        int w = (int) (mat.size().width);
+        int h = (int) (mat.size().height);
+        if (imagePane.getWidth() != w || imagePane.getHeight() != h) {
+            imagePane.setSize(w, h);
+        }
+        BufferedImage bufferedImage = converter.getImage(mat);
+        imagePane.setIcon(new ImageIcon(bufferedImage));
+    }
 }
