@@ -3,6 +3,7 @@
 #include <iostream>
 #include <array>
 #include <opencv2/opencv.hpp>
+#include <time.h>
 #include "imageprocessing_ImageProcessor.h"
 
 using namespace cv;
@@ -49,6 +50,7 @@ JNIEXPORT void JNICALL Java_imageprocessing_ImageProcessor_process
 				image->data[channels * (image->cols*i + j) + 1] = 0;
 				image->data[channels * (image->cols*i + j) + 2] = 255;
 			}
+
 			else if (red/green > rgYellowRatio && red/blue > rbYellowRatio) {
 				image->data[channels * (image->cols*i + j) + 0] = 0;
 				image->data[channels * (image->cols*i + j) + 1] = 255;
