@@ -91,8 +91,8 @@ public class Main {
                 }
             }
         });
+        findCube.start();
         while (true) {
-            findCube.start();
             if (cubeFound.get()) {
                 findCube.interrupt();
                 pidThread.interrupt();
