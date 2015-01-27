@@ -62,15 +62,15 @@ public class TestStayStraight {
             begin = finish;
             derivative = diff - prevDiff;
             prevDiff = diff;
-            if (integral > 500) {
-                integral = 500;
+            if (integral > 200) {
+                integral = 200;
             }
             double power = p * diff + i * integral + d * derivative;
             leftMotor.setSpeed(motorBias + power);
             rightMotor.setSpeed(motorBias - power);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed() + " Heading: " + heading);
-            System.out.println("Diff" + p * diff + "Integral: " + i * integral + "Derivative: " + d * derivative + "Power: " + power);
+            System.out.println("Diff: " + p * diff + " Integral: " + i * integral + " Derivative: " + d * derivative + " Power: " + power);
             try {
                 Thread.sleep(33);
             } catch (InterruptedException e) {
