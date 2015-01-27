@@ -190,8 +190,8 @@ public class Main {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            Sensor camera = sensors.get(2);
-            double distanceInches = camera.distanceToObject();
+            ImageCube closestCube = imageUtil.getClosestCube();
+            double distanceInches = closestCube.getDistance();
             double distance = distanceInches * 2.54; // in to cm
             if (distance <= 20) {
                 break outerloop;
@@ -284,7 +284,7 @@ public class Main {
 
         CameraSensor camera = new CameraSensor(imageUtil);
         double cameraHeading = 0.0;
-        sensorHeadings.put(camera, cameraHeading);
+        //sensorHeadings.put(camera, cameraHeading);
 
 //        int trigPin = 4;
 //        int echoPin = 7;

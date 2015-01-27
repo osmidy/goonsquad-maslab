@@ -111,7 +111,7 @@ public class ImageUtil {
         int x = 0;
         int y = 0;
         double heading;
-        for (int[] pixel : redCenters) {
+        for (int[] pixel : greenCenters) {
             y = pixel[1];
             double distance = 2129 * Math.pow(y, -0.876); // Equation from
                                                           // camera calibration
