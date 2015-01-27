@@ -24,7 +24,8 @@ public class Robot {
     // Datatype Definition: Robot ::= sensors:Set<Sensor> + gyro:Gyroscope +
     // motors:List<Motor> + servos:List<Servo>
 
-    // Rep Invariant: robot has at least two motors; at least one servo; each sensor has a heading
+    // Rep Invariant: robot has at least two motors; at least one servo; each
+    // sensor has a heading
     private void checkRep() {
         assert motors.size() >= 2;
         assert !servos.isEmpty();
@@ -43,7 +44,15 @@ public class Robot {
     private State state = State.WALLFOLLOW;
 
     public enum State {
-        FINDWALL, WALLFOLLOW, DRIVETOCUBE, COLLECTCUBE, FINDDROPZONE, DROPSTACK;
+        FINDWALL("FINDWALL"), WALLFOLLOW("WALLFOLLOW"), DRIVETOCUBE(
+                "DRIVETOCUBE"), COLLECTCUBE("COLLECTCUBE"), FINDDROPZONE(
+                "FINDDROPZONE"), DROPSTACK("DROPSTACK");
+        
+        private String state;
+
+        private State(String state) {
+            this.state = state;
+        }
     }
 
     /**
@@ -80,16 +89,18 @@ public class Robot {
         checkRep();
         return this.currentHeading;
     }
-    
+
     /**
      * Updates the current heading of this Robot
-     * @param angle the new heading
+     * 
+     * @param angle
+     *            the new heading
      */
     public synchronized void updateHeading(double angle) {
         checkRep();
         this.currentHeading = angle;
     }
-    
+
     /**
      * @return the desired heading of the robot
      */
@@ -97,10 +108,12 @@ public class Robot {
         checkRep();
         return this.desiredHeading;
     }
-    
+
     /**
      * Updates the desired heading for this Robot
-     * @param desired heading desired by this Robot
+     * 
+     * @param desired
+     *            heading desired by this Robot
      */
     public synchronized void setDesiredHeading(double desired) {
         checkRep();
@@ -117,7 +130,7 @@ public class Robot {
         checkRep();
         this.currentHeading = angle;
     }
-    
+
     public synchronized Map<Sensor, Double> getSensorMap() {
         checkRep();
         return this.sensorHeadings;
@@ -135,17 +148,17 @@ public class Robot {
         checkRep();
         return angle;
     }
-    
+
     public synchronized Gyroscope getGyro() {
         checkRep();
         return this.gyro;
     }
-    
+
     public synchronized List<Sensor> getSensors() {
         checkRep();
         return this.sensors;
     }
-    
+
     public synchronized List<Motor> getMotors() {
         checkRep();
         return this.motors;

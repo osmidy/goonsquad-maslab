@@ -32,6 +32,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         System.out.println("MAP: " + cokebot.getSensorMap());
         System.out.println("LIST: " + cokebot.getSensors());
+        
         Thread sensorThread = new Thread(new Runnable() {
             public void run() {
                 while (true) {
@@ -78,7 +79,6 @@ public class Main {
         while (!wallFound) {
             Sensor wallSensor = cokebot.findClosestWallSensor();
             cokebot.followWall(wallSensor);
-            sleep(30);
             wallFound = true;
         }
         sleep(30);
@@ -113,11 +113,11 @@ public class Main {
             }
         });
         findCube.start();
-        while (true) {
+        mainloop: while (true) {
             if (cubeFound.get()) {
                 findCube.interrupt();
                 pidThread.interrupt();
-                break;
+                break mainloop;
             }
             sleep(30);
         }
@@ -192,12 +192,9 @@ public class Main {
                 e.printStackTrace();
             }
             CameraSensor camera = (CameraSensor) sensors.get(2);
-            double distanceIN = camera.distanceToObject();
-            double distance = distanceIN * 2.54; //in to cm
+            double distanceInches = camera.distanceToObject();
+            double distance = distanceInches * 2.54; // in to cm
             if (distance <= 20) {
-                leftMotor.setSpeed(.1);
-                rightMotor.setSpeed(.1);
-                sleep(1000);
                 break outerloop;
             }
             
@@ -209,6 +206,9 @@ public class Main {
             // }
             // }
         }
+        leftMotor.setSpeed(.1);
+        rightMotor.setSpeed(.1);
+        sleep(1000);
         getHeading.interrupt();
         sleep(30);
         cokebot.setState(State.FINDWALL);
