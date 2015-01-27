@@ -40,7 +40,7 @@ public class Robot {
     private double currentHeading = 0.0;
     private double desiredHeading = 0.0;
     private final double radius = 7.5;
-    private State state = State.FINDWALL;
+    private State state = State.WALLFOLLOW;
 
     public enum State {
         FINDWALL, WALLFOLLOW, DRIVETOCUBE, COLLECTCUBE, FINDDROPZONE, DROPSTACK;
@@ -134,6 +134,11 @@ public class Robot {
         double angle = sensorHeadings.get(sensor);
         checkRep();
         return angle;
+    }
+    
+    public synchronized Gyroscope getGyro() {
+        checkRep();
+        return this.gyro;
     }
     
     public synchronized List<Sensor> getSensors() {

@@ -74,8 +74,8 @@ public class ExperimentalWF {
             if ((diagonalSep < 0.25) && (sideSep < 0.25)) { // diagonalSep < 0.3
                 System.out.println("(1,1)" + "(" + sideSep + "," + diagonalSep
                         + ")");
-                leftMotor.setSpeed(0.1);
-                rightMotor.setSpeed(-0.1);
+                leftMotor.setSpeed(0.15);
+                rightMotor.setSpeed(-0.15);
                 // leftMotor.setSpeed(0.25); // .23 // .25
                 // rightMotor.setSpeed(0.1); // .1
                 try {
@@ -161,7 +161,7 @@ public class ExperimentalWF {
                 }
 
                 double power = p * diff + i * integral + d * derivative;
-                bias = 0.2; // 0.15;
+                bias = 0.3; // 0.15;
                 // if (diagonalSep < 0.4){
                 // bias = 0.1;
                 // power = power - ((diagonalSep-0.4)/8);

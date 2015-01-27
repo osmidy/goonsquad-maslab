@@ -4,11 +4,12 @@ import imageprocessing.ImageUtil;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import PID.StayStraightPID;
 import PID.WallFollowPID;
 import robot.Robot;
 import robot.Robot.State;
@@ -23,9 +24,25 @@ import sensors.UltraSonicSensor;
 public class Main {
     // Free Cokebot!
     private final static Robot cokebot = makeRobot();
+    private final static List<Motor> motors = cokebot.getMotors();
+    private final static List<Sensor> sensors = cokebot.getSensors();
     private final static ImageUtil imageUtil = new ImageUtil();
+    
 
     public static void main(String[] args) throws IOException {
+        System.out.println("MAP: " + cokebot.getSensorMap());
+        System.out.println("LIST: " + cokebot.getSensors());
+        Thread sensorThread = new Thread(new Runnable() {
+            public void run() {
+                while (true) {
+                    for (Sensor sensor : sensors) {
+                        sensor.distanceToObject();
+                    }
+                    sleep(30);
+                }
+            }
+        });
+        sensorThread.start();
         // TODO: when stack is hit, remove stack from list, create new cubes and
         // add to list
 
@@ -33,20 +50,15 @@ public class Main {
             State state = cokebot.getState();
             if (state.equals(State.FINDWALL)) {
                 findWall();
-            }
-            if (state.equals(State.WALLFOLLOW)) {
+            } else if (state.equals(State.WALLFOLLOW)) {
                 followAndSearch();
-            }
-            if (state.equals(State.DRIVETOCUBE)) {
+            } else if (state.equals(State.DRIVETOCUBE)) {
                 driveToCube();
-            }
-            if (state.equals(State.COLLECTCUBE)) {
+            } else if (state.equals(State.COLLECTCUBE)) {
                 collectCube();
-            }
-            if (state.equals(State.FINDDROPZONE)) {
+            } else if (state.equals(State.FINDDROPZONE)) {
                 findDropZone();
-            }
-            if (state.equals(State.DROPSTACK)) {
+            } else if (state.equals(State.DROPSTACK)) {
                 dropStack();
             }
             sleep(30);
@@ -82,7 +94,7 @@ public class Main {
         Thread findCube = new Thread(new Runnable() {
             public void run() {
                 while (!cubeFound.get()) {
-                    List<int[]> centers = imageUtil.getCubeCenters();
+                    List<int[]> centers = imageUtil.getGreenCenters(); // TODO: desired color field
                     if (!centers.isEmpty()) {
                         ImageCube closestCube = imageUtil.getClosestCube();
                         double newDesiredHeading = closestCube.getHeading();
@@ -93,8 +105,8 @@ public class Main {
                 }
             }
         });
+        findCube.start();
         while (true) {
-            findCube.start();
             if (cubeFound.get()) {
                 findCube.interrupt();
                 pidThread.interrupt();
@@ -105,7 +117,95 @@ public class Main {
         cokebot.setState(State.DRIVETOCUBE);
     }
 
-    private static void driveToCube() {
+    private static void driveToCube() throws IOException {
+        List<Motor> motors = cokebot.getMotors();
+        List<Sensor> sensors = cokebot.getSensors();
+        Motor leftMotor = motors.get(0);
+        Motor rightMotor = motors.get(1);
+        Gyroscope gyro = cokebot.getGyro();
+//        StayStraightPID pid = new StayStraightPID(new File("StayStraightPID.conf"), cokebot, leftMotor, rightMotor, gyro);
+//        Thread thread = pid.thread();
+//        thread.start();
+        Thread getHeading = new Thread(new Runnable() {
+            public void run() {
+                double heading = cokebot.getCurrentHeading();
+                long start = System.currentTimeMillis();
+                while (true) {
+                    long end = System.currentTimeMillis();
+                    double deltaT = .001 * (end - start); // from milli to sec
+                    double omega = gyro.getAngularVelocity();
+                    double bias = ((.11 * end) - .3373);
+                    double prevBias = ((.11 * start) - .3373);
+                    double total = (omega - (bias - prevBias)) * deltaT;
+                    heading += total;
+                    start = end;
+                    cokebot.setHeading(heading);
+                }
+            }
+
+        });
+
+        // Initial Settings
+        getHeading.start();
+        double motorBias = 0.2;
+        double p = .012;
+        double i = .0005;
+        double d = .03;
+        long begin = System.currentTimeMillis();
+        double integral = 0;
+        double derivative = 0;
+        double prevDiff = 0;
+        leftMotor.setSpeed(motorBias);
+        rightMotor.setSpeed(motorBias);
+
+        // Main loop with PID control implemented
+        outerloop: while (true) {
+            double desired = cokebot.getDesiredHeading();
+            double heading = cokebot.getCurrentHeading();
+            double diff = desired - heading;          
+            long finish = System.currentTimeMillis();
+            double deltaT = .001 * (finish - begin); // from milli to sec
+            integral += diff * deltaT;
+            begin = finish;
+            derivative = diff - prevDiff;
+            prevDiff = diff;
+            if (integral > 500) {
+                integral = 500;
+            }
+            double power = p * diff + i * integral + d * derivative;
+            leftMotor.setSpeed(motorBias + power);
+            rightMotor.setSpeed(motorBias - power);
+            System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
+                    + rightMotor.getSpeed() + " Heading: " + heading);
+            System.out.println("Diff" + p * diff + "Integral: " + i * integral + "Derivative: " + d * derivative + "Power: " + power);
+            try {
+                Thread.sleep(33);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            CameraSensor camera = (CameraSensor) sensors.get(2);
+            double distanceIN = camera.distanceToObject();
+            double distance = distanceIN * 2.54; //in to cm
+            if (distance <= 20) {
+                leftMotor.setSpeed(.1);
+                rightMotor.setSpeed(.1);
+                sleep(1000);
+                break outerloop;
+            }
+            
+            long fin = System.currentTimeMillis();
+            // if ((fin - current) >= 10000) {
+            //    leftMotor.setSpeed(0);
+            //    rightMotor.setSpeed(0);
+            //    break outerloop;
+            // }
+            // }
+        }
+        getHeading.interrupt();
+        sleep(30);
+        cokebot.setState(State.FINDWALL);
+        
 
     }
 
@@ -141,7 +241,7 @@ public class Main {
     private static Robot makeRobot() {
         final List<Motor> motors = new ArrayList<Motor>();
         final List<Servo> servos = new ArrayList<Servo>();
-        final Map<Sensor, Double> sensorHeadings = new HashMap<Sensor, Double>();
+        final Map<Sensor, Double> sensorHeadings = new LinkedHashMap<Sensor, Double>();
 
         // Wheel Motors
         int pwmPinLeft = 9;
@@ -180,12 +280,12 @@ public class Main {
         double cameraHeading = 0.0;
         sensorHeadings.put(camera, cameraHeading);
 
-        int trigPin = 4;
-        int echoPin = 7;
-        double ultrasonicHeading = 0.0;
-
-        UltraSonicSensor ultrasonic = new UltraSonicSensor(trigPin, echoPin);
-        sensorHeadings.put(ultrasonic, ultrasonicHeading);
+//        int trigPin = 4;
+//        int echoPin = 7;
+//        double ultrasonicHeading = 0.0;
+//
+//        UltraSonicSensor ultrasonic = new UltraSonicSensor(trigPin, echoPin);
+//        sensorHeadings.put(ultrasonic, ultrasonicHeading);
 
         // Gyro
         int gyroPin = 10;
