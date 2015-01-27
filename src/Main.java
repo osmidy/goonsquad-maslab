@@ -27,6 +27,8 @@ public class Main {
     private final static ImageUtil imageUtil = new ImageUtil();
 
     public static void main(String[] args) throws IOException {
+        System.out.println("MAP: " + cokebot.getSensorMap());
+        System.out.println("LIST: " + cokebot.getSensors());
         // TODO: when stack is hit, remove stack from list, create new cubes and
         // add to list
 
