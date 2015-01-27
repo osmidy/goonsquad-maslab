@@ -42,7 +42,13 @@ public class Main {
                 }
             }
         });
-        imageUtil.main(new String[0]);
+        
+        Thread imageUtilThread = new Thread(new Runnable() {
+            public void run() {
+                imageUtil.main(new String[0]);
+            }
+        });
+        imageUtilThread.start();
         sensorThread.start();
         // TODO: when stack is hit, remove stack from list, create new cubes and
         // add to list
