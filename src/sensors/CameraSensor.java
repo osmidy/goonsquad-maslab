@@ -19,7 +19,7 @@ public class CameraSensor implements Sensor {
     
     // Will give distance of closest object in image
     @Override
-    public double distanceToObject() {
+    public synchronized double distanceToObject() {
         // TODO Auto-generated method stub
         return imageUtil.getClosestCube().getDistance();
     }

@@ -42,6 +42,7 @@ public class Main {
                 }
             }
         });
+        imageUtil.main(new String[0]);
         sensorThread.start();
         // TODO: when stack is hit, remove stack from list, create new cubes and
         // add to list
