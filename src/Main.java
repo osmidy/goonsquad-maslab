@@ -112,7 +112,7 @@ public class Main {
         });
         findCube.start();
         mainloop: while (true) {
-            System.out.println(cubeFound.get());
+            //System.out.println(cubeFound.get());
             if (cubeFound.get()) {
                 findCube.interrupt();
                 pidThread.interrupt();
