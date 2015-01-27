@@ -161,7 +161,7 @@ public class ExperimentalWF {
                 }
 
                 double power = p * diff + i * integral + d * derivative;
-                bias = 0.2; // 0.15;
+                bias = 0.3; // 0.15;
                 // if (diagonalSep < 0.4){
                 // bias = 0.1;
                 // power = power - ((diagonalSep-0.4)/8);
