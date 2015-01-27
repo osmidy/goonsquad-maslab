@@ -8,8 +8,8 @@
 
 using namespace cv;
 
-JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube(
-		JNIEnv *env, jobject thisObj, jlong pointer, jint x, jint y) {
+JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube(JNIEnv *env,
+		jobject thisObj, jlong pointer, jint x, jint y) {
 	Mat* image = (Mat*) pointer;
 	int width = 320;
 	int height = 240;
@@ -26,16 +26,20 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube(
 	// Check surrounding pixels; assume shape is roughly square
 	double radius = .5 * pow(minimumArea, .5);
 	if (x < radius || x > width - radius) {
-		threshold = 0.4;
+		threshold = 0.35;
 	} else {
-		threshold = 0.8;
+		threshold = 0.7;
 	}
+	if (y < radius || y > height - radius) {
+		threshold = 0.35;
+	} else {
+		threshold = 0.7;
+	}
+
 	int greenCount = 0;
 	int redCount = 0;
-	//printf("C++ Before: %d, %d, %d\n", notCenter, redCenter, greenCenter);
 	for (int i = y - radius; i >= 0 && i < y + radius; i++) {
 		for (int j = x - radius; j >= 0 && j < x + radius; j++) {
-			//printf("C++ During: %d, %d, %d\n", notCenter, redCenter, greenCenter);
 			// Will change for specific color cubes; for now take red and green
 			int val0 = image->data[channels * (image->cols * i + j) + 0];
 			int val1 = image->data[channels * (image->cols * i + j) + 1];
@@ -49,12 +53,14 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube(
 		}
 	}
 	if ((redCount > 0)
-			&& ((minimumArea) > redCount && redCount >= (minimumArea * threshold))) {
+			&& ((minimumArea) > redCount
+					&& redCount >= (minimumArea * threshold))) {
 		cubeCenter = redCenter;
 	}
 
 	if ((greenCount > 0)
-			&& ((minimumArea) > greenCount && greenCount >= (minimumArea * threshold))) {
+			&& ((minimumArea) > greenCount
+					&& greenCount >= (minimumArea * threshold))) {
 		cubeCenter = greenCenter;
 	}
 	return (jint) cubeCenter;

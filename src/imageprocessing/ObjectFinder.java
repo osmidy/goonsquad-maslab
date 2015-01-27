@@ -76,8 +76,8 @@ public class ObjectFinder {
                 totalX += currentX;
                 totalY += currentY;
                 count++;
-                if ((Math.abs(nextX - currentX)) > 15
-                        && (Math.abs(nextY - currentY) > 15) || i + 1 == length) {
+                if ((Math.abs(nextX - currentX)) > 10
+                        && (Math.abs(nextY - currentY) > 10) || i + 1 == length) {
                     redCubes.add(new int[] { totalX / count, totalY / count });
                     totalX = 0;
                     totalY = 0;
@@ -107,8 +107,8 @@ public class ObjectFinder {
                 totalX += currentX;
                 totalY += currentY;
                 count++;
-                if ((Math.abs(nextX - currentX)) > 15
-                        && (Math.abs(nextY - currentY) > 15) || i + 1 == length) {
+                if ((Math.abs(nextX - currentX)) > 10
+                        && (Math.abs(nextY - currentY) > 10) || i + 1 == length) {
                     greenCubes.add(new int[] { totalX / count, totalY / count });
                     totalX = 0;
                     totalY = 0;
