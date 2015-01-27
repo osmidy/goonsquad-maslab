@@ -13,7 +13,6 @@ import org.opencv.core.Mat;
  *
  */
 public class ObjectFinder {
-    private final Mat image;
     private final LinkedList<int[]> redQueue = new LinkedList<int[]>();
     private final LinkedList<int[]> greenQueue = new LinkedList<int[]>();
     private final List<int[]> redCubes = new ArrayList<int[]>();
@@ -28,17 +27,18 @@ public class ObjectFinder {
         System.loadLibrary("interface");
     }
 
-    public ObjectFinder(Mat image) {
-        this.image = image;
-        this.findCubes();
-    }
-
     /**
      * Find blocks in an image
      * 
      * @return a List of the center pixels of blocks in the image
      */
-    public synchronized void findCubes() {
+    public synchronized void findCubes(Mat image) {
+        // Need Lists empty every time a new frame is processed
+        redQueue.clear();
+        greenQueue.clear();
+        redCubes.clear();
+        greenCubes.clear();
+        
         int rows = image.rows();
         int cols = image.cols();
         long pointer = image.getNativeObjAddr();

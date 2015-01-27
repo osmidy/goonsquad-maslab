@@ -53,7 +53,7 @@ public class ImageUtil {
                                  // file + ".jpg");
         Mat resizedImage = new Mat();
         Mat processedImage = new Mat();
-        ObjectFinder finder = new ObjectFinder(processedImage);
+        ObjectFinder finder = new ObjectFinder();
         Size size = new Size(width, height);
         Mat2Image rawImageConverter = new Mat2Image(
                 BufferedImage.TYPE_3BYTE_BGR);
@@ -76,10 +76,12 @@ public class ImageUtil {
             long end = System.currentTimeMillis();
             System.out.println("Process:  "+ (end - start)/1000.);
             start = System.currentTimeMillis();
+            finder.findCubes(processedImage);
             redCenters = finder.getRedCubes();
             greenCenters = finder.getGreenCubes();
             end = System.currentTimeMillis();
             System.out.println("Cubes: " + (end - start)/1000.);
+            System.out.println(greenCenters.size());
             
             for (int[] center : redCenters) {
                 System.out.println("RED: " + Arrays.toString(center));
