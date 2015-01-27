@@ -103,11 +103,11 @@ public class Main {
                     if (!centers.isEmpty()) {
                         ImageCube closestCube = imageUtil.getClosestCube();
                         cokebot.setVelocity(0);
-                        double newDesiredHeading = closestCube.getHeading();
+                        sleep(100);
+                        double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
                         cokebot.setDesiredHeading(newDesiredHeading);
                         cubeFound.set(true);
                     }
-                    sleep(30);
                 }
             }
         });
