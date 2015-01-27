@@ -24,11 +24,25 @@ import sensors.UltraSonicSensor;
 public class Main {
     // Free Cokebot!
     private final static Robot cokebot = makeRobot();
+    private final static List<Motor> motors = cokebot.getMotors();
+    private final static List<Sensor> sensors = cokebot.getSensors();
     private final static ImageUtil imageUtil = new ImageUtil();
+    
 
     public static void main(String[] args) throws IOException {
         System.out.println("MAP: " + cokebot.getSensorMap());
         System.out.println("LIST: " + cokebot.getSensors());
+        Thread sensorThread = new Thread(new Runnable() {
+            public void run() {
+                while (true) {
+                    for (Sensor sensor : sensors) {
+                        sensor.distanceToObject();
+                    }
+                    sleep(30);
+                }
+            }
+        });
+        sensorThread.start();
         // TODO: when stack is hit, remove stack from list, create new cubes and
         // add to list
 
@@ -266,12 +280,12 @@ public class Main {
         double cameraHeading = 0.0;
         sensorHeadings.put(camera, cameraHeading);
 
-        int trigPin = 4;
-        int echoPin = 7;
-        double ultrasonicHeading = 0.0;
-
-        UltraSonicSensor ultrasonic = new UltraSonicSensor(trigPin, echoPin);
-        sensorHeadings.put(ultrasonic, ultrasonicHeading);
+//        int trigPin = 4;
+//        int echoPin = 7;
+//        double ultrasonicHeading = 0.0;
+//
+//        UltraSonicSensor ultrasonic = new UltraSonicSensor(trigPin, echoPin);
+//        sensorHeadings.put(ultrasonic, ultrasonicHeading);
 
         // Gyro
         int gyroPin = 10;
