@@ -112,6 +112,7 @@ public class Main {
         });
         findCube.start();
         mainloop: while (true) {
+            System.out.println(cubeFound.get());
             if (cubeFound.get()) {
                 findCube.interrupt();
                 pidThread.interrupt();
@@ -189,7 +190,7 @@ public class Main {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            CameraSensor camera = (CameraSensor) sensors.get(2);
+            Sensor camera = sensors.get(2);
             double distanceInches = camera.distanceToObject();
             double distance = distanceInches * 2.54; // in to cm
             if (distance <= 20) {
