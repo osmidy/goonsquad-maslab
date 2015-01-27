@@ -39,10 +39,8 @@ public class ImageUtil {
         // Setup the camera
         VideoCapture camera = new VideoCapture();
         camera.open(0);
+        boolean gui = false;
 
-        // Create GUI windows to display camera output and OpenCV output
-        JLabel cameraPane = createWindow("Camera output", width, height);
-        JLabel opencvPane = createWindow("OpenCV output", width, height);
 
         // Set up structures for processing images
         ImageProcessor processor = new ImageProcessor();
@@ -89,9 +87,14 @@ public class ImageUtil {
             for (int[] x : greenCenters) {
                 System.out.println("GREEN: " + Arrays.toString(x));
             }
+            // Create GUI windows to display camera output and OpenCV output
             // Update the GUI windows
-            updateWindow(cameraPane, resizedImage, rawImageConverter);
-            updateWindow(opencvPane, processedImage, processedImageConverter);
+            if (gui) {
+                JLabel cameraPane = createWindow("Camera output", width, height);
+                JLabel opencvPane = createWindow("OpenCV output", width, height);
+                updateWindow(cameraPane, resizedImage, rawImageConverter);
+                updateWindow(opencvPane, processedImage, processedImageConverter);
+            }
 
             try {
                 Thread.sleep(10);
