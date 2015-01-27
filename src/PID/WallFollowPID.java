@@ -74,8 +74,8 @@ public class WallFollowPID implements PID {
                     sideSep = sideSensor.distanceToObject();
                     if ((diagonalSep < 0.25) && (sideSep < 0.25)) { // diagonalSep
                                                                     // < 0.3
-                        System.out.println("(1,1)" + "(" + sideSep + ","
-                                + diagonalSep + ")");
+//                        System.out.println("(1,1)" + "(" + sideSep + ","
+//                                + diagonalSep + ")");
                         leftMotor.setSpeed(0.1);
                         rightMotor.setSpeed(-0.1);
                         try {
@@ -86,10 +86,10 @@ public class WallFollowPID implements PID {
                         }
                     } else if ((diagonalSep < 0.25) && (sideSep >= 0.25)) { // diagonalSep
                         // < 0.3
-                        System.out.println("(0,1)" + "(" + sideSep + ","
-                                + diagonalSep + ")");
+//                        System.out.println("(0,1)" + "(" + sideSep + ","
+//                                + diagonalSep + ")");
                         if (diagonalSep < 0.1) {
-                            System.out.println("Too Close");
+//                            System.out.println("Too Close");
                             // diagonalSep = diagonalSensor.distanceToObject();
                             leftMotor.setSpeed(0.1);
                             rightMotor.setSpeed(-0.1);
@@ -113,8 +113,8 @@ public class WallFollowPID implements PID {
                             }
                         }
                     } else if ((diagonalSep >= 0.25) && (sideSep >= 0.25)) {
-                        System.out.println("(0,0)" + "(" + sideSep + ","
-                                + diagonalSep + ")");
+//                        System.out.println("(0,0)" + "(" + sideSep + ","
+//                                + diagonalSep + ")");
 
                         while (diagonalSep > 0.25) { // .25
                             diagonalSep = diagonalSensor.distanceToObject();

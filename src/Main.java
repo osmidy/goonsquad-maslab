@@ -29,10 +29,7 @@ public class Main {
     private final static ImageUtil imageUtil = new ImageUtil();
     
 
-    public static void main(String[] args) throws IOException {
-        System.out.println("MAP: " + cokebot.getSensorMap());
-        System.out.println("LIST: " + cokebot.getSensors());
-        
+    public static void main(String[] args) throws IOException {        
         Thread sensorThread = new Thread(new Runnable() {
             public void run() {
                 while (true) {
@@ -56,6 +53,7 @@ public class Main {
 
         while (true) {
             State state = cokebot.getState();
+            System.out.println(state);
             if (state.equals(State.FINDWALL)) {
                 findWall();
             } else if (state.equals(State.WALLFOLLOW)) {
@@ -182,9 +180,9 @@ public class Main {
             double power = p * diff + i * integral + d * derivative;
             leftMotor.setSpeed(motorBias + power);
             rightMotor.setSpeed(motorBias - power);
-            System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
-                    + rightMotor.getSpeed() + " Heading: " + heading);
-            System.out.println("Diff" + p * diff + "Integral: " + i * integral + "Derivative: " + d * derivative + "Power: " + power);
+//            System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
+//                    + rightMotor.getSpeed() + " Heading: " + heading);
+//            System.out.println("Diff" + p * diff + "Integral: " + i * integral + "Derivative: " + d * derivative + "Power: " + power);
             try {
                 Thread.sleep(33);
             } catch (InterruptedException e) {
