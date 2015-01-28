@@ -32,7 +32,7 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube
         threshold = 0.05; // 0.35;
     }
     else {
-        threshold = 0.1; // 0.7;
+        threshold = 0.15; // 0.7;
     }
     // Apply threshold to area
     threshold *= minimumArea;
