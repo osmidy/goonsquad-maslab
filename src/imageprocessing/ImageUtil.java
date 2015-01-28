@@ -83,12 +83,12 @@ public class ImageUtil {
             redCenters = finder.getRedCubes();
             greenCenters = finder.getGreenCubes();
             
-//            for (int[] center : redCenters) {
-//                System.out.println("RED: " + Arrays.toString(center));
-//            }
-//            for (int[] x : greenCenters) {
-//                System.out.println("GREEN: " + Arrays.toString(x));
-//            }
+            for (int[] center : redCenters) {
+                System.out.println("RED: " + Arrays.toString(center));
+            }
+            for (int[] x : greenCenters) {
+                System.out.println("GREEN: " + Arrays.toString(x));
+            }
             // Create GUI windows to display camera output and OpenCV output
             // Update the GUI windows
             if (guiOn) {
