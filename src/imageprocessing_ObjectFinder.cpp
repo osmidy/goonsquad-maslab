@@ -11,59 +11,60 @@ using namespace std;
 
 JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube
   (JNIEnv *env, jobject thisObj, jlong pointer, jint x, jint y) {
-	Mat* image = (Mat*) pointer;
-	int width = 160;
-	int height = 120;
-	int notCenter = 33;
-	int redCenter = 44;
-	int greenCenter = 55;
-	double input = (double) y;
-	double threshold;
-	int cubeCenter = notCenter;
-	int channels = image->channels();
-	// Get distance in inches based on y-coordinate of pixel (240 * 180)
-	double distance = (0.0029 * pow(input, 2.0)) - (0.8845 * input) + 77.271; // 2129 * pow((double) y, -0.876);
-	// Get expected area/pixel count based on distance from camera
-	double minimumArea = 142538 *  pow(distance, -1.839); // 610099 * pow(distance, -1.892);
-	// Check surrounding pixels; assume shape is roughly square
-	double radius = .5 * pow(minimumArea, .5);
-	if (x < radius || x > width - radius) {
-		threshold = 0.35;
-	} else {
-		threshold = 0.7;
-	}
-	if (y < radius || y > height - radius) {
-		threshold = 0.35;
-	} else {
-		threshold = 0.7;
-	}
+    Mat* image = (Mat*)pointer;
+    int channels = image->channels();
+    int width = 160;
+    int height = 120;
+    int notCenter = 33;
+    int redCenter = 44;
+    int greenCenter = 55;
+    int cubeCenter;
+    double inputX = (double)x;
+    double inputY = (double)y;
+    double threshold;
+    // Get distance in inches based on y
+    double distance = (0.0029 * pow(inputY, 2.0)) - (0.8845 * inputY) + 77.271;
+    // Get expected area/pixel count based on distance from camera
+    double minimumArea = 142538 * pow(distance, -1.839);
+    // Check surrounding pixels (roughly square/rectangle shape)
+    double radius = 0.5 * pow(minimumArea, 0.5);
+    if (inputX < radius || inputX > (width - radius) || inputY < radius || inputY > (height - radius)) {
+        threshold = 0.35;
+    }
+    else {
+        threshold = 0.7;
+    }
+    // Apply threshold to area
+    threshold *= minimumArea;
+    // Boundaries for iteration
+    int lowerX = (int)(x - radius);
+    int upperX = (int)(x + radius);
+    int lowerY = (int)(y - radius);
+    int upperY = (int)(y + radius);
 
-	int greenCount = 0;
-	int redCount = 0;
-	for (int i = y - radius; i >= 0 && i < y + radius; i++) {
-		for (int j = x - radius; j >= 0 && j < x + radius; j++) {
-			// Will change for specific color cubes; for now take red and green
-			int val0 = image->data[channels * (image->cols * i + j) + 0];
-			int val1 = image->data[channels * (image->cols * i + j) + 1];
-			int val2 = image->data[channels * (image->cols * i + j) + 2];
-			// if green or red
-			if ((val0 == 0) && (val1 == 255) && (val2 == 0)) {
-				greenCount++;
-			} else if ((val0 == 0) && (val1 == 0) && (val2 == 255)) {
-				redCount++;
-			}
-		}
-	}
-	if ((redCount > 0)
-			&& ((minimumArea) > redCount
-					&& redCount >= (minimumArea * threshold))) {
-		cubeCenter = redCenter;
-	}
-
-	if ((greenCount > 0)
-			&& ((minimumArea) > greenCount
-					&& greenCount >= (minimumArea * threshold))) {
-		cubeCenter = greenCenter;
-	}
-	return (jint) cubeCenter;
+    int greenCount = 0;
+    int redCount = 0;
+    for (int i = lowerY; i >= 0 && i < upperY && i < height; i++) {
+        for (int j = lowerX; j >= 0 && j < upperX && j < width; j++) {
+            int val0 = image->data[channels * (image->cols*i+j) + 0];
+            int val1 = image->data[channels * (image->cols*i+j) + 1];
+            int val2 = image->data[channels * (image->cols*i+j) + 2];
+            if ((val0 == 0) && (val1 == 255) && (val2 == 0)) {
+                greenCount++;
+            }
+            else if ((val0 == 0) && (val1 == 0) && (val2 == 255)) {
+                redCount++;
+            }
+        }
+    }
+    if ((redCount > 0) && (minimumArea > redCount) && (redCount >= threshold)) {
+        cubeCenter = redCenter;
+    }
+    else if ((greenCount > 0) && (minimumArea > greenCount) && (greenCount >= threshold)) {
+        cubeCenter = greenCenter;
+    }
+    else {
+        cubeCenter = notCenter;
+    }
+    return (jint) cubeCenter;
 }

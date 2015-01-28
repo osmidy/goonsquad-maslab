@@ -24,7 +24,7 @@ public class ObjectFinder {
     private final int greenCenter = 55;
 
     static {
-        System.loadLibrary("obj");
+        System.loadLibrary("interface");
     }
 
     /**
@@ -45,7 +45,6 @@ public class ObjectFinder {
         for (int y = 0; y < rows; y += 5) {
             for (int x = 0; x < cols; x += 5) {
                 int cubeCenter = checkCube(pointer, x, y);
-//                System.out.println(cubeCenter);
                 if (cubeCenter == redCenter) {
                     redQueue.add(new int[] {x,y});
                 }

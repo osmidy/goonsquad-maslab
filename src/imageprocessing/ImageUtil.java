@@ -39,7 +39,10 @@ public class ImageUtil {
         // Setup the camera
         VideoCapture camera = new VideoCapture();
         camera.open(0);
-        boolean gui = false;
+        boolean guiOn = false;
+        JLabel cameraPane = createWindow("Camera output", width, height, guiOn);
+        JLabel opencvPane = createWindow("OpenCV output", width, height, guiOn);
+        
 
 
         // Set up structures for processing images
@@ -69,17 +72,16 @@ public class ImageUtil {
             }
 
             Imgproc.resize(rawImage, resizedImage, size); // Halves resolution
-            long start = System.currentTimeMillis();
             processor.process(resizedImage, processedImage);
-            long end = System.currentTimeMillis();
-            System.out.println("Process:  "+ (end - start)/1000.);
-            start = System.currentTimeMillis();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
             finder.findCubes(processedImage);
             redCenters = finder.getRedCubes();
             greenCenters = finder.getGreenCubes();
-            end = System.currentTimeMillis();
-            System.out.println("Cubes: " + (end - start)/1000.);
-            System.out.println(greenCenters.size());
             
             for (int[] center : redCenters) {
                 System.out.println("RED: " + Arrays.toString(center));
@@ -89,9 +91,7 @@ public class ImageUtil {
             }
             // Create GUI windows to display camera output and OpenCV output
             // Update the GUI windows
-            if (gui) {
-                JLabel cameraPane = createWindow("Camera output", width, height);
-                JLabel opencvPane = createWindow("OpenCV output", width, height);
+            if (guiOn) {
                 updateWindow(cameraPane, resizedImage, rawImageConverter);
                 updateWindow(opencvPane, processedImage, processedImageConverter);
             }
@@ -148,7 +148,7 @@ public class ImageUtil {
         return heading;
     }
 
-    private static JLabel createWindow(String name, int width, int height) {
+    private static JLabel createWindow(String name, int width, int height, boolean guiOn) {
         JFrame imageFrame = new JFrame(name);
         imageFrame.setSize(width, height);
         imageFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -157,7 +157,7 @@ public class ImageUtil {
         imagePane.setLayout(new BorderLayout());
         imageFrame.setContentPane(imagePane);
 
-        imageFrame.setVisible(true);
+        imageFrame.setVisible(guiOn);
         return imagePane;
     }
 

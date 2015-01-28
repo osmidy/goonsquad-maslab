@@ -1,2 +1,0 @@
-cd ~/goonsquad-maslab/src
-g++ -I$JAVA_HOME/include -I/$JAVA_HOME/include/linux -shared -o libinterface.so *.cpp -lmraa -std=c++11 -fPIC
