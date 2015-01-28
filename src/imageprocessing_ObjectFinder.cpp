@@ -7,9 +7,10 @@
 #include "imageprocessing_ObjectFinder.h"
 
 using namespace cv;
+using namespace std;
 
-JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube(JNIEnv *env,
-		jobject thisObj, jlong pointer, jint x, jint y) {
+JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube
+  (JNIEnv *env, jobject thisObj, jlong pointer, jint x, jint y) {
 	Mat* image = (Mat*) pointer;
 	int width = 320;
 	int height = 240;
