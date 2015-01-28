@@ -119,7 +119,6 @@ public class Main {
                 pidThread.interrupt();
                 break mainloop;
             }
-            sleep(30);
         }
         cokebot.setState(State.DRIVETOCUBE);
     }
