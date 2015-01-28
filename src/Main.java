@@ -111,6 +111,7 @@ public class Main {
             }
         });
         findCube.start();
+        sleep(675);
         mainloop: while (true) {
             //System.out.println(cubeFound.get());
             if (cubeFound.get()) {
