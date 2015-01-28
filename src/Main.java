@@ -130,7 +130,7 @@ public class Main {
         }
         cokebot.setSpeed(0);
         print("BREAK SPEED: " + cokebot.getSpeed());
-        sleep(30000);
+        sleep(30);
         cokebot.setState(State.DRIVETOCUBE);
     }
 

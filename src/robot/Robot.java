@@ -259,7 +259,7 @@ public class Robot {
      * @param state
      *            One of the enumerated states for the Robot class
      */
-    public void setState(State state) {
+    public synchronized void setState(State state) {
         this.state = state;
         checkRep();
     }
