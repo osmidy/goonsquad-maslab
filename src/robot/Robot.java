@@ -178,7 +178,7 @@ public class Robot {
      * @param speed
      *            double in range [0.0, 1.0]
      */
-    public synchronized void setVelocity(double speed) {
+    public synchronized void setSpeed(double speed) {
         motors.get(0).setSpeed(speed);
         motors.get(1).setSpeed(speed);
         checkRep();

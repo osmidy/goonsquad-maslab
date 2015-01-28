@@ -108,23 +108,24 @@ public class Main {
                         double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
                         cokebot.setDesiredHeading(newDesiredHeading);
                         cubeFound.set(true);
-                        cokebot.setVelocity(0);
+                        cokebot.setSpeed(0);
                     }
                 }
             }
         });
         findCube.start();
         mainloop: while (true) {
-            //System.out.println(cubeFound.get());
+            print("CUBE FOUND: " + cubeFound.toString());
             if (cubeFound.get()) {
                 findCube.interrupt();
                 pidThread.interrupt();
-                cokebot.setVelocity(0);
+                cokebot.setSpeed(0);
+                print("BREAK SPEED: " + cokebot.getSpeed());
                 break mainloop;
             }
             
         }
-        cokebot.setVelocity(0);
+        cokebot.setSpeed(0);
         sleep(30000);
         cokebot.setState(State.DRIVETOCUBE);
     }
@@ -301,5 +302,9 @@ public class Main {
         Gyroscope gyro = new Gyroscope(gyroPin);
 
         return new Robot(motors, servos, sensorHeadings, gyro);
+    }
+    
+    private static void print(String x) {
+        System.out.println(x);
     }
 }
