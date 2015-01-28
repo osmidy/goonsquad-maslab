@@ -104,6 +104,7 @@ public class Main {
                         ImageCube closestCube = imageUtil.getClosestCube();
                         double speed = cokebot.getSpeed();
                         cokebot.setVelocity(0);
+                        sleep(3000);
                         cokebot.setVelocity(-speed);
                         sleep(3000);
                         double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
