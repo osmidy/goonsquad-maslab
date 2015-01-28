@@ -102,11 +102,8 @@ public class Main {
                     List<int[]> centers = imageUtil.getGreenCenters(); // TODO: desired color field
                     if (!centers.isEmpty()) {
                         ImageCube closestCube = imageUtil.getClosestCube();
-                        double speed = cokebot.getSpeed();
                         cokebot.setVelocity(0);
-                        sleep(3000);
-                        cokebot.setVelocity(-speed);
-                        sleep(3000);
+                        sleep(100);
                         double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
                         cokebot.setDesiredHeading(newDesiredHeading);
                         cubeFound.set(true);
@@ -120,6 +117,11 @@ public class Main {
             if (cubeFound.get()) {
                 findCube.interrupt();
                 pidThread.interrupt();
+                double speed = cokebot.getSpeed();
+                cokebot.setVelocity(0);
+                sleep(3000);
+                cokebot.setVelocity(-speed);
+                sleep(3000);
                 break mainloop;
             }
             sleep(30);
