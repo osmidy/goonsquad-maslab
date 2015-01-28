@@ -124,7 +124,6 @@ public class Main {
     }
 
     private static void driveToCube() throws IOException {
-        cokebot.setDesiredHeading(-25);
 //        StayStraightPID pid = new StayStraightPID(new File("StayStraightPID.conf"), cokebot, leftMotor, rightMotor, gyro);
 //        Thread thread = pid.thread();
 //        thread.start();
@@ -201,10 +200,12 @@ public class Main {
             // }
             // }
         }
+        getHeading.interrupt();
         leftMotor.setSpeed(.1);
         rightMotor.setSpeed(.1);
         sleep(1000);
-        getHeading.interrupt();
+        leftMotor.setSpeed(0);
+        rightMotor.setSpeed(0);
         sleep(30);
         cokebot.setState(State.FINDWALL);
         
