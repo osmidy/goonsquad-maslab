@@ -29,10 +29,10 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube
     // Check surrounding pixels (roughly square/rectangle shape)
     double radius = 0.5 * pow(minimumArea, 0.5);
     if (inputX < radius || inputX > (width - radius) || inputY < radius || inputY > (height - radius)) {
-        threshold = 0.35;
+        threshold = 0.05; // 0.35;
     }
     else {
-        threshold = 0.7;
+        threshold = 0.1; // 0.7;
     }
     // Apply threshold to area
     threshold *= minimumArea;
@@ -42,15 +42,15 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube
     int lowerY = (int)(y - radius);
     int upperY = (int)(y + radius);
 
-    int innerLowerX = (int)(y - radius * 0.9);
-    int innerUpperX = (int)(y + radius * 0.9);
-    int innerLowerY = (int)(y - radius * 0.9);
-    int innerUpperY = (int)(y + radius * 0.9);
+    int innerLowerX = (int)(y - (radius * 0.9));
+    int innerUpperX = (int)(y + (radius * 0.9));
+    int innerLowerY = (int)(y - (radius * 0.9));
+    int innerUpperY = (int)(y + (radius * 0.9));
 
     int greenCount = 0;
     int redCount = 0;
-    for (int i = lowerY; i >= 0 && i < upperY && i < height; i++) {
-        for (int j = lowerX; j >= 0 && j < upperX && j < width; j++) {
+    for (int i = lowerY; i >= 0 && i < upperY && i < height; i+=2) {
+        for (int j = lowerX; j >= 0 && j < upperX && j < width; j+=2) {
         	if (!(((i > innerLowerY ) && (i < innerUpperY)) && ((j > innerLowerX) && (j < innerUpperX)))) {
 				int val0 = image->data[channels * (image->cols*i+j) + 0];
 				int val1 = image->data[channels * (image->cols*i+j) + 1];
