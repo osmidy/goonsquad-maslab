@@ -73,12 +73,6 @@ public class ImageUtil {
 
             Imgproc.resize(rawImage, resizedImage, size); // Halves resolution
             processor.process(resizedImage, processedImage);
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
             finder.findCubes(processedImage);
             redCenters = finder.getRedCubes();
             greenCenters = finder.getGreenCubes();
@@ -94,11 +88,6 @@ public class ImageUtil {
             if (guiOn) {
 //                updateWindow(cameraPane, resizedImage, rawImageConverter);
 //                updateWindow(opencvPane, processedImage, processedImageConverter);
-            }
-
-            try {
-                Thread.sleep(33);
-            } catch (InterruptedException e) {
             }
             long loopEnd = System.currentTimeMillis();
             System.out.println("Loop Time: " + ((loopEnd - loopStart)));
