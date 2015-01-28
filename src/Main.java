@@ -117,11 +117,6 @@ public class Main {
             if (cubeFound.get()) {
                 findCube.interrupt();
                 pidThread.interrupt();
-                double speed = cokebot.getSpeed();
-                cokebot.setVelocity(0);
-                sleep(3000);
-                cokebot.setVelocity(-speed);
-                sleep(3000);
                 break mainloop;
             }
             sleep(30);

@@ -97,7 +97,7 @@ public class ImageUtil {
             }
 
             try {
-                Thread.sleep(10);
+                Thread.sleep(33);
             } catch (InterruptedException e) {
             }
         }
