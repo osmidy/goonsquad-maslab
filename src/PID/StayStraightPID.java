@@ -22,11 +22,13 @@ public class StayStraightPID implements PID {
     private final Motor rightMotor;
     private final Gyroscope gyro;
     private final Robot robot;
-    
+
     private double desiredHeading = 0;
     private double currentHeading = 0;
-    
-    public StayStraightPID(File file, Robot robot, Motor leftMotor, Motor rightMotor, Gyroscope gyro) throws IOException {
+    private final double bias;
+
+    public StayStraightPID(File file, Robot robot, Motor leftMotor,
+            Motor rightMotor, Gyroscope gyro, double bias) throws IOException {
         BufferedReader read = new BufferedReader(new FileReader(file));
         for (String line = read.readLine(); line != null; line = read
                 .readLine()) {
@@ -43,7 +45,8 @@ public class StayStraightPID implements PID {
                 d = value;
             }
         }
-        
+        this.bias = bias;
+
         this.robot = robot;
         this.leftMotor = leftMotor;
         this.rightMotor = rightMotor;
@@ -56,11 +59,79 @@ public class StayStraightPID implements PID {
     public Thread thread() {
         Thread pid = new Thread(new Runnable() {
             public void run() {
-                
+                // Calculating Current Heading with integration
+                Thread getHeading = new Thread(new Runnable() {
+                    public void run() {
+                        long start = System.currentTimeMillis();
+                        double heading = robot.getCurrentHeading();
+                        while (true) {
+                            long end = System.currentTimeMillis();
+                            double deltaT = .001 * (end - start); // from milli
+                                                                  // to sec
+                            double omega = gyro.getAngularVelocity();
+                            double bias = ((.11 * end) - .3373);
+                            double prevBias = ((.11 * start) - .3373);
+                            double total = (omega - (bias - prevBias)) * deltaT;
+                            heading += total;
+                            start = end;
+                        }
+                    }
+
+                });
+
+                // Initial Settings
+                getHeading.start();
+                double desired = robot.getDesiredHeading();
+                double heading = robot.getCurrentHeading();
+                double p = .012;
+                double i = .0005;
+                double d = .03;
+                long begin = System.currentTimeMillis();
+                double integral = 0;
+                double derivative = 0;
+                double prevDiff = 0;
+                leftMotor.setSpeed(bias);
+                rightMotor.setSpeed(bias);
+
+                // Main loop with PID control implemented
+                try {
+                    outerloop: while (true) {
+                        double diff = desired - heading;
+                        long finish = System.currentTimeMillis();
+                        double deltaT = .001 * (finish - begin); // from milli
+                                                                 // to sec
+                        integral += diff * deltaT;
+                        begin = finish;
+                        derivative = diff - prevDiff;
+                        prevDiff = diff;
+                        if (integral > 200) {
+                            integral = 200;
+                        }
+                        double power = p * diff + i * integral + d * derivative;
+                        leftMotor.setSpeed(bias + power);
+                        rightMotor.setSpeed(bias - power);
+                        System.out.println("Left: " + leftMotor.getSpeed()
+                                + " Right: " + rightMotor.getSpeed()
+                                + " Heading: " + heading);
+                        System.out.println("Diff: " + p * diff + " Integral: "
+                                + i * integral + " Derivative: " + d
+                                * derivative + " Power: " + power);
+                        Thread.sleep(33);
+
+                        long fin = System.currentTimeMillis();
+                        // if ((fin - current) >= 10000) {
+                        // leftMotor.setSpeed(0);
+                        // rightMotor.setSpeed(0);
+                        // break outerloop;
+                        // }
+                        // }
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         return pid;
     }
-    
-    
+
 }
