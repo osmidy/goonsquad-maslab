@@ -62,7 +62,7 @@ public class Main {
             sleep(120); 
             System.out.println(state);
             if (state.equals(State.FINDWALL)) {
-                findWall();
+                break simulate;//findWall();
             } else if (state.equals(State.WALLFOLLOW)) {
                 followAndSearch();
             } else if (state.equals(State.DRIVETOCUBE)) {
@@ -105,7 +105,6 @@ public class Main {
                     if (!centers.isEmpty()) {
                         pidThread.interrupt();
                         cokebot.setSpeed(0);
-                        System.out.println("FOUND");
                         ImageCube closestCube = imageUtil.getClosestCube();
                         double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
                         cokebot.setDesiredHeading(newDesiredHeading);
@@ -131,13 +130,44 @@ public class Main {
         cokebot.setState(State.DRIVETOCUBE);
     }
 
-//    private static void driveToCube() throws IOException {
-////        StayStraightPID pid = new StayStraightPID(new File("StayStraightPID.conf"), cokebot, leftMotor, rightMotor, gyro);
-////        Thread thread = pid.thread();
-////        thread.start();
-
+    private static void driveToCube() throws IOException {
+        File file = new File("StayStraightPID.conf");
+        StayStraightPID adjustAngle = new StayStraightPID(file, cokebot, leftMotor, rightMotor, gyro, 0.0);
+        StayStraightPID getCube = new StayStraightPID(file, cokebot, leftMotor, rightMotor, gyro, 0.1);
+        Thread adjustThread = adjustAngle.thread();
+        Thread driveThread = getCube.thread();
+        AtomicBoolean interrupted = new AtomicBoolean(false);
         
-
+        AtomicBoolean angleSet = new AtomicBoolean(false);
+        Thread findCube = new Thread(new Runnable() {
+            public void run() {
+                List<int[]> centers;
+                while (!angleSet.get()) {
+                    centers = imageUtil.getGreenCenters(); // TODO: desired color field
+                    if (!centers.isEmpty()) {
+                        cokebot.setSpeed(0);
+                        ImageCube closestCube = imageUtil.getClosestCube();
+                        double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
+                        cokebot.setDesiredHeading(newDesiredHeading);
+                        angleSet.set(true);
+                        cokebot.setSpeed(0);
+                        adjustThread.interrupt();
+                        interrupted.set(true);
+                    }
+                }
+            }
+        });
+        
+        adjustThread.start();
+        sleep(100);
+        findCube.start();
+        while (!interrupted.get()) {
+            sleep(10);
+        }
+        driveThread.start();
+        sleep(3000);
+        cokebot.setSpeed(0);
+        cokebot.setState(State.FINDWALL);     
     }
 
     private static void collectCube() {
