@@ -70,6 +70,7 @@ public class WallFollowPID implements PID {
                 rightMotor.setSpeed(bias);
 
                 mainLoop: while (true) {
+                    System.out.println("GET YO PID!!!");
                     diagonalSep = diagonalSensor.distanceToObject();
                     sideSep = sideSensor.distanceToObject();
                     if ((diagonalSep < 0.25) && (sideSep < 0.25)) { // diagonalSep

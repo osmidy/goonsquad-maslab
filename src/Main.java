@@ -123,7 +123,9 @@ public class Main {
             if (cubeFound.get()) {
                 print("CUBE FOUND");
                 findCube.interrupt();
+                print("END FIND THREAD");
                 pidThread.interrupt();
+                print("END PID THREAD");
                 cokebot.setSpeed(0);
                 break mainloop;
             }
