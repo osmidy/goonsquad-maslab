@@ -28,8 +28,7 @@ public class WallFollowPID implements PID {
     private final IRSensor diagonalSensor;
 
     public WallFollowPID(File file, Motor leftMotor, Motor rightMotor,
-            IRSensor sideIR, IRSensor diagonalIR)
-            throws IOException {
+            IRSensor sideIR, IRSensor diagonalIR) throws IOException {
         BufferedReader read = new BufferedReader(new FileReader(file));
         for (String line = read.readLine(); line != null; line = read
                 .readLine()) {
@@ -69,117 +68,93 @@ public class WallFollowPID implements PID {
                 leftMotor.setSpeed(bias);
                 rightMotor.setSpeed(bias);
 
-                mainLoop: while (true) {
-                    System.out.println("GET YO PID!!!");
-                    diagonalSep = diagonalSensor.distanceToObject();
-                    sideSep = sideSensor.distanceToObject();
-                    if ((diagonalSep < 0.25) && (sideSep < 0.25)) { // diagonalSep
-                                                                    // < 0.3
-//                        System.out.println("(1,1)" + "(" + sideSep + ","
-//                                + diagonalSep + ")");
-                        leftMotor.setSpeed(0.1);
-                        rightMotor.setSpeed(-0.1);
-                        try {
-                            Thread.sleep(150);
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    } else if ((diagonalSep < 0.25) && (sideSep >= 0.25)) { // diagonalSep
-                        // < 0.3
-//                        System.out.println("(0,1)" + "(" + sideSep + ","
-//                                + diagonalSep + ")");
-                        if (diagonalSep < 0.1) {
-//                            System.out.println("Too Close");
-                            // diagonalSep = diagonalSensor.distanceToObject();
+                try {
+                    mainLoop: while (true) {
+                        System.out.println("GET YO PID!!!");
+                        diagonalSep = diagonalSensor.distanceToObject();
+                        sideSep = sideSensor.distanceToObject();
+                        if ((diagonalSep < 0.25) && (sideSep < 0.25)) { // diagonalSep
+                                                                        // < 0.3
+                            // System.out.println("(1,1)" + "(" + sideSep + ","
+                            // + diagonalSep + ")");
                             leftMotor.setSpeed(0.1);
                             rightMotor.setSpeed(-0.1);
-                            try {
+                            Thread.sleep(150);
+                        } else if ((diagonalSep < 0.25) && (sideSep >= 0.25)) { // diagonalSep
+                            // < 0.3
+                            // System.out.println("(0,1)" + "(" + sideSep + ","
+                            // + diagonalSep + ")");
+                            if (diagonalSep < 0.1) {
+                                // System.out.println("Too Close");
+                                // diagonalSep =
+                                // diagonalSensor.distanceToObject();
+                                leftMotor.setSpeed(0.1);
+                                rightMotor.setSpeed(-0.1);
                                 Thread.sleep(100);
-                            } catch (InterruptedException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
 
-                        } else {
-                            leftMotor.setSpeed(0.05); // 0.05
-                            rightMotor.setSpeed(0.1); // 0.1
-                            // leftMotor.setSpeed(0.25); // .23 // .25
-                            // rightMotor.setSpeed(0.1); // .1
-                            try {
+                            } else {
+                                leftMotor.setSpeed(0.05); // 0.05
+                                rightMotor.setSpeed(0.1); // 0.1
+                                // leftMotor.setSpeed(0.25); // .23 // .25
+                                // rightMotor.setSpeed(0.1); // .1
                                 Thread.sleep(200);
-                            } catch (InterruptedException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
                             }
-                        }
-                    } else if ((diagonalSep >= 0.25) && (sideSep >= 0.25)) {
-//                        System.out.println("(0,0)" + "(" + sideSep + ","
-//                                + diagonalSep + ")");
+                        } else if ((diagonalSep >= 0.25) && (sideSep >= 0.25)) {
+                            // System.out.println("(0,0)" + "(" + sideSep + ","
+                            // + diagonalSep + ")");
 
-                        while (diagonalSep > 0.25) { // .25
-                            diagonalSep = diagonalSensor.distanceToObject();
-                            leftMotor.setSpeed(0.1);
-                            rightMotor.setSpeed(0.25);
-                            try {
+                            while (diagonalSep > 0.25) { // .25
+                                diagonalSep = diagonalSensor.distanceToObject();
+                                leftMotor.setSpeed(0.1);
+                                rightMotor.setSpeed(0.25);
                                 Thread.sleep(100);
-                            } catch (InterruptedException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
                             }
-                        }
-                        leftMotor.setSpeed(0.05);
-                        rightMotor.setSpeed(0.05);
-                        try {
+                            leftMotor.setSpeed(0.05);
+                            rightMotor.setSpeed(0.05);
                             Thread.sleep(200);
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    } else {
-                        long end = System.currentTimeMillis();
-                        double diff = sideSep - desired;
-                        double deltaT = .001 * (end - begin);
-                        integral += diff * deltaT;
-                        derivative = diff - prevDiff;
+                        } else {
+                            long end = System.currentTimeMillis();
+                            double diff = sideSep - desired;
+                            double deltaT = .001 * (end - begin);
+                            integral += diff * deltaT;
+                            derivative = diff - prevDiff;
 
-                        if (integral > 500) {
-                            integral = 500;
-                        }
+                            if (integral > 500) {
+                                integral = 500;
+                            }
 
-                        double power = p * diff + i * integral + d * derivative;
-                        bias = 0.2;
-                        leftMotor.setSpeed(bias - power);
-                        rightMotor.setSpeed(bias + power);
-                        begin = end;
-                        prevDiff = diff;
+                            double power = p * diff + i * integral + d
+                                    * derivative;
+                            bias = 0.2;
+                            leftMotor.setSpeed(bias - power);
+                            rightMotor.setSpeed(bias + power);
+                            begin = end;
+                            prevDiff = diff;
 
-                        try {
                             Thread.sleep(33);
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
 
-                        if (log == true) {
-                            System.out.println("Side: " + sideSep
-                                    + "Diagonal: " + diagonalSep);
-                            System.out.println("Left: " + leftMotor.getSpeed()
-                                    + " Right: " + rightMotor.getSpeed());
-                            System.out.println("Diff: " + p * diff
-                                    + "Integral: " + i * integral
-                                    + "Derivative: " + d * derivative
-                                    + "Power: " + power);
-                            try {
-                                Thread.sleep(150);
-                            } catch (InterruptedException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
+                            if (log == true) {
+                                System.out.println("Side: " + sideSep
+                                        + "Diagonal: " + diagonalSep);
+                                System.out.println("Left: "
+                                        + leftMotor.getSpeed() + " Right: "
+                                        + rightMotor.getSpeed());
+                                System.out.println("Diff: " + p * diff
+                                        + "Integral: " + i * integral
+                                        + "Derivative: " + d * derivative
+                                        + "Power: " + power);
+                                try {
+                                    Thread.sleep(150);
+                                } catch (InterruptedException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-
             }
         });
         return pid;
