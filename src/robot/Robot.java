@@ -248,7 +248,7 @@ public class Robot {
     /**
      * @return the current state of the Robot
      */
-    public State getState() {
+    public synchronized State getState() {
         checkRep();
         return this.state;
     }

@@ -55,9 +55,10 @@ public class Main {
         imageUtilThread.start();
         // TODO: when stack is hit, remove stack from list, create new cubes and
         // add to list
-        State state = cokebot.getState();
+        State state;
         sleep(670);
         simulate: while (true) {
+            state = cokebot.getState();
             sleep(120); 
             System.out.println(state);
             if (state.equals(State.FINDWALL)) {
