@@ -24,7 +24,7 @@ public class ObjectFinder {
     private final int greenCenter = 55;
 
     static {
-        System.loadLibrary("interface");
+        System.loadLibrary("obj");
     }
 
     /**
