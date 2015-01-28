@@ -89,9 +89,9 @@ public class ImageUtil {
             if (guiOn) {
 //                updateWindow(cameraPane, resizedImage, rawImageConverter);
 //                updateWindow(opencvPane, processedImage, processedImageConverter);
+            }
             long loopEnd = System.currentTimeMillis();
             System.out.println("Loop Time: " + ((loopEnd - loopStart)));
-            }
         }
     }
     
