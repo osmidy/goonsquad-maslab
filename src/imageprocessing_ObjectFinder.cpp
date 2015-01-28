@@ -64,6 +64,6 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube
 			&& ((minimumArea) > greenCount
 					&& greenCount >= (minimumArea * threshold))) {
 		cubeCenter = greenCenter;
-//	}
+	}
 	return (jint) cubeCenter;
 }
