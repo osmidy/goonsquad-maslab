@@ -42,10 +42,10 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube
     int lowerY = (int)(y - radius);
     int upperY = (int)(y + radius);
 
-    int innerLowerX = (int)(y - radius/2);
-    int innerUpperX = (int)(y + radius/2);
-    int innerLowerY = (int)(y - radius/2);
-    int innerUpperY = (int)(y + radius/2);
+    int innerLowerX = (int)(y - radius * 0.75);
+    int innerUpperX = (int)(y + radius * 0.75);
+    int innerLowerY = (int)(y - radius * 0.75);
+    int innerUpperY = (int)(y + radius * 0.75);
 
     int greenCount = 0;
     int redCount = 0;
