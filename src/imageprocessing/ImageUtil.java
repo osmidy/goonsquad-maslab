@@ -55,6 +55,7 @@ public class ImageUtil {
         Mat processedImage = new Mat();
         ObjectFinder finder = new ObjectFinder();
         Size size = new Size(width, height);
+        Size blurSize = new Size(5, 5);
         Mat2Image rawImageConverter = new Mat2Image(
                 BufferedImage.TYPE_3BYTE_BGR);
         Mat2Image processedImageConverter = new Mat2Image(
@@ -72,7 +73,7 @@ public class ImageUtil {
             }
 
             Imgproc.resize(rawImage, resizedImage, size); // Halves resolution
-            processor.process(resizedImage, processedImage);
+            processor.process(resizedImage, processedImage, blurSize);
             finder.findCubes(processedImage);
             redCenters = finder.getRedCubes();
             greenCenters = finder.getGreenCubes();

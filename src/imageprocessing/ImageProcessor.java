@@ -36,8 +36,8 @@ public class ImageProcessor {
     // (In practice it's a little different:
     //  the output image will be for your visual reference,
     //  but you will mainly want to output a list of the locations of detected objects.)
-    public void process(Mat resizedImage, Mat processedImage) {
-        Imgproc.GaussianBlur(resizedImage, processedImage, new Size(5, 5), 1.0);
+    public void process(Mat resizedImage, Mat processedImage, Size blurSize) {
+        Imgproc.GaussianBlur(resizedImage, processedImage, blurSize, 1.0);
         long pointer = processedImage.getNativeObjAddr();
         process(pointer);
     }
