@@ -31,6 +31,7 @@ public class Main {
     private final static Motor rightMotor = motors.get(1);
     private final static IRSensor sideIR = (IRSensor) sensors.get(0);
     private final static IRSensor diagonalIR = (IRSensor) sensors.get(1);
+    private final static Gyroscope gyro = cokebot.getGyro();
     
 
     public static void main(String[] args) throws IOException {        
@@ -123,11 +124,7 @@ public class Main {
     }
 
     private static void driveToCube() throws IOException {
-        List<Motor> motors = cokebot.getMotors();
-        List<Sensor> sensors = cokebot.getSensors();
-        Motor leftMotor = motors.get(0);
-        Motor rightMotor = motors.get(1);
-        Gyroscope gyro = cokebot.getGyro();
+        cokebot.setDesiredHeading(-25);
 //        StayStraightPID pid = new StayStraightPID(new File("StayStraightPID.conf"), cokebot, leftMotor, rightMotor, gyro);
 //        Thread thread = pid.thread();
 //        thread.start();
