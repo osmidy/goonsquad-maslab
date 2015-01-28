@@ -65,7 +65,10 @@ public class Main {
             } else if (state.equals(State.WALLFOLLOW)) {
                 followAndSearch();
             } else if (state.equals(State.DRIVETOCUBE)) {
+                print("TRANSITION SPEED: " + cokebot.getSpeed());
+                print("BREAKING SENSOR THREAD");
                 sensorThread.interrupt();
+                print("BREAKING MAIN");
                 break simulate;//driveToCube();
             } else if (state.equals(State.COLLECTCUBE)) {
                 collectCube();
@@ -76,6 +79,7 @@ public class Main {
             }
             sleep(30);
         }
+        print("OUT OF LOOP! BYE FELICIA!");
 
     }
 
@@ -120,12 +124,12 @@ public class Main {
                 findCube.interrupt();
                 pidThread.interrupt();
                 cokebot.setSpeed(0);
-                print("BREAK SPEED: " + cokebot.getSpeed());
                 break mainloop;
             }
             
         }
         cokebot.setSpeed(0);
+        print("BREAK SPEED: " + cokebot.getSpeed());
         sleep(30000);
         cokebot.setState(State.DRIVETOCUBE);
     }
