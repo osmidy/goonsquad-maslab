@@ -56,7 +56,7 @@ public class Main {
         // TODO: when stack is hit, remove stack from list, create new cubes and
         // add to list
         State state = cokebot.getState();
-        while (true) {
+        simulate: while (true) {
             sleep(120); 
             System.out.println(state);
             if (state.equals(State.FINDWALL)) {
@@ -65,7 +65,7 @@ public class Main {
                 sleep(670);
                 followAndSearch();
             } else if (state.equals(State.DRIVETOCUBE)) {
-                driveToCube();
+                break simulate;//driveToCube();
             } else if (state.equals(State.COLLECTCUBE)) {
                 collectCube();
             } else if (state.equals(State.FINDDROPZONE)) {
@@ -121,7 +121,7 @@ public class Main {
             }
             sleep(30000);
         }
-        //cokebot.setState(State.DRIVETOCUBE);
+        cokebot.setState(State.DRIVETOCUBE);
     }
 
     private static void driveToCube() throws IOException {
