@@ -56,15 +56,16 @@ public class Main {
         // TODO: when stack is hit, remove stack from list, create new cubes and
         // add to list
         State state = cokebot.getState();
+        sleep(670);
         simulate: while (true) {
             sleep(120); 
             System.out.println(state);
             if (state.equals(State.FINDWALL)) {
                 findWall();
             } else if (state.equals(State.WALLFOLLOW)) {
-                sleep(670);
                 followAndSearch();
             } else if (state.equals(State.DRIVETOCUBE)) {
+                sensorThread.interrupt();
                 break simulate;//driveToCube();
             } else if (state.equals(State.COLLECTCUBE)) {
                 collectCube();
@@ -98,14 +99,15 @@ public class Main {
         AtomicBoolean cubeFound = new AtomicBoolean(false);
         Thread findCube = new Thread(new Runnable() {
             public void run() {
+                List<int[]> centers;
                 while (!cubeFound.get()) {
-                    List<int[]> centers = imageUtil.getGreenCenters(); // TODO: desired color field
+                    centers = imageUtil.getGreenCenters(); // TODO: desired color field
                     if (!centers.isEmpty()) {
                         ImageCube closestCube = imageUtil.getClosestCube();
-                        cokebot.setVelocity(0);
                         double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
                         cokebot.setDesiredHeading(newDesiredHeading);
                         cubeFound.set(true);
+                        cokebot.setVelocity(0);
                     }
                 }
             }
