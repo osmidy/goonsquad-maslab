@@ -37,9 +37,9 @@ public class ExperimentalWF {
         long begin = System.currentTimeMillis();
         boolean log = true;
         double bias = 0.15;
-        double p = 0.2;
+        double p = 0.5;
         double i = 0.005; // .005 // 0.01;
-        double d = .08; // 0.08 //0.5;// .3 // 0.7
+        double d = .8; // 0.08 //0.5;// .3 // 0.7
         double integral = 0;
         double derivative = 0;
         double sideSep = sideSensor.distanceToObject();
