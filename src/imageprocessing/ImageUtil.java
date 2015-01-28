@@ -20,7 +20,6 @@ public class ImageUtil {
     private static final int width = 160;
     private static final int height = 120;
     // Diagonal FOV is ~70; 56 horizontal, 42 vertical
-    // Resized images have 320 horizontal pixels
     private static final double thetaX = 56;
     private static final double pixelsPerDegree = width / thetaX; // Horizontal
                                                                   // direction
@@ -39,9 +38,9 @@ public class ImageUtil {
         // Setup the camera
         VideoCapture camera = new VideoCapture();
         camera.open(0);
-        boolean guiOn = false;
-//        JLabel cameraPane = createWindow("Camera output", width, height, guiOn);
-//        JLabel opencvPane = createWindow("OpenCV output", width, height, guiOn);
+        boolean guiOn = true;
+        JLabel cameraPane = createWindow("Camera output", width, height, guiOn);
+        JLabel opencvPane = createWindow("OpenCV output", width, height, guiOn);
         
 
 
@@ -62,6 +61,7 @@ public class ImageUtil {
                 BufferedImage.TYPE_3BYTE_BGR);
 
         while (true) {
+            long loopStart = System.currentTimeMillis();
             // Wait until the camera has a new frame
             while (!camera.read(rawImage)) {
                 try {
@@ -92,14 +92,16 @@ public class ImageUtil {
             // Create GUI windows to display camera output and OpenCV output
             // Update the GUI windows
             if (guiOn) {
-//                updateWindow(cameraPane, resizedImage, rawImageConverter);
-//                updateWindow(opencvPane, processedImage, processedImageConverter);
+                updateWindow(cameraPane, resizedImage, rawImageConverter);
+                updateWindow(opencvPane, processedImage, processedImageConverter);
             }
 
             try {
                 Thread.sleep(33);
             } catch (InterruptedException e) {
             }
+            long loopEnd = System.currentTimeMillis();
+            System.out.println("Loop Time: " + ((loopEnd - loopStart)));
         }
     }
     
