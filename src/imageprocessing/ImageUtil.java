@@ -40,8 +40,8 @@ public class ImageUtil {
         VideoCapture camera = new VideoCapture();
         camera.open(0);
         boolean guiOn = false;
-        JLabel cameraPane = createWindow("Camera output", width, height, guiOn);
-        JLabel opencvPane = createWindow("OpenCV output", width, height, guiOn);
+//        JLabel cameraPane = createWindow("Camera output", width, height, guiOn);
+//        JLabel opencvPane = createWindow("OpenCV output", width, height, guiOn);
         
 
 
@@ -92,8 +92,8 @@ public class ImageUtil {
             // Create GUI windows to display camera output and OpenCV output
             // Update the GUI windows
             if (guiOn) {
-                updateWindow(cameraPane, resizedImage, rawImageConverter);
-                updateWindow(opencvPane, processedImage, processedImageConverter);
+//                updateWindow(cameraPane, resizedImage, rawImageConverter);
+//                updateWindow(opencvPane, processedImage, processedImageConverter);
             }
 
             try {
