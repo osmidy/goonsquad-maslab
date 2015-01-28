@@ -36,10 +36,10 @@ public class ExperimentalWF {
         // long current = System.currentTimeMillis();
         long begin = System.currentTimeMillis();
         boolean log = true;
-        double bias = 0.2;
+        double bias = 0.15;
         double p = 0.5;
         double i = 0.005; // .005 // 0.01;
-        double d = 1.3; // 0.08 //0.5;// .3 // 0.7
+        double d = .08; // 0.08 //0.5;// .3 // 0.7
         double integral = 0;
         double derivative = 0;
         double sideSep = sideSensor.distanceToObject();
@@ -161,7 +161,6 @@ public class ExperimentalWF {
                 }
 
                 double power = p * diff + i * integral + d * derivative;
-                bias = 0.3; // 0.15;
                 // if (diagonalSep < 0.4){
                 // bias = 0.1;
                 // power = power - ((diagonalSep-0.4)/8);

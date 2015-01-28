@@ -88,8 +88,6 @@ public class Main {
     }
 
     private static void followAndSearch() throws IOException {
-        List<Motor> motors = cokebot.getMotors();
-        List<Sensor> sensors = cokebot.getSensors();
         WallFollowPID pid = new WallFollowPID(new File("WallFollowPID.txt"),
                 leftMotor, rightMotor, sideIR, diagonalIR);
         Thread pidThread = pid.thread();
