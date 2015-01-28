@@ -51,17 +51,18 @@ public class Main {
                 imageUtil.main(new String[0]);
             }
         });
-        imageUtilThread.start();
         sensorThread.start();
+        imageUtilThread.start();
         // TODO: when stack is hit, remove stack from list, create new cubes and
         // add to list
-
+        State state = cokebot.getState();
         while (true) {
-            State state = cokebot.getState();
+            sleep(120); 
             System.out.println(state);
             if (state.equals(State.FINDWALL)) {
                 findWall();
             } else if (state.equals(State.WALLFOLLOW)) {
+                sleep(670);
                 followAndSearch();
             } else if (state.equals(State.DRIVETOCUBE)) {
                 driveToCube();
@@ -110,7 +111,6 @@ public class Main {
             }
         });
         findCube.start();
-        sleep(670);
         mainloop: while (true) {
             //System.out.println(cubeFound.get());
             if (cubeFound.get()) {
@@ -119,9 +119,9 @@ public class Main {
                 cokebot.setVelocity(0);
                 break mainloop;
             }
-            sleep(10000);
+            sleep(30000);
         }
-        cokebot.setState(State.DRIVETOCUBE);
+        //cokebot.setState(State.DRIVETOCUBE);
     }
 
     private static void driveToCube() throws IOException {
