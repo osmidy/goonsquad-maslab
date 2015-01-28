@@ -64,6 +64,7 @@ public class WallFollowPID implements PID {
                 boolean log = false;
                 double integral = 0;
                 double derivative = 0;
+                double bias = .1;
                 double sideSep = sideSensor.distanceToObject();
                 double diagonalSep = diagonalSensor.distanceToObject();
                 double prevDiff = 0;
