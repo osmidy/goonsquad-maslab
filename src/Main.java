@@ -102,7 +102,6 @@ public class Main {
                     if (!centers.isEmpty()) {
                         ImageCube closestCube = imageUtil.getClosestCube();
                         cokebot.setVelocity(0);
-                        sleep(100);
                         double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
                         cokebot.setDesiredHeading(newDesiredHeading);
                         cubeFound.set(true);
@@ -111,15 +110,16 @@ public class Main {
             }
         });
         findCube.start();
-        sleep(675);
+        sleep(670);
         mainloop: while (true) {
             //System.out.println(cubeFound.get());
             if (cubeFound.get()) {
                 findCube.interrupt();
                 pidThread.interrupt();
+                cokebot.setVelocity(0);
                 break mainloop;
             }
-            sleep(33);
+            sleep(10000);
         }
         cokebot.setState(State.DRIVETOCUBE);
     }
