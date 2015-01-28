@@ -121,8 +121,10 @@ public class Main {
                 cokebot.setVelocity(0);
                 break mainloop;
             }
-            sleep(30000);
+            
         }
+        cokebot.setVelocity(0);
+        sleep(30000);
         cokebot.setState(State.DRIVETOCUBE);
     }
 
