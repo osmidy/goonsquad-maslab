@@ -21,6 +21,7 @@ public class WallFollowPID implements PID {
     private double diff;
     private double integral = 0;
     private double derivative = 0;
+    private double bias = 0;
 
     private final Motor leftMotor;
     private final Motor rightMotor;
@@ -44,6 +45,9 @@ public class WallFollowPID implements PID {
             if (constant.equals("d")) {
                 d = value;
             }
+            if (constant.equals("bias")) {
+                bias = value;
+            }
         }
 
         this.leftMotor = leftMotor;
@@ -58,7 +62,6 @@ public class WallFollowPID implements PID {
             public void run() {
                 long begin = System.currentTimeMillis();
                 boolean log = false;
-                double bias = 0.2;
                 double integral = 0;
                 double derivative = 0;
                 double sideSep = sideSensor.distanceToObject();
@@ -125,7 +128,6 @@ public class WallFollowPID implements PID {
 
                             double power = p * diff + i * integral + d
                                     * derivative;
-                            bias = 0.2;
                             leftMotor.setSpeed(bias - power);
                             rightMotor.setSpeed(bias + power);
                             begin = end;
