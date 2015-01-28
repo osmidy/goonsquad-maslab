@@ -178,7 +178,7 @@ public class Robot {
      * @param speed
      *            double in range [0.0, 1.0]
      */
-    public void setVelocity(double speed) {
+    public synchronized void setVelocity(double speed) {
         motors.get(0).setSpeed(speed);
         motors.get(1).setSpeed(speed);
         checkRep();
@@ -187,7 +187,7 @@ public class Robot {
     /**
      * @return the current angular velocity of the robot, in deg/s
      */
-    public double getAngularVelocity() {
+    public synchronized double getAngularVelocity() {
         double omega = gyro.getAngularVelocity();
         checkRep();
         return omega;

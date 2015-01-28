@@ -56,7 +56,7 @@ public class Gyroscope {
      *            Gyroscope
      * @return the heading, in degrees/s, of the Gyroscope
      */
-    public double getAngularVelocity() {
+    public synchronized double getAngularVelocity() {
         return getAngularVelocity(chipPointer, spiPointer);
     }
 
