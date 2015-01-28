@@ -159,10 +159,10 @@ public class Main {
         });
         
         adjustThread.start();
-        sleep(100);
+//        sleep(100);
         findCube.start();
         while (!interrupted.get()) {
-            sleep(10);
+            sleep(1);
         }
         driveThread.start();
         sleep(3000);
