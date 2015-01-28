@@ -27,6 +27,10 @@ public class Main {
     private final static List<Motor> motors = cokebot.getMotors();
     private final static List<Sensor> sensors = cokebot.getSensors();
     private final static ImageUtil imageUtil = new ImageUtil();
+    private final static Motor leftMotor = motors.get(0);
+    private final static Motor rightMotor = motors.get(1);
+    private final static IRSensor sideIR = (IRSensor) sensors.get(0);
+    private final static IRSensor diagonalIR = (IRSensor) sensors.get(1);
     
 
     public static void main(String[] args) throws IOException {        
@@ -86,10 +90,6 @@ public class Main {
     private static void followAndSearch() throws IOException {
         List<Motor> motors = cokebot.getMotors();
         List<Sensor> sensors = cokebot.getSensors();
-        Motor leftMotor = motors.get(0);
-        Motor rightMotor = motors.get(1);
-        IRSensor sideIR = (IRSensor) sensors.get(0);
-        IRSensor diagonalIR = (IRSensor) sensors.get(1);
         WallFollowPID pid = new WallFollowPID(new File("WallFollowPID.txt"),
                 leftMotor, rightMotor, sideIR, diagonalIR);
         Thread pidThread = pid.thread();
@@ -119,6 +119,7 @@ public class Main {
                 pidThread.interrupt();
                 break mainloop;
             }
+            sleep(33);
         }
         cokebot.setState(State.DRIVETOCUBE);
     }

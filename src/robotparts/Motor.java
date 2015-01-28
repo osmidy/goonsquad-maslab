@@ -73,14 +73,14 @@ public class Motor {
     /**
      * @return current speed of this Motor
      */
-    public double getSpeed() {
+    public synchronized double getSpeed() {
         return this.speed;
     }
 
     /**
      * Sets the Motor to run in the forward direction.
      */
-    private void setForward() {
+    private synchronized void setForward() {
         dir.write(dirPointer, forwardValue);
         checkRep();
     }
@@ -88,7 +88,7 @@ public class Motor {
     /**
      * Sets the Motor to run in the reverse direction.
      */
-    private void setReverse() {
+    private synchronized void setReverse() {
         dir.write(dirPointer, reverseValue);
         checkRep();
     }
