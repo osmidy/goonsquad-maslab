@@ -42,19 +42,26 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube
     int lowerY = (int)(y - radius);
     int upperY = (int)(y + radius);
 
+    int innerLowerX = (int)(y - radius/2);
+    int innerUpperX = (int)(y + radius/2);
+    int innerLowerY = (int)(y - radius/2);
+    int innerUpperY = (int)(y + radius/2);
+
     int greenCount = 0;
     int redCount = 0;
     for (int i = lowerY; i >= 0 && i < upperY && i < height; i++) {
         for (int j = lowerX; j >= 0 && j < upperX && j < width; j++) {
-            int val0 = image->data[channels * (image->cols*i+j) + 0];
-            int val1 = image->data[channels * (image->cols*i+j) + 1];
-            int val2 = image->data[channels * (image->cols*i+j) + 2];
-            if ((val0 == 0) && (val1 == 255) && (val2 == 0)) {
-                greenCount++;
-            }
-            else if ((val0 == 0) && (val1 == 0) && (val2 == 255)) {
-                redCount++;
-            }
+        	if (!(((i > innerLowerY ) && (i < innerUpperY)) && ((j > innerLowerX) && (j < innerUpperX)))) {
+				int val0 = image->data[channels * (image->cols*i+j) + 0];
+				int val1 = image->data[channels * (image->cols*i+j) + 1];
+				int val2 = image->data[channels * (image->cols*i+j) + 2];
+				if ((val0 == 0) && (val1 == 255) && (val2 == 0)) {
+					greenCount++;
+				}
+				else if ((val0 == 0) && (val1 == 0) && (val2 == 255)) {
+					redCount++;
+				}
+        	}
         }
     }
     if ((redCount > 0) && (minimumArea > redCount) && (redCount >= threshold)) {
