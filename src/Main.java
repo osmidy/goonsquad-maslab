@@ -115,8 +115,8 @@ public class Main {
         });
         findCube.start();
         mainloop: while (true) {
-            print("CUBE FOUND: " + cubeFound.toString());
             if (cubeFound.get()) {
+                print("CUBE FOUND");
                 findCube.interrupt();
                 pidThread.interrupt();
                 cokebot.setSpeed(0);
