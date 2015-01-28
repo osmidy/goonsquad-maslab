@@ -103,6 +103,7 @@ public class Main {
                 while (!cubeFound.get()) {
                     centers = imageUtil.getGreenCenters(); // TODO: desired color field
                     if (!centers.isEmpty()) {
+                        System.out.print("FOUND");
                         ImageCube closestCube = imageUtil.getClosestCube();
                         double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
                         cokebot.setDesiredHeading(newDesiredHeading);
