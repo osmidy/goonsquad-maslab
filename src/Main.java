@@ -170,6 +170,7 @@ public class Main {
 //        cokebot.setSpeed(0);
         driveThread.start();
         sleep(3000);
+        driveThread.interrupt();
         cokebot.setState(State.FINDWALL);     
     }
 
