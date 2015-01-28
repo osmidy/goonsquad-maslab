@@ -54,16 +54,16 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube
 			}
 		}
 	}
-//	if ((redCount > 0)
-//			&& ((minimumArea) > redCount
-//					&& redCount >= (minimumArea * threshold))) {
-//		cubeCenter = redCenter;
-//	}
-//
-//	if ((greenCount > 0)
-//			&& ((minimumArea) > greenCount
-//					&& greenCount >= (minimumArea * threshold))) {
-//		cubeCenter = greenCenter;
+	if ((redCount > 0)
+			&& ((minimumArea) > redCount
+					&& redCount >= (minimumArea * threshold))) {
+		cubeCenter = redCenter;
+	}
+
+	if ((greenCount > 0)
+			&& ((minimumArea) > greenCount
+					&& greenCount >= (minimumArea * threshold))) {
+		cubeCenter = greenCenter;
 //	}
 	return (jint) cubeCenter;
 }
