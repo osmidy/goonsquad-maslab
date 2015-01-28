@@ -44,8 +44,8 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube
 
     int greenCount = 0;
     int redCount = 0;
-    for (int i = lowerY; i >= 0 && i < upperY && i < height; i+=2) {
-        for (int j = lowerX; j >= 0 && j < upperX && j < width; j+=2) {
+    for (int i = lowerY; i >= 0 && i < upperY && i < height; i++) {
+        for (int j = lowerX; j >= 0 && j < upperX && j < width; j++) {
             int val0 = image->data[channels * (image->cols*i+j) + 0];
             int val1 = image->data[channels * (image->cols*i+j) + 1];
             int val2 = image->data[channels * (image->cols*i+j) + 2];
