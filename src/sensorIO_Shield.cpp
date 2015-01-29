@@ -10,7 +10,7 @@
 
 // From staff code
 void initPWM(mraa::I2c *i2c) {
-    char* writeBuf[2] = { 0 };
+    uint8_t writeBuf[2] = { 0 };
     writeBuf[0] = 0x00; // Write to MODE 1 Register;
     writeBuf[1] = 1 << 4; // Enable Sleep Mode
 
