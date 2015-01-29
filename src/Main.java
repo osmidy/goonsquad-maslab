@@ -74,14 +74,31 @@ public class Main {
 
     }
 
-    private static void findWall() {
-        boolean wallFound = false;
-        while (!wallFound) {
-            Sensor wallSensor = cokebot.findClosestWallSensor();
-            cokebot.followWall(wallSensor);
-            wallFound = true;
-        }
-        sleep(30);
+    private static void findWall() throws IOException{
+        double wallHeading; // Calculated from column that is being iterated over (column 77)
+        double newWallHeading = cokebot.getCurrentHeading() + wallHeading;
+        cokebot.setDesiredHeading(newWallHeading);
+        
+        File file = new File("StayStraightPID.conf");
+        StayStraightPID getToWall = new StayStraightPID(file, cokebot, leftMotor, rightMotor, gyro);
+        Thread getToWallThread = getToWall.thread();
+        Thread checkDistance = new Thread(new Runnable() {
+            public void run() {
+                double wallDistance = Double.MAX_VALUE;
+                // TODO: make sure interrupted correctly
+                while (wallDistance > 20) {
+                    System.out.println("Approaching wall...");
+                    wallDistance = getWallDistance(); // Iterates over column to find distance, details in notebook
+                    sleep(10);
+                }
+            }
+        });
+        
+        getToWallThread.start();
+        checkDistance.start();
+        sleep(500);
+        getToWallThread.interrupt();
+        
         cokebot.setState(State.WALLFOLLOW);
     }
 
@@ -153,11 +170,39 @@ public class Main {
 
     }
 
-    private static void findDropZone() {
-        // TODO Auto-generated method stub
-
-    }
-
+    private static void findDropZone() throws IOException {
+        double dropHeading; // Calculated from column that is being iterated over (column 0)
+        double newWallHeading = cokebot.getCurrentHeading() + dropHeading;
+        cokebot.setDesiredHeading(newWallHeading);
+        
+        File file = new File("StayStraightPID.conf");
+        StayStraightPID getToWall = new StayStraightPID(file, cokebot, leftMotor, rightMotor, gyro);
+        Thread getToWallThread = getToWall.thread();
+        Thread checkDistance = new Thread(new Runnable() {
+            public void run() {
+                double wallDistance = Double.MAX_VALUE;
+                // TODO: make sure interrupted correctly
+                while (wallDistance > 20) {
+                    System.out.println("Approaching wall...");
+                    wallDistance = getWallDistance(); // Iterates over column to find distance, details in notebook
+                    sleep(10);
+                    }
+                }
+            });
+            
+            getToWallThread.start();
+            checkDistance.start();
+            sleep(500);
+            getToWallThread.interrupt();
+        }
+        
+        // Now turn to face the wall
+        double newFaceWallHeading = cokebot.getCurrentHeading() - (90 - dropHeading);
+        cokebot.setDesiredHeading(newFaceWallHeading);
+        // Turn in place to the desired heading, which should face the wall
+        
+        cokebot.setState(State.DROPSTACK);
+    
     private static void dropStack() {
         // TODO Auto-generated method stub
 
