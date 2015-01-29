@@ -29,6 +29,8 @@ public class ImageUtil {
     private static final double focalLength = width * 0.5 / tanHalfX;
     private static List<int[]> redCenters = new ArrayList<int[]>();
     private static List<int[]> greenCenters = new ArrayList<int[]>();
+    private static final Mat2Image rawImageConverter = new Mat2Image(BufferedImage.TYPE_3BYTE_BGR);
+    private static final Mat2Image processedImageConverter = new Mat2Image(BufferedImage.TYPE_3BYTE_BGR);
     
     private ImageProcessor processor = new ImageProcessor();
     private Mat rawImage = new Mat();
@@ -40,15 +42,17 @@ public class ImageUtil {
     private final Size imageSize = new Size(width, height);
     private final Size blurSize = new Size(5, 5);
 
-    /**
-     * Main method
-     */
+    public static void main(String[] args) {
+        ImageUtil ig = new ImageUtil();
+        while (true) {ig.checkImage();}
+    }
+    
     public void checkImage() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load the OpenCV library
         camera.open(0);
-//        boolean guiOn = true;
-//        JLabel cameraPane = createWindow("Camera output", width, height, guiOn);
-//        JLabel opencvPane = createWindow("OpenCV output", width, height, guiOn);      
+        boolean guiOn = true;
+        JLabel cameraPane = createWindow("Camera output", width, height, guiOn);
+        JLabel opencvPane = createWindow("OpenCV output", width, height, guiOn);      
 
 
         // Set up structures for processing images
@@ -78,10 +82,10 @@ public class ImageUtil {
         }
         // Create GUI windows to display camera output and OpenCV output
         // Update the GUI windows
-//            if (guiOn) {
-//                updateWindow(cameraPane, resizedImage, rawImageConverter);
-//                updateWindow(opencvPane, processedImage, processedImageConverter);
-//            }
+            if (guiOn) {
+                updateWindow(cameraPane, resizedImage, rawImageConverter);
+                updateWindow(opencvPane, processedImage, processedImageConverter);
+            }
         long loopEnd = System.currentTimeMillis();
         System.out.println("Loop Time: " + ((loopEnd - loopStart)));
     }

@@ -14,6 +14,10 @@ public class Servo {
     private final int index;
     private final Shield shield;
     private final long pointer;
+    
+    static {
+        System.loadLibrary("interface");
+    }
 
     /**
      * Instantiates a Servo.

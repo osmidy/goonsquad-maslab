@@ -35,7 +35,7 @@ JNIEXPORT void JNICALL Java_robotparts_Servo_setPosition
     double on = 4095.0 * (double)duty;
     uint16_t onRounded = (uint16_t) on;
 
-    uint8_t writeBuf[5];
+    char* writeBuf[5];
 
     // ON_L
     writeBuf[0] = registers[(int)index];
