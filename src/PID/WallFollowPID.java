@@ -21,7 +21,6 @@ public class WallFollowPID implements PID {
     private double diff;
     private double integral = 0;
     private double derivative = 0;
-    private double bias = 0;
 
     private final Motor leftMotor;
     private final Motor rightMotor;
@@ -44,9 +43,6 @@ public class WallFollowPID implements PID {
             }
             if (constant.equals("d")) {
                 d = value;
-            }
-            if (constant.equals("bias")) {
-                bias = value;
             }
         }
 

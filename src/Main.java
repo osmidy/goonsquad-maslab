@@ -19,7 +19,6 @@ import robotparts.Servo;
 import sensors.CameraSensor;
 import sensors.IRSensor;
 import sensors.Sensor;
-import sensors.UltraSonicSensor;
 
 public class Main {
     // Free Cokebot!
@@ -32,6 +31,9 @@ public class Main {
     private final static IRSensor sideIR = (IRSensor) sensors.get(0);
     private final static IRSensor diagonalIR = (IRSensor) sensors.get(1);
     private final static Gyroscope gyro = cokebot.getGyro();
+    
+    private final static File wallFollowPid = new File("WallFollowPID.conf");
+    private final static File stayStraightPid = new File("StayStraightPID.conf");
     
 
     public static void main(String[] args) throws IOException {        
@@ -46,20 +48,12 @@ public class Main {
             }
         });
         
-        Thread imageUtilThread = new Thread(new Runnable() {
-            public void run() {
-                imageUtil.main(new String[0]);
-            }
-        });
         sensorThread.start();
-        imageUtilThread.start();
         // TODO: when stack is hit, remove stack from list, create new cubes and
         // add to list
         State state;
-        sleep(670);
         simulate: while (true) {
             state = cokebot.getState();
-            sleep(120); 
             System.out.println(state);
             if (state.equals(State.FINDWALL)) {
                 cokebot.setSpeed(0);
@@ -92,8 +86,7 @@ public class Main {
     }
 
     private static void followAndSearch() throws IOException {
-        WallFollowPID pid = new WallFollowPID(new File("WallFollowPID.txt"),
-                leftMotor, rightMotor, sideIR, diagonalIR);
+        WallFollowPID pid = new WallFollowPID(wallFollowPid, leftMotor, rightMotor, sideIR, diagonalIR);
         Thread pidThread = pid.thread();
         pidThread.start();
 
@@ -102,6 +95,7 @@ public class Main {
             public void run() {
                 List<int[]> centers;
                 while (!cubeFound.get()) {
+                    imageUtil.checkImage();
                     centers = imageUtil.getGreenCenters(); // TODO: desired color field
                     if (!centers.isEmpty()) {
                         pidThread.interrupt();
@@ -118,8 +112,7 @@ public class Main {
         findCube.start();
         mainloop: while (true) {
             if (cubeFound.get()) {
-//                findCube.interrupt();
-//                pidThread.interrupt();
+                findCube.interrupt();
                 cokebot.setSpeed(0);
                 break mainloop;
             }
@@ -133,44 +126,25 @@ public class Main {
 
     private static void driveToCube() throws IOException {
         File file = new File("StayStraightPID.conf");
-        StayStraightPID adjustAngle = new StayStraightPID(file, cokebot, leftMotor, rightMotor, gyro, 0.0);
-        StayStraightPID getCube = new StayStraightPID(file, cokebot, leftMotor, rightMotor, gyro, 0.1);
-        Thread adjustThread = adjustAngle.thread();
-        Thread driveThread = getCube.thread();
-//        AtomicBoolean interrupted = new AtomicBoolean(false);
-//        
-//        AtomicBoolean angleSet = new AtomicBoolean(false);
-//        Thread findCube = new Thread(new Runnable() {
-//            public void run() {
-//                List<int[]> centers;
-//                while (!angleSet.get()) {
-//                    centers = imageUtil.getGreenCenters(); // TODO: desired color field
-//                    if (!centers.isEmpty()) {
-//                        cokebot.setSpeed(0);
-//                        ImageCube closestCube = imageUtil.getClosestCube();
-//                        double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
-//                        cokebot.setDesiredHeading(newDesiredHeading);
-//                        angleSet.set(true);
-//                        cokebot.setSpeed(0);
-//                        adjustThread.interrupt();
-//                        interrupted.set(true);
-//                    }
-//                }
-//            }
-//        });
-//        
-//        adjustThread.start();
-////        sleep(100);
-//        findCube.start();
-//        while (!interrupted.get()) {
-//            sleep(1);
-//        }
-//        driveThread.start();
-//        sleep(3000);
-//        cokebot.setSpeed(0);
-        driveThread.start();
-        sleep(3000);
-        driveThread.interrupt();
+        StayStraightPID getCube = new StayStraightPID(file, cokebot, leftMotor, rightMotor, gyro);
+        Thread getCubeThread = getCube.thread();
+        Thread checkDistance = new Thread(new Runnable() {
+            public void run() {
+                double distance = Double.MAX_VALUE;
+                // TODO: make sure interrupted correctly
+                while (distance > 20) {
+                    System.out.println("Running check...");
+                    imageUtil.checkImage();
+                    distance = imageUtil.getClosestCube().getDistance();
+                    sleep(10);
+                }
+            }
+        });
+        
+        getCubeThread.start();
+        checkDistance.start();
+        sleep(1500);
+        getCubeThread.interrupt();
         cokebot.setState(State.FINDWALL);     
     }
 

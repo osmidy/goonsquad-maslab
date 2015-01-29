@@ -25,10 +25,9 @@ public class StayStraightPID implements PID {
 
     private double desiredHeading = 0;
     private double currentHeading = 0;
-    private final double bias;
 
     public StayStraightPID(File file, Robot robot, Motor leftMotor,
-            Motor rightMotor, Gyroscope gyro, double bias) throws IOException {
+            Motor rightMotor, Gyroscope gyro) throws IOException {
         BufferedReader read = new BufferedReader(new FileReader(file));
         for (String line = read.readLine(); line != null; line = read
                 .readLine()) {
@@ -45,7 +44,6 @@ public class StayStraightPID implements PID {
                 d = value;
             }
         }
-        this.bias = bias;
 
         this.robot = robot;
         this.leftMotor = leftMotor;
@@ -83,9 +81,10 @@ public class StayStraightPID implements PID {
                 getHeading.start();
                 double desired = robot.getDesiredHeading();
                 double heading = robot.getCurrentHeading();
-                double p = .012;
-                double i = .0005;
-                double d = .03;
+                double bias = 0.2;
+//                double p = .012;
+//                double i = .0005;
+//                double d = .03;
                 long begin = System.currentTimeMillis();
                 double integral = 0;
                 double derivative = 0;

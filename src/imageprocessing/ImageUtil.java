@@ -29,14 +29,22 @@ public class ImageUtil {
     private static final double focalLength = width * 0.5 / tanHalfX;
     private static List<int[]> redCenters = new ArrayList<int[]>();
     private static List<int[]> greenCenters = new ArrayList<int[]>();
+    
+    private ImageProcessor processor = new ImageProcessor();
+    private Mat rawImage = new Mat();
+    private Mat resizedImage = new Mat();
+    private Mat processedImage = new Mat();
+    private final VideoCapture camera = new VideoCapture();
+    private final ObjectFinder finder = new ObjectFinder();
+    
+    private final Size imageSize = new Size(width, height);
+    private final Size blurSize = new Size(5, 5);
 
     /**
      * Main method
      */
-    public static void main(String args[]) {
+    public void checkImage() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load the OpenCV library
-        // Setup the camera
-        VideoCapture camera = new VideoCapture();
         camera.open(0);
 //        boolean guiOn = true;
 //        JLabel cameraPane = createWindow("Camera output", width, height, guiOn);
@@ -44,63 +52,56 @@ public class ImageUtil {
 
 
         // Set up structures for processing images
-        ImageProcessor processor = new ImageProcessor();
+        
         // Scanner input = new Scanner(System.in);
         // String file = input.nextLine();
-        Mat rawImage = new Mat();// Highgui.imread("C:/Users/George/Dropbox (MIT)/goonsquad-maslab/src/imageprocessing/test-images/center.jpg");//new
-                                 // Mat(); // Highgui.imread("/home/osmidy/" +
-                                 // file + ".jpg");
-        Mat resizedImage = new Mat();
-        Mat processedImage = new Mat();
-        ObjectFinder finder = new ObjectFinder();
-        Size size = new Size(width, height);
-        Size blurSize = new Size(5, 5);
-        Mat2Image rawImageConverter = new Mat2Image(
-                BufferedImage.TYPE_3BYTE_BGR);
-        Mat2Image processedImageConverter = new Mat2Image(
-                BufferedImage.TYPE_3BYTE_BGR);
 
-        while (true) {
-            long loopStart = System.currentTimeMillis();
-            // Wait until the camera has a new frame
-            while (!camera.read(rawImage)) {
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            Imgproc.resize(rawImage, resizedImage, size); // Halves resolution
-            processor.process(resizedImage, processedImage, blurSize);
-            finder.findCubes(processedImage);
+        long loopStart = System.currentTimeMillis();
+        // Wait until the camera has a new frame
+        for (int i = 0; i < 5; i++) {
+            camera.grab();
+        }
+        camera.retrieve(rawImage);
+        Imgproc.resize(rawImage, resizedImage, imageSize); // Halves resolution
+        processor.process(resizedImage, processedImage, blurSize);
+        finder.findCubes(processedImage);
 
-            redCenters = finder.getRedCubes();
-            greenCenters = finder.getGreenCubes();
+        redCenters = this.setRedCenters(finder.getRedCubes());
+        greenCenters = this.setGreenCenters(finder.getGreenCubes());
 
-            
-            for (int[] center : redCenters) {
-                System.out.println("RED: " + Arrays.toString(center));
-            }
-            for (int[] x : greenCenters) {
-                System.out.println("GREEN: " + Arrays.toString(x));
-            }
-            // Create GUI windows to display camera output and OpenCV output
-            // Update the GUI windows
+        
+        for (int[] center : redCenters) {
+            System.out.println("RED: " + Arrays.toString(center));
+        }
+        for (int[] x : greenCenters) {
+            System.out.println("GREEN: " + Arrays.toString(x));
+        }
+        // Create GUI windows to display camera output and OpenCV output
+        // Update the GUI windows
 //            if (guiOn) {
 //                updateWindow(cameraPane, resizedImage, rawImageConverter);
 //                updateWindow(opencvPane, processedImage, processedImageConverter);
 //            }
-            long loopEnd = System.currentTimeMillis();
-            System.out.println("Loop Time: " + ((loopEnd - loopStart)));
-        }
+        long loopEnd = System.currentTimeMillis();
+        System.out.println("Loop Time: " + ((loopEnd - loopStart)));
     }
     
-    public List<int[]> getRedCenters() {
+    private synchronized List<int[]> setGreenCenters(List<int[]> greenCubes) {
+        List<int[]> list = greenCubes;
+        return list;
+    }
+
+    private synchronized List<int[]> setRedCenters(List<int[]> redCubes) {
+        List<int[]> list = redCubes;
+        return list;
+    }
+
+    public synchronized List<int[]> getRedCenters() {
         List<int[]> list = redCenters;
         return list;
     }
     
-    public List<int[]> getGreenCenters() {
+    public synchronized List<int[]> getGreenCenters() {
         List<int[]> list = greenCenters;
         return list;
     }
