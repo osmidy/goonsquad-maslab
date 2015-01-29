@@ -1,4 +1,6 @@
 import robotparts.Motor;
+import robotparts.Servo;
+import sensorIO.Shield;
 
 
 public class SetZero {
@@ -15,7 +17,8 @@ public class SetZero {
                 leftReverse);
         Motor rightMotor = new Motor(pwmPinRight, dirPinRight, rightForward,
                 rightReverse);
-        
+        Servo servo1 = new Servo(0, new Shield(6));
+        servo1.setPosition(0);
         leftMotor.setSpeed(0);
         rightMotor.setSpeed(0);
     }
