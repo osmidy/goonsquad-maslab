@@ -10,7 +10,7 @@
 
 // From staff code
 void initPWM(mraa::I2c *i2c) {
-    uint8_t writeBuf[2] = { 0 };
+    char* writeBuf[2] = { 0 };
     writeBuf[0] = 0x00; // Write to MODE 1 Register;
     writeBuf[1] = 1 << 4; // Enable Sleep Mode
 
@@ -36,7 +36,7 @@ void initPWM(mraa::I2c *i2c) {
 JNIEXPORT jlong JNICALL Java_sensorIO_Shield_init(JNIEnv *env, jobject thisObj,
         jint bus) {
     mraa::I2c* shield = new mraa::I2c((int) bus);
-    assert(i2c != NULL);
+    assert(shield != NULL);
     jlong pointer = (jlong) shield;
     initPWM(shield);
     return pointer;
