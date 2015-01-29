@@ -15,7 +15,7 @@ public class TestServo {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            servo.setPosition(-.2);
+            servo.setPosition(.5);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
