@@ -41,8 +41,8 @@ public class ObjectFinder {
     public synchronized void findObjects(Mat image) {
     	this.getObjectTypes(image);
     	this.findCubes();
-    	this.findClosestWall();
-    	this.findDropzone();
+//    	this.findClosestWall();
+//    	this.findDropzone();
     }
 
 	/**
