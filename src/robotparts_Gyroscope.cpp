@@ -15,7 +15,7 @@
  * Makes use of staff code
  */
 
-float readSensor(char* recv) {
+float readSensor(uint8_t* recv) {
 	int init = 0;
 	struct timeval tv;
 	float rf;
