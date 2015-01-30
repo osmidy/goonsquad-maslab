@@ -243,10 +243,17 @@ public class Main {
         });
         
         getCubeThread.start();
-        checkDistance.start();
+        double distance = Double.MAX_VALUE;
+        // TODO: make sure interrupted correctly
+        while (distance > .20) {
+            System.out.println("Running check...");
+            distance = imageUtil.getClosestCube().getDistance();
+            distance *= 0.0254; //in to m
+            sleep(10);
+        }
         sleep(1500);
-//        getCubeThread.interrupt();
-//        cokebot.setState(State.COLLECTCUBE);     
+        getCubeThread.interrupt();
+        cokebot.setState(State.COLLECTCUBE);     
     }
 
     private static void collectCube() {
