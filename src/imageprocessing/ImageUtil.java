@@ -71,8 +71,8 @@ public class ImageUtil {
         // Wait until the camera has a new frame
 //        camera.grab();
 //        camera.retrieve(rawImage);
-        camera.read(rawImage);
         long loopStart = System.currentTimeMillis();
+        camera.read(rawImage);
         Imgproc.resize(rawImage, resizedImage, imageSize); // Reduces resolution
 
         processor.process(resizedImage, processedImage, blurSize);
