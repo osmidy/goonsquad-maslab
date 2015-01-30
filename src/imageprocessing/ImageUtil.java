@@ -71,8 +71,9 @@ public class ImageUtil {
         // Wait until the camera has a new frame
         camera.grab();
         camera.retrieve(rawImage);
-        Imgproc.resize(rawImage, resizedImage, imageSize); // Reduces resolution
         long loopStart = System.currentTimeMillis();
+        Imgproc.resize(rawImage, resizedImage, imageSize); // Reduces resolution
+
         processor.process(resizedImage, processedImage, blurSize);
         
         finder.findObjects(processedImage);
