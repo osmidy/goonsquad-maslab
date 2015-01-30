@@ -184,7 +184,7 @@ public class Main {
                 pidThread.interrupt();
                 cokebot.setSpeed(0);
                 ImageCube closestCube = imageUtil.getClosestCube();
-                double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
+                double newDesiredHeading = closestCube.getHeading();// + cokebot.getCurrentHeading();
                 cokebot.setDesiredHeading(newDesiredHeading);
                 cubeFound.set(true);
                 cokebot.setSpeed(0);
