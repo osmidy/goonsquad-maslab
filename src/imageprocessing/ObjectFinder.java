@@ -64,7 +64,8 @@ public class ObjectFinder {
         long pointer = image.getNativeObjAddr();
         for (int y = 0; y < rows; y += 5) {
             for (int x = 0; x < cols; x += 5) {
-                int objectType = getObjectType(pointer, x, y);
+//                int objectType = getObjectType(pointer, x, y);
+                int objectType  = 33;
                 if (objectType == redCenter) {
                     redQueue.add(new int[] {x,y});
                 } else if (objectType == greenCenter) {
