@@ -84,7 +84,7 @@ public class ImageUtil {
 
         // Wait until the camera has a new frame
         camera.open(0);
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 7; i++) {
             camera.grab();
         }
         camera.retrieve(rawImage);
