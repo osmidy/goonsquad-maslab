@@ -36,7 +36,7 @@ public class ExperimentalWF {
         // long current = System.currentTimeMillis();
         long begin = System.currentTimeMillis();
         boolean log = true;
-        double bias = 0.15;
+        double bias = 0.2;
         double p = 0.5;
         double i = 0.005; // .005 // 0.01;
         double d = .08; // 0.08 //0.5;// .3 // 0.7
@@ -74,8 +74,8 @@ public class ExperimentalWF {
             if ((diagonalSep < 0.25) && (sideSep < 0.25)) { // diagonalSep < 0.3
                 System.out.println("(1,1)" + "(" + sideSep + "," + diagonalSep
                         + ")");
-                leftMotor.setSpeed(0.15);
-                rightMotor.setSpeed(-0.15);
+                leftMotor.setSpeed(0.18);
+                rightMotor.setSpeed(-0.18);
                 // leftMotor.setSpeed(0.25); // .23 // .25
                 // rightMotor.setSpeed(0.1); // .1
                 try {
@@ -93,8 +93,8 @@ public class ExperimentalWF {
                 if (diagonalSep < 0.1) {
                     System.out.println("Too Close");
                     // diagonalSep = diagonalSensor.distanceToObject();
-                    leftMotor.setSpeed(0.1);
-                    rightMotor.setSpeed(-0.1);
+                    leftMotor.setSpeed(0.13);
+                    rightMotor.setSpeed(-0.13);
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
@@ -130,8 +130,8 @@ public class ExperimentalWF {
 
                 while (diagonalSep > 0.25) { // .25
                     diagonalSep = diagonalSensor.distanceToObject();
-                    leftMotor.setSpeed(0.1);
-                    rightMotor.setSpeed(0.25);
+                    leftMotor.setSpeed(0.13);
+                    rightMotor.setSpeed(0.28);
                     // leftMotor.setSpeed(0.25); // .23 // .25
                     // rightMotor.setSpeed(0.1); // .1
                     try {
