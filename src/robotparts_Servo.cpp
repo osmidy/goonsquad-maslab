@@ -7,7 +7,7 @@
 
 #define SHIELD_I2C_ADDR 0x40
 
-char registers[] = {
+uint8_t registers[] = {
   6,   // output 0
   10,  // output 1
   14,  // output 2
@@ -35,7 +35,7 @@ JNIEXPORT void JNICALL Java_robotparts_Servo_setPosition
     double on = 4095.0 * (double)duty;
     uint16_t onRounded = (uint16_t) on;
 
-    char writeBuf[5];
+    uint8_t writeBuf[5];
 
     // ON_L
     writeBuf[0] = registers[(int)index];
