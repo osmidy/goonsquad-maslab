@@ -46,6 +46,17 @@ public class ImageUtil {
 
     private final Size imageSize = new Size(width, height);
     private final Size blurSize = new Size(5, 5);
+    // CHANGE FOR EACH MATCH!!!
+    private final Color color = Color.GREEN;
+    public enum Color {
+        RED("RED"), GREEN("GREEN");
+        
+        private String str;
+        
+        private Color(String str) {
+            this.str = str;
+        }
+    }
 
     // public static void main(String[] args) {
     // ImageUtil ig = new ImageUtil();
@@ -72,7 +83,7 @@ public class ImageUtil {
 
         // Wait until the camera has a new frame
         camera.open(0);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 7; i++) {
             camera.grab();
         }
         camera.retrieve(rawImage);
@@ -187,6 +198,10 @@ public class ImageUtil {
         double halfWidth = width * .5;
         double heading = Math.atan((x - halfWidth) / focalLength);
         return heading;
+    }
+    
+    public Color getHomeColor() {
+        return this.color;
     }
 
     private static JLabel createWindow(String name, int width, int height,

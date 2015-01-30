@@ -1,5 +1,6 @@
 import imageprocessing.ImageCube;
 import imageprocessing.ImageUtil;
+import imageprocessing.ImageUtil.Color;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +52,14 @@ public class Main {
                 }
             }
         });
-        
+        // CHANGE COLOR FOR EACH MATCH!!!!!
+        Color homeColor = imageUtil.getHomeColor();
+        Color enemyColor;
+        if (homeColor.equals(Color.GREEN)) {
+            enemyColor = Color.GREEN;
+        } else {
+            enemyColor = Color.RED;
+        }
         Thread imageThread = new Thread(new Runnable() {
             public void run() {
                 while (true) {
