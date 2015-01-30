@@ -217,7 +217,12 @@ public class Main {
         AtomicBoolean cubeFound = new AtomicBoolean(false);
         List<int[]> centers;
         while (!cubeFound.get()) {
-            centers = imageUtil.getGreenCenters(); // TODO: desired color field
+            if (desiredColor == homeColor) {
+                centers = imageUtil.getHomeColorCenters(); // TODO: desired color field
+            }
+            else {
+                centers = imageUtil.getEnemyColorCenters();
+            }
             if (!centers.isEmpty()) {
                 pidThread.interrupt();
                 cokebot.setSpeed(0);
@@ -319,25 +324,25 @@ public class Main {
         RotatePID rotateRobot = new RotatePID(stayStraightPid, cokebot, leftMotor, rightMotor, gyro);
         Thread rotateThread = rotateRobot.thread();
         IRSensor closeRange = (IRSensor)sensors.get(2);
-        cubeCount++;
+        if (closeRange.getVoltage() < 500) {
+            System.out.println("COLLECTED!");
+            cubeCount++;
+        }
         servo.setPosition(0.8);
         liftMotor.setSpeed(.2);
-        sleep(300);
+        sleep(3000);
         liftMotor.setSpeed(0);
         servo.setPosition(0.0);
-//        if (closeRange.getVoltage() < 500) {
-//            System.out.println("COLLECTED!");
-//        }
-        if ((cubeCount == 2 || timeLeft < (30 * 1000)) && desiredColor.equals(homeColor)) {
+        if ((cubeCount >= 2 || timeLeft < (30 * 1000)) && desiredColor.equals(homeColor)) {
             cokebot.setSpeed(0);
             // Rotate for reverse
             double newDesiredHeading = cokebot.getCurrentHeading() + 180.0;
             cokebot.setDesiredHeading(newDesiredHeading);
             rotateThread.start();
-            sleep(200);
+            sleep(2000);
             rotateThread.interrupt();
             cokebot.setState(State.DROPSTACK);
-        } else if ((cubeCount == 2 || timeLeft < (45 * 1000)) && desiredColor.equals(enemyColor)) {
+        } else if ((cubeCount >= 2 || timeLeft < (45 * 1000)) && desiredColor.equals(enemyColor)) {
             cokebot.setState(State.FINDDROPZONE);
         } else {
             cokebot.setState(State.FINDWALL);

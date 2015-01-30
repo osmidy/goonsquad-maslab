@@ -5,7 +5,7 @@ import sensorIO.Shield;
 public class TestServo {
     static int bus = 6; // Always for shield on Edison
     static Shield shield = new Shield(bus);
-    static Servo servo = new Servo(0, shield);
+    static Servo servo = new Servo(3, shield);
     public static void main(String[] args) {
         while (true) {
             servo.setPosition(0);
