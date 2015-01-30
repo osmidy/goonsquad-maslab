@@ -185,7 +185,7 @@ public class ImageUtil {
                 y = pixel[1];
             }
         }
-        heading = getHeading(x + 30); // Camera offset from center
+        heading = getHeading(x + 25); // Camera offset from center
         ImageCube cube = new ImageCube(x, y, closestDistance, heading);
         return cube;
     }
