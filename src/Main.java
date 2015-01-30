@@ -164,33 +164,49 @@ public class Main {
         pidThread.start();
 
         AtomicBoolean cubeFound = new AtomicBoolean(false);
-        Thread findCube = new Thread(new Runnable() {
-            public void run() {
-                List<int[]> centers;
-                while (!cubeFound.get()) {
-                    imageUtil.checkImage();
-                    centers = imageUtil.getGreenCenters(); // TODO: desired color field
-                    if (!centers.isEmpty()) {
-                        pidThread.interrupt();
-                        cokebot.setSpeed(0);
-                        ImageCube closestCube = imageUtil.getClosestCube();
-                        double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
-                        cokebot.setDesiredHeading(newDesiredHeading);
-                        cubeFound.set(true);
-                        cokebot.setSpeed(0);
-                    }
-                }
-            }
-        });
-        findCube.start();
-        mainloop: while (true) {
-            if (cubeFound.get()) {
-                findCube.interrupt();
+        List<int[]> centers;
+        while (!cubeFound.get()) {
+            imageUtil.checkImage();
+            centers = imageUtil.getGreenCenters(); // TODO: desired color field
+            if (!centers.isEmpty()) {
+                pidThread.interrupt();
                 cokebot.setSpeed(0);
-                break mainloop;
+                ImageCube closestCube = imageUtil.getClosestCube();
+                double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
+                cokebot.setDesiredHeading(newDesiredHeading);
+                cubeFound.set(true);
+                cokebot.setSpeed(0);
             }
-            
         }
+    
+        
+//        Thread findCube = new Thread(new Runnable() {
+//            public void run() {
+//                List<int[]> centers;
+//                while (!cubeFound.get()) {
+//                    imageUtil.checkImage();
+//                    centers = imageUtil.getGreenCenters(); // TODO: desired color field
+//                    if (!centers.isEmpty()) {
+//                        pidThread.interrupt();
+//                        cokebot.setSpeed(0);
+//                        ImageCube closestCube = imageUtil.getClosestCube();
+//                        double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
+//                        cokebot.setDesiredHeading(newDesiredHeading);
+//                        cubeFound.set(true);
+//                        cokebot.setSpeed(0);
+//                    }
+//                }
+//            }
+//        });
+//        findCube.start();
+//        mainloop: while (true) {
+//            if (cubeFound.get()) {
+//                findCube.interrupt();
+//                cokebot.setSpeed(0);
+//                break mainloop;
+//            }
+//            
+//        }
         cokebot.setSpeed(0);
         sleep(30);
 //        findCube.interrupt();
