@@ -269,6 +269,8 @@ public class Main {
     }
 
     private static void driveToCube() throws IOException {
+        
+        long start = System.currentTimeMillis();
         StayStraightPID getCube = new StayStraightPID(stayStraightPid, cokebot, leftMotor, rightMotor, gyro);
         Thread getCubeThread = getCube.thread();
         Thread checkDistance = new Thread(new Runnable() {
@@ -291,6 +293,16 @@ public class Main {
         IRSensor closeRange = (IRSensor)sensors.get(2);
         double voltage = closeRange.getVoltage();
         while (voltage > 500) {
+            long end = System.currentTimeMillis();
+            if ((end - start) > 10000) {
+                getCubeThread.interrupt();
+                leftMotor.setSpeed(-.05);
+                rightMotor.setSpeed(-.05);
+                sleep(100);
+                leftMotor.setSpeed(0);
+                rightMotor.setSpeed(0);
+                cokebot.setState(State.WALLFOLLOW);
+            }
             System.out.println("Running check...");
             distance = imageUtil.getClosestCube(desiredColor).getDistance();
             distance *= 0.0254; //in to m
