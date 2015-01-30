@@ -100,7 +100,6 @@ public class Main {
     			int[] wall = new int[2];
     			double distance = Double.MAX_VALUE;
     			while (!wallFound.get()) {
-    				imageUtil.checkImage();
     				wall = imageUtil.getWallPixel();
     				if ((wall.length != 0) && (wall != null)) {
     					imageUtil.getWallHeading(wall);
@@ -112,7 +111,6 @@ public class Main {
     				}
     			}
     			while (!nearWall.get()) {
-    			    imageUtil.checkImage();
     			    wall = imageUtil.getWallPixel();
     			    double distanceInches = 2129 * Math.pow(wall[1], -0.876); // Camera calibration
     			    distance = distanceInches * .0254; // inches to meters
@@ -173,7 +171,6 @@ public class Main {
         AtomicBoolean cubeFound = new AtomicBoolean(false);
         List<int[]> centers;
         while (!cubeFound.get()) {
-            imageUtil.checkImage();
             centers = imageUtil.getGreenCenters(); // TODO: desired color field
             if (!centers.isEmpty()) {
                 pidThread.interrupt();
@@ -227,12 +224,13 @@ public class Main {
             public void run() {
                 double distance = Double.MAX_VALUE;
                 // TODO: make sure interrupted correctly
-                while (distance > 20) {
+                while (distance > .20) {
                     System.out.println("Running check...");
-                    imageUtil.checkImage();
                     distance = imageUtil.getClosestCube().getDistance();
+                    distance *= 0.0254; //in to m
                     sleep(10);
                 }
+                cokebot.setState(State.COLLECTCUBE);
             }
         });
         
@@ -240,10 +238,11 @@ public class Main {
         checkDistance.start();
         sleep(1500);
 //        getCubeThread.interrupt();
-        cokebot.setState(State.COLLECTCUBE);     
+//        cokebot.setState(State.COLLECTCUBE);     
     }
 
     private static void collectCube() {
+        System.out.println("SERVOS: " + sensors);
         IRSensor closeRange = (IRSensor)sensors.get(2);
         if (closeRange.getVoltage() < 500) {
             System.out.println("COLLECTED!");
