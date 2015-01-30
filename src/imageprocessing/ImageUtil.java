@@ -53,10 +53,10 @@ public class ImageUtil {
     public void checkFirstImage() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         camera.open(0);
-        for (int i = 0; i < 4; i++) {
-            camera.grab();
-        }
-        checkImage();
+//        for (int i = 0; i < 4; i++) {
+//            camera.grab();
+//        }
+//        checkImage();
     }
     public void checkImage() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load the OpenCV library
