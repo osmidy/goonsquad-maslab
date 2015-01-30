@@ -43,9 +43,39 @@ public class ObjectFinder {
     	this.findCubes();
     	this.findClosestWall();
     	this.findDropzone();
+    	setBoundaries();
     }
 
-	/**
+    /**
+     * Eliminates objects beyond walls
+     */
+	private void setBoundaries() {
+	    int max = Integer.MIN_VALUE;
+	    for (int[] pixel : wallQueue) {
+	        int y = pixel[1];
+	        if (max < y) {
+	            max = y;
+	        }
+	    }
+	    for (int[] pixel : redCubes) {
+	        int y = pixel[1];
+	        if (y < max) {
+	            redCubes.remove(pixel);
+	        }
+	    }
+	    for (int[] pixel : greenCubes) {
+            int y = pixel[1];
+            if (y < max) {
+                greenCubes.remove(pixel);
+            }
+        }
+	    if (dropzonePixel[1] < max) {
+	        dropzonePixel = new int[2];
+	    }
+        
+    }
+
+    /**
      * Find blocks in an image
      * 
      * @return a List of the center pixels of blocks in the image
