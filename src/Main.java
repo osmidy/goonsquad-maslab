@@ -245,7 +245,9 @@ public class Main {
         getCubeThread.start();
         double distance = Double.MAX_VALUE;
         // TODO: make sure interrupted correctly
-        while (distance > .20) {
+        IRSensor closeRange = (IRSensor)sensors.get(2);
+        double voltage = closeRange.getVoltage();
+        while (voltage > 500) {
             System.out.println("Running check...");
             distance = imageUtil.getClosestCube().getDistance();
             distance *= 0.0254; //in to m
