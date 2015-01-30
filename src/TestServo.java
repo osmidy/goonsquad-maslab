@@ -8,7 +8,7 @@ public class TestServo {
     static Servo servo = new Servo(0, shield);
     public static void main(String[] args) {
         while (true) {
-            servo.setPosition(.2);
+            servo.setPosition(0);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
