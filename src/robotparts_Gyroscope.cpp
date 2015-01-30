@@ -44,7 +44,7 @@ JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getAngularVelocity(JNIEnv *e
 	chipSelect->write(1);
 	spi->bitPerWord(32);
 	char rxBuf[2];
-	char writeBuf[4];
+	unint8_t writeBuf[4];
 	unsigned int sensorRead = 0x20000000;
 	writeBuf[0] = sensorRead & 0xff;
 	writeBuf[1] = (sensorRead >> 8) & 0xff;

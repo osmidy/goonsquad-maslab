@@ -81,7 +81,7 @@ public class StayStraightPID implements PID {
                 getHeading.start();
                 double desired = robot.getDesiredHeading();
                 double heading = robot.getCurrentHeading();
-                double bias = 0.2;
+                double bias = motorBias;
 //                double p = .012;
 //                double i = .0005;
 //                double d = .03;

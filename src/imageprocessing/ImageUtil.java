@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
-import org.opencv.highgui.VideoCapture;
+import org.opencv.videoio.VideoCapture;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageUtil {
@@ -27,25 +27,28 @@ public class ImageUtil {
     private static final double radiansX = thetaX / radiansToDegrees;
     private static final double tanHalfX = Math.tan(thetaX / 2);
     private static final double focalLength = width * 0.5 / tanHalfX;
-    private static List<int[]> redCenters = new ArrayList<int[]>();
-    private static List<int[]> greenCenters = new ArrayList<int[]>();
     private static final Mat2Image rawImageConverter = new Mat2Image(BufferedImage.TYPE_3BYTE_BGR);
     private static final Mat2Image processedImageConverter = new Mat2Image(BufferedImage.TYPE_3BYTE_BGR);
+
+    private static List<int[]> redCenters = new ArrayList<int[]>();
+    private static List<int[]> greenCenters = new ArrayList<int[]>();
+    private static int[] wallPixel = new int[2];
+    private static int[] dropzonePixel = new int[2];
     
     private ImageProcessor processor = new ImageProcessor();
     private Mat rawImage = new Mat();
     private Mat resizedImage = new Mat();
     private Mat processedImage = new Mat();
-    private final VideoCapture camera = new VideoCapture();
+    private final VideoCapture camera = new org.opencv.videoio.VideoCapture();
     private final ObjectFinder finder = new ObjectFinder();
     
     private final Size imageSize = new Size(width, height);
     private final Size blurSize = new Size(5, 5);
 
-    public static void main(String[] args) {
-        ImageUtil ig = new ImageUtil();
-        while (true) {ig.checkImage();}
-    }
+//    public static void main(String[] args) {
+//        ImageUtil ig = new ImageUtil();
+//        while (true) {ig.checkImage();}
+//    }
     
     public void checkImage() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load the OpenCV library
@@ -68,10 +71,13 @@ public class ImageUtil {
         camera.retrieve(rawImage);
         Imgproc.resize(rawImage, resizedImage, imageSize); // Halves resolution
         processor.process(resizedImage, processedImage, blurSize);
-        finder.findCubes(processedImage);
+        finder.findObjects(processedImage);
 
         redCenters = this.setRedCenters(finder.getRedCubes());
         greenCenters = this.setGreenCenters(finder.getGreenCubes());
+        wallPixel = this.setWallPixel(finder.getWallPixel());
+        dropzonePixel = this.setDropzonePixel(finder.getDropzonePixel());
+        
 
         
         for (int[] center : redCenters) {
@@ -90,7 +96,17 @@ public class ImageUtil {
         System.out.println("Loop Time: " + ((loopEnd - loopStart)));
     }
     
-    private synchronized List<int[]> setGreenCenters(List<int[]> greenCubes) {
+    private synchronized int[] setWallPixel(int[] pixel) {
+		int[] closest = pixel;
+		return closest;
+	}
+
+	private synchronized int[] setDropzonePixel(int[] pixel) {
+		int[] closest = pixel;
+		return closest;
+	}
+
+	private synchronized List<int[]> setGreenCenters(List<int[]> greenCubes) {
         List<int[]> list = greenCubes;
         return list;
     }
@@ -98,6 +114,26 @@ public class ImageUtil {
     private synchronized List<int[]> setRedCenters(List<int[]> redCubes) {
         List<int[]> list = redCubes;
         return list;
+    }
+    
+    public synchronized int[] getWallPixel() {
+    	int[] pixel = wallPixel;
+    	return pixel;
+    }
+    
+    public synchronized double getWallHeading(int[] pixel) {
+    	double heading = this.getHeading(pixel[0]);
+    	return heading;
+    }
+    
+    public synchronized int[] getDroopzonePixel() {
+    	int[] pixel = dropzonePixel;
+    	return pixel;
+    }
+    
+    public synchronized double getDropzoneHeading(int[] pixel) {
+    	double heading = this.getHeading(pixel[0]);
+    	return heading;
     }
 
     public synchronized List<int[]> getRedCenters() {
@@ -129,7 +165,7 @@ public class ImageUtil {
                 y = pixel[1];
             }
         }
-        heading = getClosestCubeHeading(x);
+        heading = getHeading(x);
         ImageCube cube = new ImageCube(x, y, closestDistance, heading);
         return new ImageCube(x, y, closestDistance, heading);
     }
@@ -139,7 +175,7 @@ public class ImageUtil {
      *            horizontal center coordinate of closest Cube
      * @return the heading, in degrees, of the cube
      */
-    private synchronized double getClosestCubeHeading(int x) {
+    private synchronized double getHeading(int x) {
         double halfWidth = width * .5;
         double heading = Math.atan((x - halfWidth) / focalLength);
         return heading;

@@ -74,32 +74,58 @@ public class Main {
 
     }
 
-    private static void findWall() throws IOException{
-        double wallHeading; // Calculated from column that is being iterated over (column 77)
-        double newWallHeading = cokebot.getCurrentHeading() + wallHeading;
-        cokebot.setDesiredHeading(newWallHeading);
-        
-        File file = new File("StayStraightPID.conf");
-        StayStraightPID getToWall = new StayStraightPID(file, cokebot, leftMotor, rightMotor, gyro);
-        Thread getToWallThread = getToWall.thread();
-        Thread checkDistance = new Thread(new Runnable() {
-            public void run() {
-                double wallDistance = Double.MAX_VALUE;
-                // TODO: make sure interrupted correctly
-                while (wallDistance > 20) {
-                    System.out.println("Approaching wall...");
-                    wallDistance = getWallDistance(); // Iterates over column to find distance, details in notebook
-                    sleep(10);
-                }
-            }
-        });
-        
-        getToWallThread.start();
-        checkDistance.start();
-        sleep(500);
-        getToWallThread.interrupt();
-        
-        cokebot.setState(State.WALLFOLLOW);
+    private static void findWall() throws IOException {
+    	File file = new File("StayStraightPID.conf");
+    	cokebot.setSpeed(0);
+    	sleep(100);
+    	StayStraightPID approachWall = new StayStraightPID(file, cokebot, leftMotor, rightMotor, gyro);
+    	Thread approachThread = approachWall.thread();
+    	
+    	AtomicBoolean wallFound = new AtomicBoolean(false);
+    	Thread getDistance = new Thread(new Runnable() {
+    		public void run() {
+    			int[] wall;
+    			double distance = Double.MAX_VALUE;
+    			while (!wallFound.get()) {
+    				imageUtil.checkImage();
+    				wall = imageUtil.getWallPixel();
+    				if ((wall.length != 0) || (wall != null)) {
+    					imageUtil.getWallHeading(wall);
+    					cokebot.setSpeed(0);
+    					double newDesiredHeading = imageUtil.getWallHeading(wall) + cokebot.getCurrentHeading();
+    					cokebot.setDesiredHeading(newDesiredHeading);
+    					approachThread.start();
+    					wallFound.set(true);
+    				}
+    			}
+    			    			
+    		}
+    	});
+//    	double wallHeading; // Calculated from column that is being iterated over (column 77)
+//        double newWallHeading = cokebot.getCurrentHeading() + wallHeading;
+//        cokebot.setDesiredHeading(newWallHeading);
+//        
+//        File file = new File("StayStraightPID.conf");
+//        StayStraightPID getToWall = new StayStraightPID(file, cokebot, leftMotor, rightMotor, gyro);
+//        Thread getToWallThread = getToWall.thread();
+//        Thread checkDistance = new Thread(new Runnable() {
+//            public void run() {
+//                double wallDistance = Double.MAX_VALUE;
+//                // TODO: make sure interrupted correctly
+//                while (wallDistance > 20) {
+//                    System.out.println("Approaching wall...");
+//                    wallDistance = getWallDistance(); // Iterates over column to find distance, details in notebook
+//                    sleep(10);
+//                }
+//            }
+//        });
+//        
+//        getToWallThread.start();
+//        checkDistance.start();
+//        sleep(500);
+//        getToWallThread.interrupt();
+//        
+//        cokebot.setState(State.WALLFOLLOW);
     }
 
     private static void followAndSearch() throws IOException {
