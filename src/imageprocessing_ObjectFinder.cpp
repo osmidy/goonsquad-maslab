@@ -9,6 +9,14 @@
 using namespace cv;
 using namespace std;
 
+// Colors
+const array<int, 3> blue {255, 0, 0};
+const array<int, 3> green {0, 255, 0};
+const array<int, 3> red {0, 0, 255};
+const array<int, 3> yellow {0, 255, 255};
+const array<int, 3> purple {128, 0, 128};
+const array<int, 3> black {0, 0, 0};
+
 JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_getObjectType
   (JNIEnv *env, jobject thisObj, jlong pointer, jint x, jint y) {
     Mat* image = (Mat*)pointer;
@@ -50,14 +58,6 @@ JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_getObjectType
     int innerUpperX = (int)(y + (radius * 0.9));
     int innerLowerY = (int)(y - (radius * 0.9));
     int innerUpperY = (int)(y + (radius * 0.9));
-
-    // Colors
-    array<int, 3> blue {255, 0, 0};
-    array<int, 3> green {0, 255, 0};
-    array<int, 3> red {0, 0, 255};
-    array<int, 3> yellow {0, 255, 255};
-    array<int, 3> purple {128, 0, 128};
-    array<int, 3> black {0, 0, 0};
 
     int pix0 = image->data[channels * (image->cols*y + x) + 0];
     int pix1 = image->data[channels * (image->cols*y + x) + 1];
