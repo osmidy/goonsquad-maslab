@@ -72,7 +72,13 @@ public class ImageUtil {
 //        camera.grab();
 //        camera.retrieve(rawImage);
         long loopStart = System.currentTimeMillis();
-        camera.read(rawImage);
+        while (!camera.read(rawImage)) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         Imgproc.resize(rawImage, resizedImage, imageSize); // Reduces resolution
 
         processor.process(resizedImage, processedImage, blurSize);
