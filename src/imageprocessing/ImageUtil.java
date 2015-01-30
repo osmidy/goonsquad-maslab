@@ -48,7 +48,8 @@ public class ImageUtil {
     private final Size blurSize = new Size(5, 5);
     
     // CHANGE FOR EACH MATCH!!!
-    private final Color color = Color.GREEN;
+    private boolean homeColorStack = true;
+    private final Color homeColor = Color.GREEN;
     public enum Color {
         RED("RED"), GREEN("GREEN");
         
@@ -155,6 +156,22 @@ public class ImageUtil {
         double heading = this.getHeading(pixel[0]);
         return heading;
     }
+    
+    public synchronized List<int[]> getHomeColorCenters() {
+        if (this.homeColor.equals(Color.GREEN)) {
+            return getGreenCenters();
+        } else {
+            return getRedCenters();
+        }
+    }
+    
+    public synchronized List<int[]> getEnemyColorCenters() {
+        if (this.homeColor.equals(Color.GREEN)) {
+            return getRedCenters();
+        } else {
+            return getGreenCenters();
+        }
+    }
 
     public synchronized List<int[]> getRedCenters() {
         List<int[]> list = redCenters;
@@ -202,7 +219,7 @@ public class ImageUtil {
     }
     
     public Color getHomeColor() {
-        return this.color;
+        return this.homeColor;
     }
 
     private static JLabel createWindow(String name, int width, int height,

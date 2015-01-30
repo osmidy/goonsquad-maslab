@@ -15,7 +15,7 @@
  * Makes use of staff code
  */
 
-float readSensor(uint8_t* recv) {
+float readSensor(char* recv) {
 	int init = 0;
 	struct timeval tv;
 	float rf;
@@ -44,7 +44,7 @@ JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getAngularVelocity(JNIEnv *e
 	chipSelect->write(1);
 	spi->bitPerWord(32);
 	char rxBuf[2];
-	uint8_t writeBuf[4];
+	char writeBuf[4];
 	unsigned int sensorRead = 0x20000000;
 	writeBuf[0] = sensorRead & 0xff;
 	writeBuf[1] = (sensorRead >> 8) & 0xff;
@@ -53,7 +53,7 @@ JNIEXPORT jdouble JNICALL Java_robotparts_Gyroscope_getAngularVelocity(JNIEnv *e
 	float total = 0;
 	struct timeval tv;
 	chipSelect->write(0);
-	uint8_t* recv = spi->write(writeBuf, 4);
+	char* recv = spi->write(writeBuf, 4);
 	chipSelect->write(1);
 	if (recv != NULL) {
 		float driftedAngle = readSensor(recv);

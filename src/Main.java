@@ -40,8 +40,16 @@ public class Main {
     private final static File wallFollowPid = new File("WallFollowPID.conf");
     private final static File stayStraightPid = new File("StayStraightPID.conf");
     
+    // CHANGE COLOR FOR EACH MATCH!!!!!
+    boolean stackHome = true; // Whether currently stacking own color
+    private static int cubeCount = 0;
+    private static Color homeColor = imageUtil.getHomeColor();
+    private Color desiredColor = homeColor;
+    private static Color enemyColor;
+    
 
-    public static void main(String[] args) throws IOException {        
+    public static void main(String[] args) throws IOException {
+        long start = System.currentTimeMillis();
         Thread sensorThread = new Thread(new Runnable() {
             public void run() {
                 while (true) {
@@ -53,8 +61,6 @@ public class Main {
             }
         });
         // CHANGE COLOR FOR EACH MATCH!!!!!
-        Color homeColor = imageUtil.getHomeColor();
-        Color enemyColor;
         if (homeColor.equals(Color.GREEN)) {
             enemyColor = Color.GREEN;
         } else {
@@ -74,6 +80,7 @@ public class Main {
         State state;
         simulate: while (true) {
             state = cokebot.getState();
+            long end = System.currentTimeMillis();
             System.out.println(state);
             if (state.equals(State.FINDWALL)) {
                 findWall();
@@ -89,6 +96,9 @@ public class Main {
                 dropStack();
             }
             sleep(30);
+            if ((end - start) >= (185 * 1000)) {
+                break simulate;
+            }
         }
 
     }
@@ -251,8 +261,10 @@ public class Main {
             System.out.println("Running check...");
             distance = imageUtil.getClosestCube().getDistance();
             distance *= 0.0254; //in to m
+            voltage = closeRange.getVoltage();
             sleep(10);
         }
+        System.out.println("LEFT LOOP");
         sleep(1500);
         getCubeThread.interrupt();
         cokebot.setState(State.COLLECTCUBE);     
@@ -264,6 +276,10 @@ public class Main {
         if (closeRange.getVoltage() < 500) {
             System.out.println("COLLECTED!");
             SetZero.main(new String[0]);
+        }
+        cubeCount++;
+        if (cubeCount == 8 && desiredColor.equals(homeColor)) {
+            cokebot.setState(State.);
         }
 
     }
