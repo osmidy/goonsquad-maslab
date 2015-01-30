@@ -29,11 +29,11 @@ uint8_t registers[] = {
 JNIEXPORT void JNICALL Java_robotparts_Servo_setPosition
 (JNIEnv *env, jobject thisObj, jlong pointer, jint indx, jdouble dty) {
     mraa::I2c* i2c = (mraa::I2c*)pointer;
+    // From staff code
+    assert(0.0 <= dty && dty <= 1.0);
+    assert(0 <= indx && indx < 16);
     int index = (int)indx;
     double duty = 0.04 * (double)dty + 0.04;
-    // From staff code
-    assert(0.0 <= duty && duty <= 1.0);
-    assert(0 <= index && index < 16);
     double on = 4095.0 * duty;
     uint16_t onRounded = (uint16_t) on;
 

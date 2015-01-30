@@ -49,27 +49,27 @@ public class ReversePID implements PID {
         Thread pid = new Thread(new Runnable() {
             public void run() {
                 // Calculating Current Heading with integration
-                Thread getHeading = new Thread(new Runnable() {
-                    public void run() {
-                        long start = System.currentTimeMillis();
-                        double heading = robot.getCurrentHeading();
-                        while (true) {
-                            long end = System.currentTimeMillis();
-                            double deltaT = .001 * (end - start); // from milli
-                                                                  // to sec
-                            double omega = gyro.getAngularVelocity();
-                            double bias = ((.11 * end) - .3373);
-                            double prevBias = ((.11 * start) - .3373);
-                            double total = (omega - (bias - prevBias)) * deltaT;
-                            heading += total;
-                            start = end;
-                        }
-                    }
-
-                });
-
-                // Initial Settings
-                getHeading.start();
+//                Thread getHeading = new Thread(new Runnable() {
+//                    public void run() {
+//                        long start = System.currentTimeMillis();
+//                        double heading = robot.getCurrentHeading();
+//                        while (true) {
+//                            long end = System.currentTimeMillis();
+//                            double deltaT = .001 * (end - start); // from milli
+//                                                                  // to sec
+//                            double omega = gyro.getAngularVelocity();
+//                            double bias = ((.11 * end) - .3373);
+//                            double prevBias = ((.11 * start) - .3373);
+//                            double total = (omega - (bias - prevBias)) * deltaT;
+//                            heading += total;
+//                            start = end;
+//                        }
+//                    }
+//
+//                });
+//
+//                // Initial Settings
+//                getHeading.start();
                 double desired = robot.getDesiredHeading();
                 double heading = robot.getCurrentHeading();
                 double bias = -0.1;

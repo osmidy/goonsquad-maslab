@@ -33,6 +33,8 @@ public class Main {
     private final static ImageUtil imageUtil = new ImageUtil();
     private final static Motor leftMotor = motors.get(0);
     private final static Motor rightMotor = motors.get(1);
+    private final static Motor liftMotor = motors.get(2);
+    private final static Servo servo = cokebot.getServos().get(0);
     private final static IRSensor sideIR = (IRSensor) sensors.get(0);
     private final static IRSensor diagonalIR = (IRSensor) sensors.get(1);
     private final static Gyroscope gyro = cokebot.getGyro();
@@ -40,13 +42,13 @@ public class Main {
     private final static File wallFollowPid = new File("WallFollowPID.conf");
     private final static File stayStraightPid = new File("StayStraightPID.conf");
     
+    private static long timeLeft = 0; // Millis
     // CHANGE COLOR FOR EACH MATCH!!!!!
     boolean stackHome = true; // Whether currently stacking own color
     private static int cubeCount = 0;
     private static Color homeColor = imageUtil.getHomeColor();
-    private Color desiredColor = homeColor;
+    private static Color desiredColor = homeColor;
     private static Color enemyColor;
-    
 
     public static void main(String[] args) throws IOException {
         long start = System.currentTimeMillis();
@@ -73,7 +75,28 @@ public class Main {
                 }
             }
         });
+        
+        Thread gyroThread = new Thread(new Runnable() {
+            public void run() {
+                long start = System.currentTimeMillis();
+                double heading = cokebot.getCurrentHeading();
+                while (true) {
+                    long end = System.currentTimeMillis();
+                    double deltaT = .001 * (end - start); // from milli
+                                                          // to sec
+                    double omega = gyro.getAngularVelocity();
+                    double bias = ((.11 * end) - .3373);
+                    double prevBias = ((.11 * start) - .3373);
+                    double total = (omega - (bias - prevBias)) * deltaT;
+                    heading += total;
+                    cokebot.setHeading(heading);
+                    start = end;
+                }
+                            
+            }
+        });
         imageThread.start();
+        gyroThread.start();
         sensorThread.start();
         // TODO: when stack is hit, remove stack from list, create new cubes and
         // add to list
@@ -96,10 +119,14 @@ public class Main {
                 dropStack();
             }
             sleep(30);
-            if ((end - start) >= (185 * 1000)) {
+            timeLeft = end - start;
+            if (timeLeft >= (185 * 1000)) {
+                SetZero.main(new String[0]);
                 break simulate;
             }
         }
+        imageThread.interrupt();
+        sensorThread.interrupt();
 
     }
 
@@ -182,6 +209,7 @@ public class Main {
     }
 
     private static void followAndSearch() throws IOException {
+        long enter = System.currentTimeMillis();
         WallFollowPID pid = new WallFollowPID(wallFollowPid, leftMotor, rightMotor, sideIR, diagonalIR);
         Thread pidThread = pid.thread();
         pidThread.start();
@@ -193,12 +221,17 @@ public class Main {
             if (!centers.isEmpty()) {
                 pidThread.interrupt();
                 cokebot.setSpeed(0);
-                ImageCube closestCube = imageUtil.getClosestCube();
-                double newDesiredHeading = closestCube.getHeading();// + cokebot.getCurrentHeading();
+                ImageCube closestCube = imageUtil.getClosestCube(desiredColor);
+                double newDesiredHeading = closestCube.getHeading() + cokebot.getCurrentHeading();
                 cokebot.setDesiredHeading(newDesiredHeading);
                 cubeFound.set(true);
                 cokebot.setSpeed(0);
             }
+//            long exit = System.currentTimeMillis();
+//            if ((exit - enter) > 5000) {
+//                cokebot.setState(State.FINDWALL);
+//                return;
+//            }
         }
     
         
@@ -244,7 +277,7 @@ public class Main {
                 // TODO: make sure interrupted correctly
                 while (distance > .20) {
                     System.out.println("Running check...");
-                    distance = imageUtil.getClosestCube().getDistance();
+                    distance = imageUtil.getClosestCube(desiredColor).getDistance();
                     distance *= 0.0254; //in to m
                     sleep(10);
                 }
@@ -259,7 +292,7 @@ public class Main {
         double voltage = closeRange.getVoltage();
         while (voltage > 500) {
             System.out.println("Running check...");
-            distance = imageUtil.getClosestCube().getDistance();
+            distance = imageUtil.getClosestCube(desiredColor).getDistance();
             distance *= 0.0254; //in to m
             voltage = closeRange.getVoltage();
             sleep(10);
@@ -270,16 +303,32 @@ public class Main {
         cokebot.setState(State.COLLECTCUBE);     
     }
 
-    private static void collectCube() {
-        System.out.println("SERVOS: " + sensors);
+    private static void collectCube() throws IOException {
+        RotatePID rotateRobot = new RotatePID(stayStraightPid, cokebot, leftMotor, rightMotor, gyro);
+        Thread rotateThread = rotateRobot.thread();
         IRSensor closeRange = (IRSensor)sensors.get(2);
-        if (closeRange.getVoltage() < 500) {
-            System.out.println("COLLECTED!");
-            SetZero.main(new String[0]);
-        }
         cubeCount++;
-        if (cubeCount == 8 && desiredColor.equals(homeColor)) {
-            cokebot.setState(State.);
+        servo.setPosition(0.8);
+        liftMotor.setSpeed(.2);
+        sleep(300);
+        liftMotor.setSpeed(0);
+        servo.setPosition(0.0);
+//        if (closeRange.getVoltage() < 500) {
+//            System.out.println("COLLECTED!");
+//        }
+        if ((cubeCount == 2 || timeLeft < (30 * 1000)) && desiredColor.equals(homeColor)) {
+            cokebot.setSpeed(0);
+            // Rotate for reverse
+            double newDesiredHeading = cokebot.getCurrentHeading() + 180.0;
+            cokebot.setDesiredHeading(newDesiredHeading);
+            rotateThread.start();
+            sleep(200);
+            rotateThread.interrupt();
+            cokebot.setState(State.DROPSTACK);
+        } else if ((cubeCount == 2 || timeLeft < (45 * 1000)) && desiredColor.equals(enemyColor)) {
+            cokebot.setState(State.FINDDROPZONE);
+        } else {
+            cokebot.setState(State.FINDWALL);
         }
 
     }
@@ -376,10 +425,21 @@ public class Main {
         // TODO: actuator/servo things to actually drop blocks
         ReversePID reverse = new ReversePID(stayStraightPid, cokebot, leftMotor, rightMotor, gyro);
         Thread reverseThread = reverse.thread();
+        servo.setPosition(0.8);
+        liftMotor.setSpeed(-.2);
+        sleep(300);
+        liftMotor.setSpeed(0);
+        servo.setPosition(0);
         reverseThread.start();
         sleep(2000);
         reverseThread.interrupt();
         cokebot.setSpeed(0);
+        if (desiredColor == homeColor) {
+            desiredColor = enemyColor;
+        } else {
+            desiredColor = homeColor;
+        }
+        cubeCount = 0;
         cokebot.setState(State.FINDWALL);
 
     }
@@ -423,6 +483,12 @@ public class Main {
         motors.add(rightMotor);
 
         // Other Motors
+        int liftPwm = 5;
+        int liftDir = 2;
+        int liftForward = 0;
+        int liftReverse = 1;
+        Motor liftMotor = new Motor(liftPwm, liftDir, liftForward, liftReverse);
+        motors.add(liftMotor);
 
         
         // Shield
@@ -449,16 +515,9 @@ public class Main {
         sensorHeadings.put(diagonalIR, diagonalIRHeading);
         sensorHeadings.put(closeRangeIR, closeRangeIRHeading);
 
-        CameraSensor camera = new CameraSensor(imageUtil);
-        double cameraHeading = 0.0;
-        //sensorHeadings.put(camera, cameraHeading);
-
-//        int trigPin = 4;
-//        int echoPin = 7;
-//        double ultrasonicHeading = 0.0;
-//
-//        UltraSonicSensor ultrasonic = new UltraSonicSensor(trigPin, echoPin);
-//        sensorHeadings.put(ultrasonic, ultrasonicHeading);
+//        CameraSensor camera = new CameraSensor(imageUtil);
+//        double cameraHeading = 0.0;
+//        sensorHeadings.put(camera, cameraHeading);
 
         // Gyro
         int gyroPin = 10;

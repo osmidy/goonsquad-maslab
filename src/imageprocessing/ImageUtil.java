@@ -49,7 +49,7 @@ public class ImageUtil {
     
     // CHANGE FOR EACH MATCH!!!
     private boolean homeColorStack = true;
-    private final Color homeColor = Color.GREEN;
+    private final Color homeColor = Color.RED;
     public enum Color {
         RED("RED"), GREEN("GREEN");
         
@@ -184,15 +184,21 @@ public class ImageUtil {
     }
 
     /**
-     * @param redCenters
+     * @param desiredColor
      * @return Image representation of the cube
      */
-    public synchronized ImageCube getClosestCube() {
+    public synchronized ImageCube getClosestCube(Color desiredColor) {
         double closestDistance = Double.MAX_VALUE;
         int x = 0;
         int y = 0;
         double heading;
-        for (int[] pixel : greenCenters) {
+        List<int[]> list;
+        if (desiredColor.equals(Color.GREEN)) {
+            list = greenCenters;
+        } else {
+            list = redCenters;
+        }
+        for (int[] pixel : list) {
             y = pixel[1];
             double distance = 2129 * Math.pow(y, -0.876); // Equation from
                                                           // camera calibration
@@ -202,7 +208,7 @@ public class ImageUtil {
                 y = pixel[1];
             }
         }
-        heading = getHeading(x + 22); // Camera offset from center
+        heading = getHeading(x); // Camera offset from center
         ImageCube cube = new ImageCube(x, y, closestDistance, heading);
         return cube;
     }

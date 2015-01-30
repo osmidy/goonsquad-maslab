@@ -59,17 +59,17 @@ public class ObjectFinder {
 	    }
 	    for (int[] pixel : redCubes) {
 	        int y = pixel[1];
-	        if (y < max) {
+	        if (y > max) {
 	            redCubes.remove(pixel);
 	        }
 	    }
 	    for (int[] pixel : greenCubes) {
             int y = pixel[1];
-            if (y < max) {
+            if (y > max) {
                 greenCubes.remove(pixel);
             }
         }
-	    if (dropzonePixel[1] < max) {
+	    if (dropzonePixel[1] > max) {
 	        dropzonePixel = new int[2];
 	    }
         

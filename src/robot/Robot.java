@@ -320,4 +320,9 @@ public class Robot {
         checkRep();
         return this.radius;
     }
+    
+    public List<Servo> getServos() {
+        checkRep();
+        return this.servos;
+    }
 }
