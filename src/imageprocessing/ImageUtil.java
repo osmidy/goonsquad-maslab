@@ -27,71 +27,66 @@ public class ImageUtil {
     private static final double radiansX = thetaX / radiansToDegrees;
     private static final double tanHalfX = Math.tan(thetaX / 2);
     private static final double focalLength = width * 0.5 / tanHalfX;
-    private static final Mat2Image rawImageConverter = new Mat2Image(BufferedImage.TYPE_3BYTE_BGR);
-    private static final Mat2Image processedImageConverter = new Mat2Image(BufferedImage.TYPE_3BYTE_BGR);
+    private static final Mat2Image rawImageConverter = new Mat2Image(
+            BufferedImage.TYPE_3BYTE_BGR);
+    private static final Mat2Image processedImageConverter = new Mat2Image(
+            BufferedImage.TYPE_3BYTE_BGR);
 
     private static List<int[]> redCenters = new ArrayList<int[]>();
     private static List<int[]> greenCenters = new ArrayList<int[]>();
     private static int[] wallPixel = new int[2];
     private static int[] dropzonePixel = new int[2];
-    
+
     private ImageProcessor processor = new ImageProcessor();
     private Mat rawImage = new Mat();
     private Mat resizedImage = new Mat();
     private Mat processedImage = new Mat();
     private final VideoCapture camera = new VideoCapture();
     private final ObjectFinder finder = new ObjectFinder();
-    
+
     private final Size imageSize = new Size(width, height);
     private final Size blurSize = new Size(5, 5);
 
-//    public static void main(String[] args) {
-//        ImageUtil ig = new ImageUtil();
-//        ig.checkFirstImage();
-//        while (true) {ig.checkImage();}
-//    }
-    public void checkFirstImage() {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        camera.open(0);
-//        for (int i = 0; i < 4; i++) {
-//            camera.grab();
-//        }
-//        checkImage();
-    }
+    // public static void main(String[] args) {
+    // ImageUtil ig = new ImageUtil();
+    // ig.checkFirstImage();
+    // while (true) {ig.checkImage();}
+    // }
+    // public void checkFirstImage() {
+    // System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    // camera.open(0);
+    // //// for (int i = 0; i < 4; i++) {
+    // //// camera.grab();
+    // //// }
+    // //// checkImage();
+    // // }
     public void checkImage() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load the OpenCV library
-//        boolean guiOn = true;
-//        JLabel cameraPane = createWindow("Camera output", width, height, guiOn);
-//        JLabel opencvPane = createWindow("OpenCV output", width, height, guiOn);      
-
+        // boolean guiOn = true;
+        // JLabel cameraPane = createWindow("Camera output", width, height,
+        // guiOn);
+        // JLabel opencvPane = createWindow("OpenCV output", width, height,
+        // guiOn);
 
         // Set up structures for processing images
 
-        
         // Wait until the camera has a new frame
-//        camera.grab();
-//        camera.retrieve(rawImage);
-        long loopStart = System.currentTimeMillis();
-        while (!camera.read(rawImage)) {
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        for (int i = 0; i < 5; i++) {
+            camera.grab();
         }
+        camera.retrieve(rawImage);
+        long loopStart = System.currentTimeMillis();
         Imgproc.resize(rawImage, resizedImage, imageSize); // Reduces resolution
 
         processor.process(resizedImage, processedImage, blurSize);
-        
+
         finder.findObjects(processedImage);
 
         redCenters = this.setRedCenters(finder.getRedCubes());
         greenCenters = this.setGreenCenters(finder.getGreenCubes());
         wallPixel = this.setWallPixel(finder.getWallPixel());
         dropzonePixel = this.setDropzonePixel(finder.getDropzonePixel());
-        
 
-        
         for (int[] center : redCenters) {
             System.out.println("RED: " + Arrays.toString(center));
         }
@@ -100,25 +95,25 @@ public class ImageUtil {
         }
         // Create GUI windows to display camera output and OpenCV output
         // Update the GUI windows
-//            if (guiOn) {
-//                updateWindow(cameraPane, resizedImage, rawImageConverter);
-//                updateWindow(opencvPane, processedImage, processedImageConverter);
-//            }
+        // if (guiOn) {
+        // updateWindow(cameraPane, resizedImage, rawImageConverter);
+        // updateWindow(opencvPane, processedImage, processedImageConverter);
+        // }
         long loopEnd = System.currentTimeMillis();
         System.out.println("Loop Time: " + ((loopEnd - loopStart)));
     }
-    
+
     private synchronized int[] setWallPixel(int[] pixel) {
-		int[] closest = pixel;
-		return closest;
-	}
+        int[] closest = pixel;
+        return closest;
+    }
 
-	private synchronized int[] setDropzonePixel(int[] pixel) {
-		int[] closest = pixel;
-		return closest;
-	}
+    private synchronized int[] setDropzonePixel(int[] pixel) {
+        int[] closest = pixel;
+        return closest;
+    }
 
-	private synchronized List<int[]> setGreenCenters(List<int[]> greenCubes) {
+    private synchronized List<int[]> setGreenCenters(List<int[]> greenCubes) {
         List<int[]> list = greenCubes;
         return list;
     }
@@ -127,32 +122,32 @@ public class ImageUtil {
         List<int[]> list = redCubes;
         return list;
     }
-    
+
     public synchronized int[] getWallPixel() {
-    	int[] pixel = wallPixel;
-    	return pixel;
+        int[] pixel = wallPixel;
+        return pixel;
     }
-    
+
     public synchronized double getWallHeading(int[] pixel) {
-    	double heading = this.getHeading(pixel[0]);
-    	return heading;
+        double heading = this.getHeading(pixel[0]);
+        return heading;
     }
-    
+
     public synchronized int[] getDropzonePixel() {
-    	int[] pixel = dropzonePixel;
-    	return pixel;
+        int[] pixel = dropzonePixel;
+        return pixel;
     }
-    
+
     public synchronized double getDropzoneHeading(int[] pixel) {
-    	double heading = this.getHeading(pixel[0]);
-    	return heading;
+        double heading = this.getHeading(pixel[0]);
+        return heading;
     }
 
     public synchronized List<int[]> getRedCenters() {
         List<int[]> list = redCenters;
         return list;
     }
-    
+
     public synchronized List<int[]> getGreenCenters() {
         List<int[]> list = greenCenters;
         return list;
@@ -193,7 +188,8 @@ public class ImageUtil {
         return heading;
     }
 
-    private static JLabel createWindow(String name, int width, int height, boolean guiOn) {
+    private static JLabel createWindow(String name, int width, int height,
+            boolean guiOn) {
         JFrame imageFrame = new JFrame(name);
         imageFrame.setSize(width, height);
         imageFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
