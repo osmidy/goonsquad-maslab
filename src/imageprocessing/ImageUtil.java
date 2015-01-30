@@ -46,6 +46,7 @@ public class ImageUtil {
 
     private final Size imageSize = new Size(width, height);
     private final Size blurSize = new Size(5, 5);
+    
     // CHANGE FOR EACH MATCH!!!
     private final Color color = Color.GREEN;
     public enum Color {
@@ -83,7 +84,7 @@ public class ImageUtil {
 
         // Wait until the camera has a new frame
         camera.open(0);
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 8; i++) {
             camera.grab();
         }
         camera.retrieve(rawImage);
