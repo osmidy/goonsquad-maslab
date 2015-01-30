@@ -45,11 +45,11 @@ public class ImageUtil {
     private final Size imageSize = new Size(width, height);
     private final Size blurSize = new Size(5, 5);
 
-    public static void main(String[] args) {
-        ImageUtil ig = new ImageUtil();
-        ig.checkFirstImage();
-        while (true) {ig.checkImage();}
-    }
+//    public static void main(String[] args) {
+//        ImageUtil ig = new ImageUtil();
+//        ig.checkFirstImage();
+//        while (true) {ig.checkImage();}
+//    }
     public void checkFirstImage() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         camera.open(0);
