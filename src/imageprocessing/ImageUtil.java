@@ -72,8 +72,9 @@ public class ImageUtil {
         camera.grab();
         camera.retrieve(rawImage);
         Imgproc.resize(rawImage, resizedImage, imageSize); // Reduces resolution
-        processor.process(resizedImage, processedImage, blurSize);
         long loopStart = System.currentTimeMillis();
+        processor.process(resizedImage, processedImage, blurSize);
+        
         finder.findObjects(processedImage);
 
         redCenters = this.setRedCenters(finder.getRedCubes());
