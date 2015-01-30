@@ -67,10 +67,18 @@ public class ImageUtil {
 
         // Set up structures for processing images
 
+        
         long loopStart = System.currentTimeMillis();
         // Wait until the camera has a new frame
-        camera.grab();
-        camera.retrieve(rawImage);
+        while (!camera.read(rawImage)) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+//        camera.grab();
+//        camera.retrieve(rawImage);
         Imgproc.resize(rawImage, resizedImage, imageSize); // Reduces resolution
         processor.process(resizedImage, processedImage, blurSize);
         finder.findObjects(processedImage);
