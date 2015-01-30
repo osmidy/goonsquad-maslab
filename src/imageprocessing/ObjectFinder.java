@@ -16,8 +16,8 @@ public class ObjectFinder {
 	// For these, will travel to closest pixel/distance
 	private final LinkedList<int[]> wallQueue = new LinkedList<int[]>();
 	private final LinkedList<int[]> dropzoneQueue = new LinkedList<int[]>();
-	private int[] wallPixel = new int[1];
-	private int[] dropzonePixel = new int[1];
+	private int[] wallPixel = new int[2];
+	private int[] dropzonePixel = new int[2];
 	
     private final LinkedList<int[]> redQueue = new LinkedList<int[]>();
     private final LinkedList<int[]> greenQueue = new LinkedList<int[]>();

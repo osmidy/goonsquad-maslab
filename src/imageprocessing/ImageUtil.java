@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
-import org.opencv.videoio.VideoCapture;
+import org.opencv.highgui.VideoCapture;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageUtil {
@@ -39,7 +39,7 @@ public class ImageUtil {
     private Mat rawImage = new Mat();
     private Mat resizedImage = new Mat();
     private Mat processedImage = new Mat();
-    private final VideoCapture camera = new org.opencv.videoio.VideoCapture();
+    private final VideoCapture camera = new VideoCapture();
     private final ObjectFinder finder = new ObjectFinder();
     
     private final Size imageSize = new Size(width, height);
@@ -53,15 +53,12 @@ public class ImageUtil {
     public void checkImage() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load the OpenCV library
         camera.open(0);
-        boolean guiOn = true;
-        JLabel cameraPane = createWindow("Camera output", width, height, guiOn);
-        JLabel opencvPane = createWindow("OpenCV output", width, height, guiOn);      
+//        boolean guiOn = true;
+//        JLabel cameraPane = createWindow("Camera output", width, height, guiOn);
+//        JLabel opencvPane = createWindow("OpenCV output", width, height, guiOn);      
 
 
         // Set up structures for processing images
-        
-        // Scanner input = new Scanner(System.in);
-        // String file = input.nextLine();
 
         long loopStart = System.currentTimeMillis();
         // Wait until the camera has a new frame
@@ -69,7 +66,7 @@ public class ImageUtil {
             camera.grab();
         }
         camera.retrieve(rawImage);
-        Imgproc.resize(rawImage, resizedImage, imageSize); // Halves resolution
+        Imgproc.resize(rawImage, resizedImage, imageSize); // Reduces resolution
         processor.process(resizedImage, processedImage, blurSize);
         finder.findObjects(processedImage);
 
@@ -88,10 +85,10 @@ public class ImageUtil {
         }
         // Create GUI windows to display camera output and OpenCV output
         // Update the GUI windows
-            if (guiOn) {
-                updateWindow(cameraPane, resizedImage, rawImageConverter);
-                updateWindow(opencvPane, processedImage, processedImageConverter);
-            }
+//            if (guiOn) {
+//                updateWindow(cameraPane, resizedImage, rawImageConverter);
+//                updateWindow(opencvPane, processedImage, processedImageConverter);
+//            }
         long loopEnd = System.currentTimeMillis();
         System.out.println("Loop Time: " + ((loopEnd - loopStart)));
     }
@@ -126,7 +123,7 @@ public class ImageUtil {
     	return heading;
     }
     
-    public synchronized int[] getDroopzonePixel() {
+    public synchronized int[] getDropzonePixel() {
     	int[] pixel = dropzonePixel;
     	return pixel;
     }
@@ -167,7 +164,7 @@ public class ImageUtil {
         }
         heading = getHeading(x);
         ImageCube cube = new ImageCube(x, y, closestDistance, heading);
-        return new ImageCube(x, y, closestDistance, heading);
+        return cube;
     }
 
     /**
@@ -175,7 +172,7 @@ public class ImageUtil {
      *            horizontal center coordinate of closest Cube
      * @return the heading, in degrees, of the cube
      */
-    private synchronized double getHeading(int x) {
+    public synchronized double getHeading(int x) {
         double halfWidth = width * .5;
         double heading = Math.atan((x - halfWidth) / focalLength);
         return heading;

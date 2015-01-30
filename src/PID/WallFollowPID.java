@@ -141,12 +141,7 @@ public class WallFollowPID implements PID {
                                         + "Integral: " + i * integral
                                         + "Derivative: " + d * derivative
                                         + "Power: " + power);
-                                try {
-                                    Thread.sleep(150);
-                                } catch (InterruptedException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
-                                }
+                                Thread.sleep(150);
                             }
                         }
                     }

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import PID.ReversePID;
+import PID.RotatePID;
 import PID.StayStraightPID;
 import PID.WallFollowPID;
 import robot.Robot;
@@ -16,6 +18,7 @@ import robot.Robot.State;
 import robotparts.Gyroscope;
 import robotparts.Motor;
 import robotparts.Servo;
+import sensorIO.Shield;
 import sensors.CameraSensor;
 import sensors.IRSensor;
 import sensors.Sensor;
@@ -25,6 +28,7 @@ public class Main {
     private final static Robot cokebot = makeRobot();
     private final static List<Motor> motors = cokebot.getMotors();
     private final static List<Sensor> sensors = cokebot.getSensors();
+    private final static Map<Sensor, Double> sensorMap = cokebot.getSensorMap();
     private final static ImageUtil imageUtil = new ImageUtil();
     private final static Motor leftMotor = motors.get(0);
     private final static Motor rightMotor = motors.get(1);
@@ -56,8 +60,7 @@ public class Main {
             state = cokebot.getState();
             System.out.println(state);
             if (state.equals(State.FINDWALL)) {
-                cokebot.setSpeed(0);
-                break simulate;//findWall();
+                findWall();
             } else if (state.equals(State.WALLFOLLOW)) {
                 followAndSearch();
             } else if (state.equals(State.DRIVETOCUBE)) {
@@ -75,21 +78,23 @@ public class Main {
     }
 
     private static void findWall() throws IOException {
-    	File file = new File("StayStraightPID.conf");
     	cokebot.setSpeed(0);
     	sleep(100);
-    	StayStraightPID approachWall = new StayStraightPID(file, cokebot, leftMotor, rightMotor, gyro);
+    	StayStraightPID approachWall = new StayStraightPID(stayStraightPid, cokebot, leftMotor, rightMotor, gyro);
     	Thread approachThread = approachWall.thread();
+        RotatePID rotateRobot = new RotatePID(stayStraightPid, cokebot, leftMotor, rightMotor, gyro);
+        Thread rotateThread = rotateRobot.thread();
     	
     	AtomicBoolean wallFound = new AtomicBoolean(false);
+    	AtomicBoolean nearWall = new AtomicBoolean(false);
     	Thread getDistance = new Thread(new Runnable() {
     		public void run() {
-    			int[] wall;
+    			int[] wall = new int[2];
     			double distance = Double.MAX_VALUE;
     			while (!wallFound.get()) {
     				imageUtil.checkImage();
     				wall = imageUtil.getWallPixel();
-    				if ((wall.length != 0) || (wall != null)) {
+    				if ((wall.length != 0) && (wall != null)) {
     					imageUtil.getWallHeading(wall);
     					cokebot.setSpeed(0);
     					double newDesiredHeading = imageUtil.getWallHeading(wall) + cokebot.getCurrentHeading();
@@ -98,9 +103,33 @@ public class Main {
     					wallFound.set(true);
     				}
     			}
-    			    			
+    			while (!nearWall.get()) {
+    			    imageUtil.checkImage();
+    			    wall = imageUtil.getWallPixel();
+    			    double distanceInches = 2129 * Math.pow(wall[1], -0.876); // Camera calibration
+    			    distance = distanceInches * .0254; // inches to meters
+    			    nearWall.set((distance < 0.15));
+    			    sleep(30);
+    			}
     		}
     	});
+    	
+    	getDistance.start();
+    	mainloop: while (true) {
+    	    if (nearWall.get()) {
+    	        getDistance.interrupt();
+    	        break mainloop;
+    	    }
+    	}
+    	cokebot.setSpeed(0);
+    	sleep(30);
+    	double newDesiredHeading = cokebot.getCurrentHeading() - sensorMap.get(diagonalIR);
+    	cokebot.setDesiredHeading(newDesiredHeading);
+    	rotateThread.start();
+    	sleep(200);
+    	rotateThread.interrupt();
+    	cokebot.setState(State.WALLFOLLOW);
+    	
 //    	double wallHeading; // Calculated from column that is being iterated over (column 77)
 //        double newWallHeading = cokebot.getCurrentHeading() + wallHeading;
 //        cokebot.setDesiredHeading(newWallHeading);
@@ -163,13 +192,12 @@ public class Main {
         }
         cokebot.setSpeed(0);
         sleep(30);
-        findCube.interrupt();
+//        findCube.interrupt();
         cokebot.setState(State.DRIVETOCUBE);
     }
 
     private static void driveToCube() throws IOException {
-        File file = new File("StayStraightPID.conf");
-        StayStraightPID getCube = new StayStraightPID(file, cokebot, leftMotor, rightMotor, gyro);
+        StayStraightPID getCube = new StayStraightPID(stayStraightPid, cokebot, leftMotor, rightMotor, gyro);
         Thread getCubeThread = getCube.thread();
         Thread checkDistance = new Thread(new Runnable() {
             public void run() {
@@ -197,40 +225,102 @@ public class Main {
     }
 
     private static void findDropZone() throws IOException {
-        double dropHeading; // Calculated from column that is being iterated over (column 0)
-        double newWallHeading = cokebot.getCurrentHeading() + dropHeading;
-        cokebot.setDesiredHeading(newWallHeading);
+        cokebot.setSpeed(0);
+        sleep(100);
+        StayStraightPID approachZone = new StayStraightPID(stayStraightPid, cokebot, leftMotor, rightMotor, gyro);
+        Thread approachThread = approachZone.thread();
+        RotatePID rotateRobot = new RotatePID(stayStraightPid, cokebot, leftMotor, rightMotor, gyro);
+        Thread rotateThread = rotateRobot.thread();
         
-        File file = new File("StayStraightPID.conf");
-        StayStraightPID getToWall = new StayStraightPID(file, cokebot, leftMotor, rightMotor, gyro);
-        Thread getToWallThread = getToWall.thread();
-        Thread checkDistance = new Thread(new Runnable() {
+        AtomicBoolean zoneFound = new AtomicBoolean(false);
+        AtomicBoolean nearZone = new AtomicBoolean(false);
+        AtomicBoolean inZone = new AtomicBoolean(false);
+        Thread getDistance = new Thread(new Runnable() {
             public void run() {
-                double wallDistance = Double.MAX_VALUE;
-                // TODO: make sure interrupted correctly
-                while (wallDistance > 20) {
-                    System.out.println("Approaching wall...");
-                    wallDistance = getWallDistance(); // Iterates over column to find distance, details in notebook
-                    sleep(10);
+                int[] zone = new int[2];
+                double distance = Double.MAX_VALUE;
+                while (!zoneFound.get()) {
+                    imageUtil.checkImage();
+                    zone = imageUtil.getDropzonePixel();
+                    if ((zone.length != 0) && (zone != null)) {
+                        imageUtil.getDropzoneHeading(zone);
+                        cokebot.setSpeed(0);
+                        double newDesiredHeading = imageUtil.getDropzoneHeading(zone) + cokebot.getCurrentHeading();
+                        cokebot.setDesiredHeading(newDesiredHeading);
+                        approachThread.start();
+                        zoneFound.set(true);
                     }
                 }
-            });
-            
-            getToWallThread.start();
-            checkDistance.start();
-            sleep(500);
-            getToWallThread.interrupt();
+                while (!nearZone.get()) {
+                    imageUtil.checkImage();
+                    zone = imageUtil.getDropzonePixel();
+                    double distanceInches = 2129 * Math.pow(zone[1], -0.876); // Camera calibration
+                    distance = distanceInches * .0254; // in to m
+                    nearZone.set(distance < 0.15);
+                    sleep(30);
+                }
+            }
+        });
+        
+        getDistance.start();
+        mainloop: while (true) {
+            if (nearZone.get()) {
+                sleep(100);
+                getDistance.interrupt();
+                break mainloop;
+            }
         }
-        
-        // Now turn to face the wall
-        double newFaceWallHeading = cokebot.getCurrentHeading() - (90 - dropHeading);
-        cokebot.setDesiredHeading(newFaceWallHeading);
-        // Turn in place to the desired heading, which should face the wall
-        
+        cokebot.setSpeed(0);
+        // Rotate for reverse
+        double newDesiredHeading = cokebot.getCurrentHeading() + 180.0;
+        cokebot.setDesiredHeading(newDesiredHeading);
+        rotateThread.start();
+        sleep(200);
+        rotateThread.interrupt();
         cokebot.setState(State.DROPSTACK);
+//        double dropHeading; // Calculated from column that is being iterated over (column 0)
+//        double newWallHeading = cokebot.getCurrentHeading() + dropHeading;
+//        cokebot.setDesiredHeading(newWallHeading);
+//        
+//        File file = new File("StayStraightPID.conf");
+//        StayStraightPID getToWall = new StayStraightPID(file, cokebot, leftMotor, rightMotor, gyro);
+//        Thread getToWallThread = getToWall.thread();
+//        Thread checkDistance = new Threadd(new Runnable() {
+//            public void run() {
+//                double wallDistance = Double.MAX_VALUE;
+//                // TODO: make sure interrupted correctly
+//                while (wallDistance > 20) {
+//                    System.out.println("Approaching wall...");
+//                    wallDistance = getWallDistance(); // Iterates over column to find distance, details in notebook
+//                    sleep(10);
+//                    }
+//                }
+//            });
+//            
+//            getToWallThread.start();
+//            checkDistance.start();
+//            sleep(500);
+//            getToWallThread.interrupt();
+//        }
+//        
+//        // Now turn to face the wall
+//        double newFaceWallHeading = cokebot.getCurrentHeading() - (90 - dropHeading);
+//        cokebot.setDesiredHeading(newFaceWallHeading);
+//        // Turn in place to the desired heading, which should face the wall
+//        
+//        cokebot.setState(State.DROPSTACK);
+    }
     
-    private static void dropStack() {
-        // TODO Auto-generated method stub
+    private static void dropStack() throws IOException {
+        cokebot.setSpeed(0);
+        // TODO: actuator/servo things to actually drop blocks
+        ReversePID reverse = new ReversePID(stayStraightPid, cokebot, leftMotor, rightMotor, gyro);
+        Thread reverseThread = reverse.thread();
+        reverseThread.start();
+        sleep(2000);
+        reverseThread.interrupt();
+        cokebot.setSpeed(0);
+        cokebot.setState(State.FINDWALL);
 
     }
 
@@ -252,6 +342,7 @@ public class Main {
         final List<Motor> motors = new ArrayList<Motor>();
         final List<Servo> servos = new ArrayList<Servo>();
         final Map<Sensor, Double> sensorHeadings = new LinkedHashMap<Sensor, Double>();
+        
 
         // Wheel Motors
         int pwmPinLeft = 9;
@@ -273,8 +364,16 @@ public class Main {
 
         // Other Motors
 
+        
+        // Shield
+        int bus = 6;
+        Shield shield = new Shield(bus);
+        
         // Servos
-
+        int pinServoPin = 3;
+        Servo pinServo = new Servo(pinServoPin, shield);
+        servos.add(pinServo);
+        
         // Sensors
         int sideIRPin = 0;
         int diagonalIRPin = 1;

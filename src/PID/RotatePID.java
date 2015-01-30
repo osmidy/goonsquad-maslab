@@ -2,7 +2,6 @@ package PID;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -10,7 +9,7 @@ import robot.Robot;
 import robotparts.Gyroscope;
 import robotparts.Motor;
 
-public class StayStraightPID implements PID {
+public class RotatePID implements PID{
     private double p = 0;
     private double i = 0;
     private double d = 0;
@@ -25,8 +24,8 @@ public class StayStraightPID implements PID {
 
     private double desiredHeading = 0;
     private double currentHeading = 0;
-
-    public StayStraightPID(File file, Robot robot, Motor leftMotor,
+    
+    public RotatePID(File file, Robot robot, Motor leftMotor,
             Motor rightMotor, Gyroscope gyro) throws IOException {
         BufferedReader read = new BufferedReader(new FileReader(file));
         for (String line = read.readLine(); line != null; line = read
@@ -52,7 +51,7 @@ public class StayStraightPID implements PID {
         this.desiredHeading = robot.getDesiredHeading();
         this.currentHeading = robot.getCurrentHeading();
     }
-
+    
     @Override
     public Thread thread() {
         Thread pid = new Thread(new Runnable() {
@@ -79,9 +78,9 @@ public class StayStraightPID implements PID {
 
                 // Initial Settings
                 getHeading.start();
-                double desired = robot.getDesiredHeading();
-                double heading = robot.getCurrentHeading();
-                double bias = 0.1;
+                double desired = 0;
+                double heading = 0;
+                double bias = 0.0;
 //                double p = .012;
 //                double i = .0005;
 //                double d = .03;
@@ -95,6 +94,8 @@ public class StayStraightPID implements PID {
                 // Main loop with PID control implemented
                 try {
                     outerloop: while (true) {
+                        desired = robot.getDesiredHeading();
+                        heading = robot.getCurrentHeading();
                         double diff = desired - heading;
                         long finish = System.currentTimeMillis();
                         double deltaT = .001 * (finish - begin); // from milli
@@ -132,5 +133,5 @@ public class StayStraightPID implements PID {
         });
         return pid;
     }
-
+        
 }
