@@ -56,6 +56,7 @@ public class Main {
         // TODO: when stack is hit, remove stack from list, create new cubes and
         // add to list
         State state;
+        imageUtil.checkFirstImage();
         simulate: while (true) {
             state = cokebot.getState();
             System.out.println(state);

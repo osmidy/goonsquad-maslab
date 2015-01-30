@@ -45,14 +45,21 @@ public class ImageUtil {
     private final Size imageSize = new Size(width, height);
     private final Size blurSize = new Size(5, 5);
 
-//    public static void main(String[] args) {
-//        ImageUtil ig = new ImageUtil();
-//        while (true) {ig.checkImage();}
-//    }
-    
+    public static void main(String[] args) {
+        ImageUtil ig = new ImageUtil();
+        ig.checkFirstImage();
+        while (true) {ig.checkImage();}
+    }
+    public void checkFirstImage() {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        camera.open(0);
+        for (int i = 0; i < 4; i++) {
+            camera.grab();
+        }
+        checkImage();
+    }
     public void checkImage() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load the OpenCV library
-        camera.open(0);
 //        boolean guiOn = true;
 //        JLabel cameraPane = createWindow("Camera output", width, height, guiOn);
 //        JLabel opencvPane = createWindow("OpenCV output", width, height, guiOn);      
@@ -62,9 +69,7 @@ public class ImageUtil {
 
         long loopStart = System.currentTimeMillis();
         // Wait until the camera has a new frame
-        for (int i = 0; i < 5; i++) {
-            camera.grab();
-        }
+        camera.grab();
         camera.retrieve(rawImage);
         Imgproc.resize(rawImage, resizedImage, imageSize); // Reduces resolution
         processor.process(resizedImage, processedImage, blurSize);
