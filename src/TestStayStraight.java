@@ -42,7 +42,7 @@ public class TestStayStraight {
 
         // Initial Settings
         getHeading.start();
-        double motorBias = 0.2;
+        double motorBias = 0;
         double p = .012;
         double i = .0005;
         double d = .03;
@@ -70,7 +70,8 @@ public class TestStayStraight {
             rightMotor.setSpeed(motorBias - power);
             System.out.println("Left: " + leftMotor.getSpeed() + " Right: "
                     + rightMotor.getSpeed() + " Heading: " + heading);
-            System.out.println("Diff: " + p * diff + " Integral: " + i * integral + " Derivative: " + d * derivative + " Power: " + power);
+            //System.out.println("Diff: " + p * diff + " Integral: " + i * integral + " Derivative: " + d * derivative + " Power: " + power);
+            System.out.println("Gyro: " + gyro.getAngularVelocity());
             try {
                 Thread.sleep(33);
             } catch (InterruptedException e) {
