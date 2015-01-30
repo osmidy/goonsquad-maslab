@@ -71,6 +71,7 @@ public class StayStraightPID implements PID {
                             double prevBias = ((.11 * start) - .3373);
                             double total = (omega - (bias - prevBias)) * deltaT;
                             heading += total;
+                            robot.setHeading(heading);
                             start = end;
                         }
                     }
