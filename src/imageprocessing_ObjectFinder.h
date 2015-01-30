@@ -9,10 +9,10 @@ extern "C" {
 #endif
 /*
  * Class:     imageprocessing_ObjectFinder
- * Method:    checkCube
+ * Method:    getObjectType
  * Signature: (JII)I
  */
-JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube
+JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_getObjectType
   (JNIEnv *, jobject, jlong, jint, jint);
 
 #ifdef __cplusplus

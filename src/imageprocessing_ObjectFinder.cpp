@@ -9,7 +9,7 @@
 using namespace cv;
 using namespace std;
 
-JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_checkCube
+JNIEXPORT jint JNICALL Java_imageprocessing_ObjectFinder_getObjectType
   (JNIEnv *env, jobject thisObj, jlong pointer, jint x, jint y) {
     Mat* image = (Mat*)pointer;
     int channels = image->channels();

@@ -53,9 +53,9 @@ public class ImageUtil {
     public void checkImage() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load the OpenCV library
         camera.open(0);
-//        boolean guiOn = true;
-//        JLabel cameraPane = createWindow("Camera output", width, height, guiOn);
-//        JLabel opencvPane = createWindow("OpenCV output", width, height, guiOn);      
+        boolean guiOn = true;
+        JLabel cameraPane = createWindow("Camera output", width, height, guiOn);
+        JLabel opencvPane = createWindow("OpenCV output", width, height, guiOn);      
 
 
         // Set up structures for processing images
@@ -85,10 +85,10 @@ public class ImageUtil {
         }
         // Create GUI windows to display camera output and OpenCV output
         // Update the GUI windows
-//            if (guiOn) {
-//                updateWindow(cameraPane, resizedImage, rawImageConverter);
-//                updateWindow(opencvPane, processedImage, processedImageConverter);
-//            }
+            if (guiOn) {
+                updateWindow(cameraPane, resizedImage, rawImageConverter);
+                updateWindow(opencvPane, processedImage, processedImageConverter);
+            }
         long loopEnd = System.currentTimeMillis();
         System.out.println("Loop Time: " + ((loopEnd - loopStart)));
     }

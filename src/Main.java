@@ -215,12 +215,16 @@ public class Main {
         getCubeThread.start();
         checkDistance.start();
         sleep(1500);
-        getCubeThread.interrupt();
-        cokebot.setState(State.FINDWALL);     
+//        getCubeThread.interrupt();
+        cokebot.setState(State.COLLECTCUBE);     
     }
 
     private static void collectCube() {
-        // TODO Auto-generated method stub
+        IRSensor closeRange = (IRSensor)sensors.get(2);
+        if (closeRange.getVoltage() < 500) {
+            System.out.println("COLLECTED!");
+            SetZero.main(new String[0]);
+        }
 
     }
 
@@ -377,13 +381,17 @@ public class Main {
         // Sensors
         int sideIRPin = 0;
         int diagonalIRPin = 1;
+        int closeRangeIRPin = 2;
         double sideIRHeading = -90;
         double diagonalIRHeading = -30;
+        double closeRangeIRHeading = 0.0;
 
         IRSensor sideIR = new IRSensor(sideIRPin);
         IRSensor diagonalIR = new IRSensor(diagonalIRPin);
+        IRSensor closeRangeIR = new IRSensor(closeRangeIRPin);
         sensorHeadings.put(sideIR, sideIRHeading);
         sensorHeadings.put(diagonalIR, diagonalIRHeading);
+        sensorHeadings.put(closeRangeIR, closeRangeIRHeading);
 
         CameraSensor camera = new CameraSensor(imageUtil);
         double cameraHeading = 0.0;
