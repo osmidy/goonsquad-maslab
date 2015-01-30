@@ -67,12 +67,13 @@ public class ImageUtil {
 
         // Set up structures for processing images
 
-        long loopStart = System.currentTimeMillis();
+        
         // Wait until the camera has a new frame
         camera.grab();
         camera.retrieve(rawImage);
         Imgproc.resize(rawImage, resizedImage, imageSize); // Reduces resolution
         processor.process(resizedImage, processedImage, blurSize);
+        long loopStart = System.currentTimeMillis();
         finder.findObjects(processedImage);
 
         redCenters = this.setRedCenters(finder.getRedCubes());
