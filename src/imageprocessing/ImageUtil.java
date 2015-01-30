@@ -71,6 +71,7 @@ public class ImageUtil {
         // Set up structures for processing images
 
         // Wait until the camera has a new frame
+        camera.open(0);
         for (int i = 0; i < 5; i++) {
             camera.grab();
         }
